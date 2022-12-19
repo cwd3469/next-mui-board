@@ -1,34 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# What Ails You Pharmacy Client
 
-## Getting Started
+## 개요
 
-First, run the development server:
+- 어디아파 약국 클라이언트 프로젝트
 
-```bash
-npm run dev
-# or
+## 기술스택
+
+- JavaScript(ES6)
+- TypeScript
+- React
+- Next.js
+- MUI
+- Emotion
+
+## 프로젝트 시작 전 설정
+
+https://bepluslab.atlassian.net/wiki/spaces/P2D/pages/202342413
+
+## 프로젝트 시작 (개발)
+
+```
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 프로젝트 구조
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### - hook 디렉토리
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### : next.js에서 MVC 패턴을 지향하고 hooks디렉토리에서 공통으로 사용하는 커스텀 훅을 정리해 둡니다. 하지만 전역으로 사용하는 리엑트 훅 보다는 국지적으로 특정 디렉토리에서만 사용 되는 훅들이 있습니다. components에 한개의 디랙토리마다 한개에 hook디렉토리를 두어서 국지적으로 사용되는 리엑트 훅들을 정리해 두었습니다.
