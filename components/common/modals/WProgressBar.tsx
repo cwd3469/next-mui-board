@@ -5,6 +5,16 @@ import { WCircularProgress } from './styled';
 const WProgressBar = () => {
   const progressOn = useAxiosInterceptor();
 
+  const style = {
+    width: '100%',
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    display: 'flex',
+    justifyContent: 'center',
+  };
+
   return (
     <Backdrop
       sx={{
@@ -14,17 +24,7 @@ const WProgressBar = () => {
       }}
       open={progressOn}
     >
-      <Box
-        sx={{
-          width: '100%',
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
+      <Box sx={style}>
         <WCircularProgress />
       </Box>
     </Backdrop>

@@ -1,5 +1,5 @@
 import WSnackBar from '@components/common/modals/WSnackBar';
-import { UseToastInterface } from '@components/common/types';
+import { UseToastInterface } from '@components/common/modals/types';
 import { AlertColor } from '@mui/material/Alert';
 import { createContext, useCallback, useContext, useState } from 'react';
 

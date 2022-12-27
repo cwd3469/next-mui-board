@@ -3,7 +3,7 @@ import { AlertColor } from '@mui/material/Alert';
 import { Box, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import { WSnackBarType } from '../types';
+import { WSnackBarType } from './types';
 import { ErrorIcon, InfoIcon } from '../dataDisplay/WIcons';
 import { WAlert } from './styled';
 
