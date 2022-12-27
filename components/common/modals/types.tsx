@@ -1,5 +1,19 @@
 import { AlertColor, Breakpoint, SxProps, Theme } from '@mui/material';
 
+export interface ToastType {
+  type: AlertColor;
+  msg: string;
+}
+
+export interface WSnackBarType extends ToastType {
+  open: boolean;
+  close: (event?: React.SyntheticEvent | Event, reason?: string) => void;
+}
+
+export interface UseToastInterface {
+  on: (msg: string, type: AlertColor) => void;
+}
+
 export interface WModalProps {
   handleClose?: () => void;
   subTitle?: string;
@@ -25,23 +39,4 @@ export interface WConfirmProps extends WAlertProps {
   closeBtnTitle?: string;
   closeBtnColor?: string;
   closeBtnEvent?: () => void;
-}
-
-export interface ToastType {
-  type: AlertColor;
-  msg: string;
-}
-
-export interface WSnackBarType extends ToastType {
-  open: boolean;
-  close: (event?: React.SyntheticEvent | Event, reason?: string) => void;
-}
-
-export interface UseToastInterface {
-  on: (msg: string, type: AlertColor) => void;
-}
-
-export interface WOptionType {
-  id: string;
-  name: string;
 }

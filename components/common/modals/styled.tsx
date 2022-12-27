@@ -1,6 +1,19 @@
-import { Alert, CircularProgress, styled } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  styled,
+} from '@mui/material';
+import Image from 'next/image';
+import closeModal from 'public/assets/icon/closeModal.svg';
 
-export const WAlert = styled(Alert)(({ theme }) => ({
+export const WToastAlert = styled(Alert)(({ theme }) => ({
   backgroundColor: '#fff',
   border: '1px solid #999',
   borderWidth: '1px',
@@ -27,3 +40,73 @@ export const WCircularProgress = styled(CircularProgress)(({ theme }) => ({
     transition: 'transform 10s ease-in-out',
   },
 }));
+
+export const ModalButton = styled(Button)(({ theme }) => ({
+  width: '50%',
+  marginLeft: '0px !important',
+  borderRadius: '0px',
+  padding: '25px',
+  ...theme.typography.h5,
+  fontWeight: '400',
+  lineHeight: '1.2',
+  '&:hover': { backgroundColor: '#ddd' },
+}));
+
+export const WDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiPaper-root': {
+    borderRadius: '8px',
+  },
+
+  '& .MuiBackdrop-root': {
+    transition: 'all 0.5s !important',
+  },
+}));
+
+export const WDialogActions = styled(DialogActions)(({ theme }) => ({
+  justifyContent: 'space-between',
+  padding: '0px',
+  gap: '0px',
+}));
+
+export const WDialogContent = styled(DialogContent)(({ theme }) => ({
+  padding: '0px',
+  position: 'relative',
+}));
+
+export const WDialogTitle = styled(DialogTitle)(({ theme }) => ({
+  ...theme.typography.h5,
+  textAlign: 'center',
+  letterSpacing: '0px',
+  padding: '0px',
+}));
+
+export const WDialogContentText = styled(DialogContentText)(({ theme }) => ({
+  ...theme.typography.body2,
+  fontWeight: '400',
+  letterSpacing: '0px',
+  textAlign: 'center',
+}));
+
+export const WDialogLayout = styled(Box)(({ theme }) => ({
+  padding: '0px 40px',
+}));
+
+export const WModalClose = (props: { onClick?: () => void }) => {
+  const { onClick } = props;
+  return (
+    <Button
+      color="info"
+      onClick={onClick}
+      sx={{
+        position: 'absolute',
+        top: '40px ',
+        right: '40px',
+        zIndex: '99',
+        padding: '0px',
+        minWidth: '0px',
+      }}
+    >
+      <Image src={closeModal} alt="닫기 버튼"></Image>
+    </Button>
+  );
+};
