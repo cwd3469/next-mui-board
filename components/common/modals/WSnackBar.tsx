@@ -5,7 +5,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import { WSnackBarType } from './types';
 import { ErrorIcon, InfoIcon } from '../dataDisplay/WIcons';
-import { WAlert } from './styled';
+import { WToastAlert } from './styled';
 
 export const IconList = (type: AlertColor) => {
   switch (type) {
@@ -35,7 +35,7 @@ const WSnackBar = (props: WSnackBarType) => {
         horizontal: 'center',
       }}
     >
-      <WAlert
+      <WToastAlert
         icon={IconList(type)}
         variant="outlined"
         severity={type ? type : 'success'}
@@ -55,7 +55,7 @@ const WSnackBar = (props: WSnackBarType) => {
             );
           })}
         </Box>
-      </WAlert>
+      </WToastAlert>
     </Snackbar>
   );
 };
