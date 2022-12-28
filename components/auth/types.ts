@@ -1,3 +1,6 @@
+import { ErrorType } from '@components/common/inputs/type';
+import { ChangeEvent } from 'react';
+
 export interface UserInfoInterface {
   accountId: string;
   roles: string[];
@@ -16,4 +19,22 @@ export interface UserInfoInterface {
   service: string;
   sub: string;
   ulid: string;
+}
+
+export interface AuthMobileViewType {
+  open: boolean;
+  authValue: string;
+  mobileValue: string;
+  authDisabled: boolean;
+  bgDisable: boolean;
+  numDisabled: boolean;
+  authError: ErrorType;
+  authOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  mobileOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onTimerDisabled: () => void;
+  mobileError: ErrorType;
+  focusOutEvent: () => void;
+  onClickAuthNumSend: () => void;
+  signupAuthOnClick: () => void;
+  resetModalClose: () => void;
 }
