@@ -3,7 +3,7 @@ import { ModalButton, WDialog, WDialogActions } from './styled';
 import WModal from './WModal';
 import { WAlertProps } from './types';
 
-export const WAlert = (props: WAlertProps) => {
+const WAlert = (props: WAlertProps) => {
   const {
     // modal
     handleClose,
@@ -35,9 +35,7 @@ export const WAlert = (props: WAlertProps) => {
       closeBtnOn={closeBtnOn}
       titleSx={titleSx}
       style={style}
-    >
-      <>
-        {children}
+      action={
         <WDialogActions>
           <ModalButton
             disabled={disabled ? disabled : false}
@@ -53,7 +51,9 @@ export const WAlert = (props: WAlertProps) => {
             {btnTitle ? btnTitle : '닫기'}
           </ModalButton>
         </WDialogActions>
-      </>
+      }
+    >
+      {children}
     </WModal>
   );
 };

@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Breakpoint, Stack } from '@mui/material';
 import { WModalProps } from './types';
 import {
   WDialog,
@@ -21,8 +21,26 @@ const WModal = (props: WModalProps) => {
     bgDisable,
     closeBtnOn,
     titleSx,
+    action,
     style,
   } = props;
+
+  const contentsWidth = (Breakpoint: Breakpoint | undefined) => {
+    switch (Breakpoint) {
+      case 'xs':
+        return '444px';
+      case 'sm':
+        return '500px';
+      case 'md':
+        return '720px';
+      case 'xl':
+        return '800px';
+      case 'lg':
+        return '1200px';
+      default:
+        return 'auto';
+    }
+  };
 
   return (
     <WDialog
@@ -38,8 +56,15 @@ const WModal = (props: WModalProps) => {
         ...style,
       }}
     >
+      {' '}
+      {closeBtnOn ? <WModalClose onClick={handleClose} /> : ''}
       {title ? (
-        <Stack gap="8px" padding="50px 40px 48px" sx={titleSx}>
+        <Stack
+          gap="8px"
+          padding="64px 40px 56px"
+          sx={titleSx}
+          width={contentsWidth(maxWidth)}
+        >
           {title ? <WDialogTitle>{title}</WDialogTitle> : ''}
           {subTitle ? <WDialogContentText>{subTitle}</WDialogContentText> : ''}
         </Stack>
@@ -49,7 +74,7 @@ const WModal = (props: WModalProps) => {
       <WDialogContent>
         <WDialogLayout>{children}</WDialogLayout>
       </WDialogContent>
-      {closeBtnOn ? <WModalClose onClick={handleClose} /> : ''}
+      {action}
     </WDialog>
   );
 };

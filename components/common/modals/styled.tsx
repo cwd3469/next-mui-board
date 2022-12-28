@@ -69,7 +69,7 @@ export const WDialogActions = styled(DialogActions)(({ theme }) => ({
 }));
 
 export const WDialogContent = styled(DialogContent)(({ theme }) => ({
-  padding: '0px',
+  padding: '0px 40px',
   position: 'relative',
 }));
 
@@ -87,9 +87,7 @@ export const WDialogContentText = styled(DialogContentText)(({ theme }) => ({
   textAlign: 'center',
 }));
 
-export const WDialogLayout = styled(Box)(({ theme }) => ({
-  padding: '0px 40px',
-}));
+export const WDialogLayout = styled(Box)(({ theme }) => ({}));
 
 export const WModalClose = (props: { onClick?: () => void }) => {
   const { onClick } = props;
