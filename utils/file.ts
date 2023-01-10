@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { FileDto, FileUid } from '@hooks/utils/fileUpload/types';
 import { Validation } from '@hooks/utils/useValidation';
 import imageCompression from 'browser-image-compression';
@@ -23,15 +20,24 @@ export const convertURLtoFile = async (url: string) => {
   }
 };
 
-export const dataURItoFile = async (dataURI: string, name: string) => {
-  if (typeof window !== 'undefined') {
-    const url = dataURI;
-    const response = await fetch(url);
-    const blob = await response.blob();
-    const metadata = { type: blob.type };
-    const file = new File([blob], name, metadata);
-    return file;
+export const dataURItoFile = (dataURI: string, name: string) => {
+  const decode = decodeURIComponent(window.atob(dataURI));
+  const mime = decode.charAt(0);
+  const extens = fileExtension(mime);
+  const bstr = window.atob(decode);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
   }
+  const file = new File(
+    [u8arr],
+    `${name}.${extens === 'application/pdf' ? 'pdf' : extens}`,
+    {
+      type: extens,
+    },
+  );
+  return file;
 };
 export const forinArr = (obj: any) => {
   let arr = [];
@@ -92,4 +98,34 @@ export const urlFileSeparation = async (imgList: FileDto[]) => {
   }
 
   return imgFile;
+};
+
+export const formDataFormat = async (fileList: File[], name: string) => {
+  const valid = new Validation();
+  let formData = new FormData();
+  for (let i = 0; i < fileList.length; i++) {
+    const item = fileList[i];
+    const imgName = item.name;
+    const regBoo = valid.regExpFile.test(item.type);
+    let resizeFile = regBoo ? item : await resizeFileCompression(item);
+    const img = blobToFile(resizeFile, imgName);
+    formData.append(name, img);
+  }
+
+  return formData;
+};
+
+export const fileExtension = (first: string) => {
+  switch (first) {
+    case '/':
+      return 'jpg';
+    case 'i':
+      return 'png';
+    case 'R':
+      return 'gif';
+    case 'U':
+      return 'webp';
+    default:
+      return 'application/pdf';
+  }
 };
