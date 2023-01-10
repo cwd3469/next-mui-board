@@ -17,6 +17,7 @@ export class Validation {
   regExpEmail: RegExp;
   regExpMobile: RegExp;
   regExpPhone: RegExp;
+  regExpBusinessNum: RegExp;
   regExpId: RegExp;
   regExpIdCheck: RegExp;
   regExpPass: RegExp;
@@ -89,6 +90,9 @@ export class Validation {
 
     /** 일반 전화번호 정규식 */
     this.regExpPhone = /^(\d{2,3})(\d{3})(\d{4})$/;
+
+    /** 사업자 등록증 정규식 */
+    this.regExpBusinessNum = /^(\d{3})(\d{2})(\d{5})$/;
 
     /** 진료비 입력 정규식 */
     this.regExpExpenses = /^[0-9,]{0,9}$/;
