@@ -9,7 +9,9 @@ import {
   styled,
   SvgIcon,
   SvgIconProps,
+  SxProps,
 } from '@mui/material';
+import { Theme } from '@mui/system';
 
 export const TermsGrid = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -151,6 +153,7 @@ export const ItemInput = (props: {
   title: string;
   require?: boolean;
   children: JSX.Element;
+  sx?: SxProps<Theme>;
 }) => {
   return (
     <Stack
@@ -158,6 +161,7 @@ export const ItemInput = (props: {
       sx={{
         gap: '8px',
         width: '320px',
+        ...props.sx,
       }}
     >
       <WSubTitle
