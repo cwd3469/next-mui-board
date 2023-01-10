@@ -31,7 +31,7 @@ export interface SignupInfo {
   pharmacyPhone: string;
   pharmacyTaxNum: string;
   businessLicense: string;
-  comnetUseCert: string;
+  pharmacistLicense: string;
   bankbookCopy: string;
 }
 
