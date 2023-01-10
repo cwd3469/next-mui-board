@@ -38,14 +38,13 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
   const onChangeInfo = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const txt = e.target.value;
-      if (txt.length <= 20) {
-        if (txt.length !== 0 && !valid.regExFaxNumber.test(txt)) {
-          errMsg();
-          return;
-        }
-        if (txt.length <= 10) {
+      if (txt.length <= 10) {
+        if (valid.regExFaxNumber.test(txt)) {
           setState(txt, keyId);
           passMsg();
+        } else {
+          errMsg();
+          return;
         }
       }
     },
