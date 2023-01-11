@@ -7,7 +7,6 @@ import { SigninDto, SigninState, SigninErr } from './type';
 import { ErrorType } from '@components/common/inputs/type';
 import { SigninLayout } from '../styled';
 import { Logo } from '@components/common/layouts/WLayout';
-import WHealthcareFacility from '@components/common/inputs/textField/modules/WHealthcareFacility';
 import {
   WPwTextField,
   WUseridTextField,
