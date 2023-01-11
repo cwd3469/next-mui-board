@@ -45,7 +45,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
       btnTitle="다음"
       handleEvent={onClickSignup}
       disabled={btnDisable}
-      btnColor="#4ac6ff"
+      activeOn
       closeBtnOn
       title="병원 정보 입력"
     >

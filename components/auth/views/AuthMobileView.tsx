@@ -32,7 +32,6 @@ const AuthMobileView = (props: AuthMobileViewType) => {
       handleEvent={signupAuthOnClick}
       bgDisable={bgDisable}
       disabled={numDisabled}
-      btnColor="#c1c1c1"
       btnTitle="다음"
       title="휴대폰번호 인증"
       closeBtnOn

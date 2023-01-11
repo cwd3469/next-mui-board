@@ -17,7 +17,7 @@ export const WConfirm = (props: WConfirmProps) => {
     style,
     // alert
     btnTitle,
-    btnColor,
+    activeOn,
     btnTextColor,
     disabled,
     handleEvent,
@@ -41,24 +41,21 @@ export const WConfirm = (props: WConfirmProps) => {
       action={
         <WDialogActions>
           <ModalButton
+            className="closeBtn"
             variant="contained"
             color="info"
             onClick={closeBtnEvent ? closeBtnEvent : handleClose}
-            sx={{
-              backgroundColor: closeBtnColor ? closeBtnColor : '#c1c1c1',
-            }}
           >
             {closeBtnTitle ? closeBtnTitle : '닫기'}
           </ModalButton>
           <ModalButton
+            className={`actionBtn ${activeOn ? 'active' : ''} ${
+              typeof disabled !== 'undefined' ? 'active' : ''
+            }`}
             disabled={disabled ? disabled : false}
             variant="contained"
             color="info"
             onClick={handleEvent ? handleEvent : handleClose}
-            sx={{
-              backgroundColor: btnColor,
-              color: btnTextColor ? btnTextColor : '#fff',
-            }}
           >
             {btnTitle ? btnTitle : '확인'}
           </ModalButton>

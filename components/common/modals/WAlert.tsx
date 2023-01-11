@@ -17,8 +17,8 @@ const WAlert = (props: WAlertProps) => {
     titleSx,
     style,
     // alert
+    activeOn,
     btnTitle,
-    btnColor,
     btnTextColor,
     disabled,
     handleEvent,
@@ -38,14 +38,15 @@ const WAlert = (props: WAlertProps) => {
       action={
         <WDialogActions>
           <ModalButton
+            className={`actionBtn ${activeOn ? 'active' : ''} ${
+              typeof disabled !== 'undefined' ? 'active' : ''
+            }`}
             disabled={disabled ? disabled : false}
             variant="contained"
             color="info"
             onClick={handleEvent ? handleEvent : handleClose}
             sx={{
               width: '100%',
-              backgroundColor: btnColor,
-              color: btnTextColor ? btnTextColor : '#fff',
             }}
           >
             {btnTitle ? btnTitle : '닫기'}
