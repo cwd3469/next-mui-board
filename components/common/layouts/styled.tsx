@@ -17,7 +17,6 @@ export const FlexCenter = styled(Grid)(({ theme }) => ({
 
 export const ImageBox = styled(Box)({
   position: 'relative',
-  minHeight: '30px',
 });
 
 export const Container = styled(Box)(({ theme }) => ({

@@ -5,12 +5,13 @@ import { Container, FlexCenter, ImageBox } from './styled';
 
 interface LogoType {
   width?: string;
+  sx?: SxProps<Theme>;
 }
 
 export const Logo = (props: LogoType) => {
-  const { width } = props;
+  const { width, sx } = props;
   return (
-    <ImageBox width={width ? width : '130px'}>
+    <ImageBox width={width ? width : '130px'} sx={sx}>
       <Image src={WauLogo} alt="로고" layout="fill" />
     </ImageBox>
   );
