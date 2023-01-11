@@ -3,6 +3,7 @@ import AuthMobileView from '@components/auth/views/AuthMobileView';
 import { ModalType } from '@components/common/layouts/gnb/types';
 import { useToastContext } from '@hooks/utils/useToastContext';
 import { useCallback, useState } from 'react';
+import SignupStepThree from './SignupStepThree';
 
 const SignupStepTwo = (props: ModalType) => {
   const {
@@ -98,6 +99,11 @@ const SignupStepTwo = (props: ModalType) => {
         onClickAuthNumSend={onClickAuthNumSend}
         signupAuthOnClick={signupAuthOnClick}
         resetModalClose={resetModalClose}
+      />
+      <SignupStepThree
+        mobileValue={'01033032222'}
+        open={modalOn}
+        handleClose={resetModalClose}
       />
     </>
   );

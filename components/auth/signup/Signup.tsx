@@ -34,14 +34,6 @@ const Signup = () => {
         <ArrowForwardIosIcon sx={{ fontSize: '11px', width: '18px' }} />
       </Button>
       <SignupStepOne open={modalOn} handleClose={handleClose} />
-      {/* TODO:삭제 하세요 */}
-      <SignupStepThree
-        mobileValue={'01033032222'}
-        open={true}
-        handleClose={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
     </Grid>
   );
 };
