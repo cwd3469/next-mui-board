@@ -1,0 +1,49 @@
+import { Button, Grid, Typography } from '@mui/material';
+import { useState } from 'react';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import SignupStepOne from './modal/SignupStepOne';
+import SignupStepThree from './modal/SignupStepThree';
+
+const Signup = () => {
+  const [modalOn, setModalOn] = useState<boolean>(false);
+  const handleOpen = () => setModalOn(true);
+  const handleClose = () => setModalOn(false);
+  return (
+    <Grid container justifyContent={'space-between'} gap="10px">
+      <Typography
+        variant="button"
+        display="block"
+        fontWeight="normal"
+        color="#555555"
+        letterSpacing="-0.13px"
+      >
+        병원 제휴를 하고 싶으신가요?
+      </Typography>
+      <Button
+        sx={{
+          padding: '0px',
+          color: '#000',
+          fontWeight: 'normal',
+          fontSize: '13px',
+          letterSpacing: '-0.13px',
+        }}
+        variant="text"
+        onClick={handleOpen}
+      >
+        병원 관리자 회원가입{' '}
+        <ArrowForwardIosIcon sx={{ fontSize: '11px', width: '18px' }} />
+      </Button>
+      <SignupStepOne open={modalOn} handleClose={handleClose} />
+      {/* TODO:삭제 하세요 */}
+      <SignupStepThree
+        mobileValue={'01033032222'}
+        open={true}
+        handleClose={function (): void {
+          throw new Error('Function not implemented.');
+        }}
+      />
+    </Grid>
+  );
+};
+
+export default Signup;

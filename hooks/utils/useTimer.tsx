@@ -5,6 +5,10 @@ export interface TimerInterface {
   time: number;
 }
 
+export interface TimerResendInterface extends TimerInterface {
+  resend: () => void;
+}
+
 export default function useTimer(props: TimerInterface) {
   const { time, action } = props;
   const [minutes, setMinutes] = useState<number>(time);

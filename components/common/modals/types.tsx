@@ -14,7 +14,7 @@ export interface UseToastInterface {
   on: (msg: string, type: AlertColor) => void;
 }
 
-export interface WModalProps {
+export interface WModalType {
   handleClose?: () => void;
   subTitle?: string;
   title?: string;
@@ -27,7 +27,11 @@ export interface WModalProps {
   style?: SxProps<Theme>;
 }
 
-export interface WAlertProps extends WModalProps {
+export interface WModalProps extends WModalType {
+  action?: JSX.Element;
+}
+
+export interface WAlertProps extends WModalType {
   btnTitle?: string;
   btnColor?: string;
   btnTextColor?: string;

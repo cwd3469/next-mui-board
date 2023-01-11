@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { ModalButton, WDialogActions } from './styled';
 import WModal from './WModal';
 import { WConfirmProps } from './types';
@@ -39,9 +38,7 @@ export const WConfirm = (props: WConfirmProps) => {
       closeBtnOn={closeBtnOn}
       titleSx={titleSx}
       style={style}
-    >
-      <>
-        {children}
+      action={
         <WDialogActions>
           <ModalButton
             variant="contained"
@@ -66,7 +63,9 @@ export const WConfirm = (props: WConfirmProps) => {
             {btnTitle ? btnTitle : '확인'}
           </ModalButton>
         </WDialogActions>
-      </>
+      }
+    >
+      {children}
     </WModal>
   );
 };

@@ -10,10 +10,13 @@ import WProgressBar from '@components/common/modals/WProgressBar';
 import { ToastContextProvider } from '@hooks/utils/useToastContext';
 import { theme } from '@styles/theme';
 import globals from '@styles/globals';
+import { Gnb } from '@components/common/layouts/gnb/Gnb';
+import { useRouter } from 'next/router';
 
 LicenseInfo.setLicenseKey(`${process.env.NEXT_PUBLIC_MUI_PRO_KEY}`);
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -40,6 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <Head>
                 <title>어다아파 병원 앱</title>
               </Head>
+              {router.pathname !== '/signin' ? <Gnb /> : ''}
               <Component {...pageProps} />
             </Hydrate>
           </QueryClientProvider>
