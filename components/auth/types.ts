@@ -29,6 +29,7 @@ export interface AuthMobileViewType {
   bgDisable: boolean;
   numDisabled: boolean;
   authError: ErrorType;
+  mobileDisabled?: boolean;
   authOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   mobileOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onTimerDisabled: () => void;

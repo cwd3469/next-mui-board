@@ -22,6 +22,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
     signupAuthOnClick,
     resetModalClose,
     bgDisable,
+    mobileDisabled,
   } = props;
 
   return (
@@ -47,6 +48,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
                 placeholder={'휴대폰번호를 입력'}
                 helper="숫자 11자리를 입력해 주세요."
                 error={mobileError}
+                disabled={mobileDisabled}
               />
             </Box>
             <Box sx={{ width: '120px', height: '48px' }}>
