@@ -50,7 +50,6 @@ const SignupStepThree = (props: SignupStepThreeType) => {
       title="병원 정보 입력"
     >
       <Stack>
-        <Button onClick={onClickSignup}>확인</Button>
         <Grid container justifyContent={'space-between'}>
           <Stack width="320px" gap="8px">
             <ItemInput title="아이디" require>
@@ -149,7 +148,11 @@ const SignupStepThree = (props: SignupStepThreeType) => {
           </Stack>
         </Grid>
         <Grid container width="740px" justifyContent="space-between">
-          <ItemInput title="사업자 등록증 첨부" require sx={{ width: '220px' }}>
+          <ItemInput
+            title="사업자 등록증 첨부"
+            require
+            sx={{ width: '220px', gap: '0px' }}
+          >
             <SignupFileUpload
               name="businessLicense"
               modifyFile={[]}
@@ -159,7 +162,11 @@ const SignupStepThree = (props: SignupStepThreeType) => {
               }
             />
           </ItemInput>
-          <ItemInput title="약사 면허증 첨부" require sx={{ width: '220px' }}>
+          <ItemInput
+            title="약사 면허증 첨부"
+            require
+            sx={{ width: '220px', gap: '0px' }}
+          >
             <SignupFileUpload
               name="pharmacistLicense"
               modifyFile={[]}
@@ -169,7 +176,11 @@ const SignupStepThree = (props: SignupStepThreeType) => {
               }
             />
           </ItemInput>
-          <ItemInput title="통장사본 첨부" require sx={{ width: '220px' }}>
+          <ItemInput
+            title="통장사본 첨부"
+            require
+            sx={{ width: '220px', gap: '0px' }}
+          >
             <SignupFileUpload
               name="bankbookCopy"
               modifyFile={[]}

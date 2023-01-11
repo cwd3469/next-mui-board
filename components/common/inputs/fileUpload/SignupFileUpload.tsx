@@ -2,7 +2,7 @@ import { useAuthFileUpload } from '@hooks/apis/auth/signup';
 import { FileUid } from '@hooks/utils/fileUpload/types';
 import useFileUpload from '@hooks/utils/fileUpload/useFileUpload';
 import useValidation from '@hooks/utils/useValidation';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { blobToFile, forinArr, resizeFileCompression } from '@utils/file';
 import { ChangeEvent } from 'react';
 import { DefaltInfo, SignupFileLadel, ImageView } from './styled';
@@ -36,6 +36,7 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
       const img = blobToFile(resizeFile, imgName);
       const formData = new FormData();
       formData.append('file', img);
+      //TODO : 추후 api 적용하면 삭제 할 예정
       const uid = { fileUlid: fileList[0].name, sort: 0 };
       onUploadFile(uid);
       onChangeFile(e);
@@ -61,44 +62,63 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
         accept=".jpg,.png,.jpeg"
         multiple={false}
       />
-      <Box height="10px" />
+
       <Grid container gap="10px" justifyContent={'flex-start'}>
         {imageSrc.length ? (
           imageSrc.map((img, inx) => {
             return (
-              <ImageView
-                key={inx}
-                inx={inx}
-                img={img}
-                deleteImg={(index: number) => {
-                  onDeleteuidList(index);
-                  onDeleteLogoUid();
-                }}
-                sx={{
-                  height: '300px',
-                  width: '200px',
-                  '& .wimageBox': {
+              <Stack key={inx}>
+                <Typography
+                  variant="body1"
+                  fontWeight={'100'}
+                  color="#333"
+                  sx={{
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    width: '200px',
+                    height: '20px',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {img.id}
+                </Typography>
+                <Box height="22px" />
+                <ImageView
+                  inx={inx}
+                  img={img}
+                  deleteImg={(index: number) => {
+                    onDeleteuidList(index);
+                    onDeleteLogoUid();
+                  }}
+                  sx={{
                     height: '300px',
                     width: '200px',
-                  },
-                }}
-              />
+                    '& .wimageBox': {
+                      height: '300px',
+                      width: '200px',
+                    },
+                  }}
+                />
+              </Stack>
             );
           })
         ) : (
-          <SignupFileLadel
-            className={isDragging ? 'drag-in' : 'drag-out'}
-            ref={dragRef}
-            htmlFor={name}
-          >
-            <DefaltInfo
-              sx={{
-                '& .uploadBtn': {
-                  marginTop: '25px',
-                },
-              }}
-            />
-          </SignupFileLadel>
+          <Stack>
+            <Box height="40px" />
+            <SignupFileLadel
+              className={isDragging ? 'drag-in' : 'drag-out'}
+              ref={dragRef}
+              htmlFor={name}
+            >
+              <DefaltInfo
+                sx={{
+                  '& .uploadBtn': {
+                    marginTop: '25px',
+                  },
+                }}
+              />
+            </SignupFileLadel>
+          </Stack>
         )}
       </Grid>
       <Box height="5px" />

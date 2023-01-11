@@ -107,27 +107,18 @@ export const ImageView = (props: {
         position: 'relative',
         width: '240px',
         height: '115px',
-        boxShadow: 'rgba(0, 0, 0, 0.5) 0px 1px 1px',
+        borderRadius: '6px',
+        border: '1px solid #eee',
+        overflow: 'hidden',
         ...sx,
       }}
     >
-      <Box
-        className="wimageBox"
-        sx={{
-          width: '240px',
-          height: '115px',
-          position: 'relative',
-          borderRadius: '6px',
-          overflow: 'hidden',
-        }}
-      >
-        <Image
-          src={img.type == 'application/pdf' ? '' : img.url}
-          alt="이미지"
-          layout="fill"
-          objectFit="cover"
-        />
-      </Box>
+      <Image
+        src={img.type == 'application/pdf' ? '' : img.url}
+        alt="이미지"
+        layout="fill"
+        objectFit="cover"
+      />
       <DeleteBtn
         className="deleteBtn"
         onClick={() => {
