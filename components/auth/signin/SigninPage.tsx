@@ -87,7 +87,7 @@ const SigninPage = () => {
   const onClickSignin = useCallback(() => {
     setCookie('accountId', siginInfo.accountId);
     setCookie('hospitalCode', siginInfo.hospitalCode);
-    let code = '0050';
+    let code = '0000';
     switch (code) {
       /// 가입 대기
       case '0050':
@@ -103,6 +103,11 @@ const SigninPage = () => {
         onOpenModal('disable');
         return;
       default:
+        onOpenModal('success');
+        setTokenList({
+          accessToken: 'accessToken',
+          refreshToken: 'refreshToken',
+        });
         return;
     }
     // postSigninMutate(siginInfo, {

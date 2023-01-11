@@ -6,7 +6,7 @@ export const SigninLayout = styled(Box)(({ theme }) => ({
   padding: '60px 104px 33px',
   borderRadius: '12px',
   position: 'absolute',
-  top: '50px',
+  top: '50%',
   left: '50%',
-  transform: 'translate(-50%, 0%)',
+  transform: 'translate(-50%, -50%)',
 }));
