@@ -12,6 +12,7 @@ import { theme } from '@styles/theme';
 import globals from '@styles/globals';
 import { Gnb } from '@components/common/layouts/gnb/Gnb';
 import { useRouter } from 'next/router';
+import { UserInfoProvider } from '@hooks/contexts/userInfoContext';
 
 LicenseInfo.setLicenseKey(`${process.env.NEXT_PUBLIC_MUI_PRO_KEY}`);
 
@@ -32,7 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
       }),
   );
   return (
-    <>
+    <UserInfoProvider>
       <Global styles={globals} />
       <ThemeProvider theme={theme}>
         <ToastContextProvider>
@@ -49,6 +50,6 @@ export default function App({ Component, pageProps }: AppProps) {
           </QueryClientProvider>
         </ToastContextProvider>
       </ThemeProvider>
-    </>
+    </UserInfoProvider>
   );
 }
