@@ -33,7 +33,7 @@ export interface WModalProps extends WModalType {
 
 export interface WAlertProps extends WModalType {
   btnTitle?: string;
-  btnColor?: string;
+  activeOn?: boolean;
   btnTextColor?: string;
   disabled?: boolean;
   handleEvent?: () => void;
