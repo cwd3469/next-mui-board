@@ -1,0 +1,9 @@
+version: '3.3'
+
+services:
+  hospital-app:
+    platform: linux/amd64
+    container_name: pharmacy-app
+    image: 031168175906.dkr.ecr.ap-northeast-2.amazonaws.com/wau-frontend-pharmacy:dev
+    ports:
+      - "8080:3100"
