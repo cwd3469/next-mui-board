@@ -6,4 +6,4 @@ services:
     container_name: pharmacy-app
     image: 031168175906.dkr.ecr.ap-northeast-2.amazonaws.com/wau-frontend-pharmacy:dev
     ports:
-      - "8080:3200"
+      - "8080:3100"
