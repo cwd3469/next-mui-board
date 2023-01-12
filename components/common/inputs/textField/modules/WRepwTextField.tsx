@@ -64,7 +64,6 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
       value={stateTxt}
       onChange={onChangeInfo}
       focusOutEvent={() => onFocusOut(stateTxt)}
-      focusInEvent={passMsg}
       disabled={disabled}
       error={err}
       maxRows={16}

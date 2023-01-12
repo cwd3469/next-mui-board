@@ -52,7 +52,7 @@ const SignupStepOne = (props: ModalType) => {
       disabled={disabled}
       bgDisable={bgDisable}
       maxWidth="xl"
-      btnColor="#c1c1c1"
+      activeOn
       btnTitle="다음"
       title="가입 안내"
       closeBtnOn

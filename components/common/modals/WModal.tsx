@@ -60,7 +60,7 @@ const WModal = (props: WModalProps) => {
       {closeBtnOn ? <WModalClose onClick={handleClose} /> : ''}
       {title ? (
         <Stack
-          gap="8px"
+          gap="16px"
           padding="64px 40px 56px"
           sx={titleSx}
           width={contentsWidth(maxWidth)}

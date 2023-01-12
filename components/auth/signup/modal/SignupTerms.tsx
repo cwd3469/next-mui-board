@@ -10,7 +10,7 @@ const SignupTerms = (props: ModalType) => {
       open={open}
       handleClose={handleClose}
       maxWidth="xl"
-      btnColor="#c1c1c1"
+      activeOn
       btnTextColor="#999"
       title=" 서비스 이용약관 동의"
     >

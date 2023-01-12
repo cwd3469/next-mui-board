@@ -22,6 +22,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
     signupAuthOnClick,
     resetModalClose,
     bgDisable,
+    mobileDisabled,
   } = props;
 
   return (
@@ -32,12 +33,12 @@ const AuthMobileView = (props: AuthMobileViewType) => {
       handleEvent={signupAuthOnClick}
       bgDisable={bgDisable}
       disabled={numDisabled}
-      btnColor="#c1c1c1"
       btnTitle="다음"
       title="휴대폰번호 인증"
       closeBtnOn
     >
       <Stack justifyContent="center" width={'720px'} alignItems="center">
+        <Box height="30px" />
         <Stack width="387px">
           {/* 휴대폰입력 */}
           <TermsGrid sx={{ alignItems: 'flex-start' }}>
@@ -48,6 +49,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
                 placeholder={'휴대폰번호를 입력'}
                 helper="숫자 11자리를 입력해 주세요."
                 error={mobileError}
+                disabled={mobileDisabled}
               />
             </Box>
             <Box sx={{ width: '120px', height: '48px' }}>
@@ -82,7 +84,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
               )}
             </Box>
           </Grid>
-          <Box sx={{ height: '136px' }} />
+          <Box sx={{ height: '100px' }} />
         </Stack>
       </Stack>
     </WAlert>

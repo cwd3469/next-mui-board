@@ -49,7 +49,23 @@ export const ModalButton = styled(Button)(({ theme }) => ({
   ...theme.typography.h5,
   fontWeight: '400',
   lineHeight: '1.2',
-  '&:hover': { backgroundColor: '#ddd' },
+  '&.closeBtn': {
+    backgroundColor: '#999',
+    color: '#fff',
+  },
+  '&.actionBtn': {
+    border: '0px',
+    boxShadow: 'none',
+    backgroundColor: '#c1c1c1',
+    color: '#fff',
+    '&.active': {
+      backgroundColor: '#4ac6ff',
+    },
+  },
+  '&.Mui-disabled': {
+    backgroundColor: '#d8d8d8 !important',
+    color: '#999',
+  },
 }));
 
 export const WDialog = styled(Dialog)(({ theme }) => ({

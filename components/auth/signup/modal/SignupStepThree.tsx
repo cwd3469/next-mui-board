@@ -45,9 +45,9 @@ const SignupStepThree = (props: SignupStepThreeType) => {
       btnTitle="다음"
       handleEvent={onClickSignup}
       disabled={btnDisable}
-      btnColor="#4ac6ff"
+      activeOn
       closeBtnOn
-      title="병원 정보 입력"
+      title="약국 정보 입력"
     >
       <Stack>
         <Grid container justifyContent={'space-between'}>
@@ -109,7 +109,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
               <WAddressSearch setAddress={addressOnChange} />
             </ItemInput>
             <Box height="20px" />
-            <ItemInput title="약국 상세 주소" require>
+            <ItemInput title="약국 상세 주소">
               <WAddressDetailTextField
                 state={info.addressDetail}
                 err={infoErr.addressDetailErr}
