@@ -1,0 +1,22 @@
+name: Publish Storybook to Chromatic
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout release
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: check node version
+        run: node -v
+      - name: install dependencies
+        run: yarn install --frozen-lockfile
+      - name: build storybook
+        run: yarn build-storybook
+      - name: publish chromatic
+        run: npx chromatic --project-token=${{ secrets.CHROMATIC_TOKEN }} --exit-once-uploaded
