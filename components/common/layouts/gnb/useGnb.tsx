@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import colors from '@styles/colors';
-
 export const useGnb = () => {
   const { pathname } = useRouter();
   const [path, setPath] = useState<string[]>([]);
@@ -33,10 +32,8 @@ export const useGnb = () => {
   const itmeMenuActive = (name: string) => {
     const page = path[path.length - 1];
     const style = {
-      '& a': {
-        color: page === name ? colors.gray_01 : colors.gray_07,
-        fontWeight: page === name ? 'bold' : '400',
-      },
+      color: page === name ? colors.gray_01 : colors.gray_07,
+      fontWeight: page === name ? 'bold' : '400',
     };
     return style;
   };
