@@ -34,7 +34,7 @@ export const TermsButton = styled(Button)(({ theme }) => ({
 export const AuthButton = styled(Button)(({ theme }) => ({
   width: '100%',
   height: '100%',
-  backgroundColor: '#c1c1c1',
+  backgroundColor: '#4ac6ff',
   ...theme.typography.body2,
   color: '#fff',
   '&:hover': {

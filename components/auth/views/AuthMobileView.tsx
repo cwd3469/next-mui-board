@@ -38,6 +38,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
       closeBtnOn
     >
       <Stack justifyContent="center" width={'720px'} alignItems="center">
+        <Box height="30px" />
         <Stack width="387px">
           {/* 휴대폰입력 */}
           <TermsGrid sx={{ alignItems: 'flex-start' }}>
@@ -83,7 +84,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
               )}
             </Box>
           </Grid>
-          <Box sx={{ height: '136px' }} />
+          <Box sx={{ height: '100px' }} />
         </Stack>
       </Stack>
     </WAlert>
