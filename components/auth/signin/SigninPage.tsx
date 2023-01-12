@@ -96,11 +96,16 @@ const SigninPage = () => {
       /// 휴면 상태
       case '0051':
         onOpenModal('dormant');
-
         return;
       /// 운영팀에 의해 정지된 계정
       case '0055':
         onOpenModal('disable');
+        return;
+      case '0057':
+        onOpenModal('excess');
+        return;
+      case '0058':
+        onOpenModal('first');
         return;
       default:
         onOpenModal('success');
