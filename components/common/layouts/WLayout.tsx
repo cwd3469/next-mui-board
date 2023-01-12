@@ -25,10 +25,10 @@ export const WLayout = (props: {
 }) => {
   const { children, bg, containerColor, sx } = props;
   return (
-    <FlexCenter sx={{ backgroundColor: bg ? bg : '#fff' }}>
+    <FlexCenter sx={{ backgroundColor: bg ? bg : '#f8f8f8' }}>
       <Container
         sx={{
-          backgroundColor: containerColor ? containerColor : '#fff',
+          backgroundColor: containerColor ? containerColor : '#f8f8f8',
           ...sx,
         }}
       >

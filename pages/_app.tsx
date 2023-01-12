@@ -44,7 +44,6 @@ export default function App({ Component, pageProps }: AppProps) {
               <Head>
                 <title>어다아파 약국 앱</title>
               </Head>
-              {router.pathname !== '/signin' ? <Gnb /> : ''}
               <Component {...pageProps} />
             </Hydrate>
           </QueryClientProvider>
