@@ -55,10 +55,10 @@ export class Validation {
     // this.regExpIdCheck = /^((?=.*[a-zA-Z])(?=.*[0-9]))[0-9a-z]{4,20}$/;
     this.regExpIdCheck = /^[a-z0-9]{4,20}$/;
 
-    /** 요양병원 코드 정규식*/
+    /** 약국 코드 정규식*/
     this.regHospitalCode = /^[0-9]{0,8}$/;
 
-    /** 요양병원 코드 전체 확인 정규식*/
+    /** 약국 코드 전체 확인 정규식*/
     this.regHospitalCodeAll = /^\d{8}$/;
 
     /** 비밀번호 정규식 최대 16자의 영문 대소문자, 숫자, 특수문자 입력 정규식*/
@@ -168,7 +168,7 @@ export class Validation {
       }
     }
   }
-  /**요양기관 번호 입력 메소드*/
+  /**기관 번호 입력 메소드*/
   hospitalCodeCheck(param: ValidInterface): void {
     const { txt, pass, error } = param;
     if (txt.length <= 8) {
@@ -180,19 +180,19 @@ export class Validation {
         });
       } else {
         error({
-          msg: '요양기관번호를 입력해주세요.',
+          msg: '기관번호를 입력해주세요.',
           boo: true,
         });
       }
     }
   }
 
-  /**요양기관 번호 체크 메소드*/
+  /**기관 번호 체크 메소드*/
   hospitalCodeAllCheck(param: ValidOnlyErr): void {
     const { txt, error } = param;
     if (txt.length < 8) {
       error({
-        msg: '요양기관 번호를 입력해주세요.',
+        msg: '기관 번호를 입력해주세요.',
         boo: true,
       });
     }
@@ -203,7 +203,7 @@ export class Validation {
       });
     } else {
       error({
-        msg: '요양기관 번호를 입력해주세요.',
+        msg: '기관 번호를 입력해주세요.',
         boo: true,
       });
     }
@@ -318,7 +318,7 @@ export class Validation {
     }
   }
 
-  //병원이름 입력 메소드
+  //약국이름 입력 메소드
   hocNameValid(param: ValidInterface): void {
     const { txt, pass, error } = param;
     if (this.regKoEnNum.test(txt)) {

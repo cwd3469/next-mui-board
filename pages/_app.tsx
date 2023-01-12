@@ -42,7 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <ReactQueryDevtools initialIsOpen={true} />
               <WProgressBar />
               <Head>
-                <title>어다아파 병원 앱</title>
+                <title>어다아파 약국 앱</title>
               </Head>
               {router.pathname !== '/signin' ? <Gnb /> : ''}
               <Component {...pageProps} />

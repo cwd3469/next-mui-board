@@ -47,7 +47,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
       disabled={btnDisable}
       activeOn
       closeBtnOn
-      title="병원 정보 입력"
+      title="약국 정보 입력"
     >
       <Stack>
         <Grid container justifyContent={'space-between'}>

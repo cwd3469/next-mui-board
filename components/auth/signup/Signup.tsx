@@ -17,7 +17,7 @@ const Signup = () => {
         color="#555555"
         letterSpacing="-0.13px"
       >
-        병원 제휴를 하고 싶으신가요?
+        약국 제휴를 하고 싶으신가요?
       </Typography>
       <Button
         sx={{
@@ -30,7 +30,7 @@ const Signup = () => {
         variant="text"
         onClick={handleOpen}
       >
-        병원 관리자 회원가입{' '}
+        약국 관리자 회원가입{' '}
         <ArrowForwardIosIcon sx={{ fontSize: '11px', width: '18px' }} />
       </Button>
       <SignupStepOne open={modalOn} handleClose={handleClose} />

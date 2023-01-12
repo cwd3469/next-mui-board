@@ -9,8 +9,10 @@ const AuthPage = () => {
     <SigninLayout>
       <Stack>
         <SigninPage />
-        <Signup />
-        <FindAccount />
+        <Stack borderTop={'1px solid #e3e3e3'} paddingTop="15px" gap="10px">
+          <Signup />
+          <FindAccount />
+        </Stack>
       </Stack>
     </SigninLayout>
   );

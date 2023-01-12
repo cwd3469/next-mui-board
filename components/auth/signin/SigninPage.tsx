@@ -211,7 +211,7 @@ const SigninPage = () => {
           err={siginErr.password}
           setErr={setStateErr}
         />
-        <Box sx={{ paddingTop: '22px' }} />
+        <Box sx={{ paddingTop: '1px' }} />
         <Stack gap="5px">
           <WButton
             onClick={onClickSignin}
@@ -225,7 +225,7 @@ const SigninPage = () => {
             로그인
           </WButton>
         </Stack>
-        <Box sx={{ paddingTop: '71px' }} />
+        <Box sx={{ paddingTop: '50px' }} />
       </Stack>
       <SigninProcess
         open={modalOn}

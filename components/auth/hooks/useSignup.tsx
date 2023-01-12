@@ -51,10 +51,10 @@ const useSignup = (props: SignupStepThreeType) => {
     [info],
   );
 
-  /**병원전화번호 '-' 추가*/
+  /**약국전화번호 '-' 추가*/
   const formChanger = mobileValue ? mobileFormat(mobileValue) : '';
 
-  /**병원 정보 입력 유효성 검사 */
+  /**약국 정보 입력 유효성 검사 */
 
   const disabledOn = useCallback(() => {
     console.log(info);
