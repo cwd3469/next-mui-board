@@ -109,7 +109,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
               <WAddressSearch setAddress={addressOnChange} />
             </ItemInput>
             <Box height="20px" />
-            <ItemInput title="약국 상세 주소" require>
+            <ItemInput title="약국 상세 주소">
               <WAddressDetailTextField
                 state={info.addressDetail}
                 err={infoErr.addressDetailErr}
