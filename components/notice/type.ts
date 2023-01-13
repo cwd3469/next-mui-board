@@ -5,3 +5,6 @@ export interface NoticeInterface {
   createAt: string;
   number: number;
 }
+export interface NoticeDetailInterface extends NoticeInterface {
+  contents: string;
+}
