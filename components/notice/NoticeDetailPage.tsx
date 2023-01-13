@@ -57,7 +57,6 @@ const NoticeDetailPage = () => {
       <WButton
         onClick={onClickBack}
         variant="contained"
-        color="info"
         sx={{
           width: '320px',
         }}

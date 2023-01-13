@@ -32,15 +32,15 @@ export const Gnb = (props: { disabled?: boolean }) => {
           조제 내역
         </GnbLink>
         <GnbLink
-          href="/business-hours"
+          href="/setting/business-hours"
           style={itmeMenuActive('business-hours')}
           disabled={disabled}
         >
           영업시간 설정
         </GnbLink>
         <GnbLink
-          href="/security-set"
-          style={itmeMenuActive('security-set')}
+          href="/setting/security"
+          style={itmeMenuActive('security')}
           disabled={disabled}
         >
           보안 설정

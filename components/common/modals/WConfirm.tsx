@@ -54,7 +54,6 @@ export const WConfirm = (props: WConfirmProps) => {
             }`}
             disabled={disabled ? disabled : false}
             variant="contained"
-            color="info"
             onClick={handleEvent ? handleEvent : handleClose}
           >
             {btnTitle ? btnTitle : '확인'}
