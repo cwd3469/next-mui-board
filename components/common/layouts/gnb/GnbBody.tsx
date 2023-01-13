@@ -42,10 +42,15 @@ const GnbBody = (props: GnbBodyType) => {
   }, [extension, router, toast]);
 
   return (
-    <WLayout sx={{ padding: '11px 0' }}>
+    <WLayout sx={{ padding: '11px 0' }} bg="#fff" containerColor="#fff">
       <FlexSpaceBetween>
         <GnbNavList>
-          <Logo />
+          <Logo
+            sx={{
+              width: '130px',
+              height: '28px',
+            }}
+          />
           <Box width={'14px'} />
           {children}
         </GnbNavList>

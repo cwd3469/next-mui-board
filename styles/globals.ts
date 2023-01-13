@@ -135,7 +135,7 @@ const glodal = css`
   }
 
   * {
-    font-family: 'NanumBarunGothic', Pretendard !important;
+    font-family: 'Pretendard' !important;
   }
   body {
     background-color: #f8f8f8;

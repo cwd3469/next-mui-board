@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import GnbBody from './GnbBody';
-import { GnbItem } from '../styled';
+import { GnbItem, GnbLink } from '../styled';
 import { useGnb } from './useGnb';
 
 export const Gnb = (props: { disabled?: boolean }) => {
@@ -10,30 +10,48 @@ export const Gnb = (props: { disabled?: boolean }) => {
   return (
     <GnbBody disabled={disabled}>
       <>
-        <GnbItem sx={itmeMenuActive('')} disabled={disabled}>
-          <Link href="/">조제 요청</Link>
-        </GnbItem>
-        <GnbItem sx={itmeMenuActive('queueing')} disabled={disabled}>
-          <Link href="/">조제 진행</Link>
-        </GnbItem>
-        <GnbItem
-          sx={activeChildren('history-detail', 'history', 3)}
+        <GnbLink
+          href="/preparation/request"
+          style={itmeMenuActive('request')}
           disabled={disabled}
         >
-          <Link href="/">조제 내역</Link>
-        </GnbItem>
-        <GnbItem sx={itmeMenuActive('certification')} disabled={disabled}>
-          <Link href="/">영업시간 설정</Link>
-        </GnbItem>
-        <GnbItem sx={itmeMenuActive('certification')} disabled={disabled}>
-          <Link href="/">보안 설정</Link>
-        </GnbItem>
-        <GnbItem
-          sx={activeChildren('doctor-set', 'treatment-set', 2)}
+          조제 요청
+        </GnbLink>
+        <GnbLink
+          href="/preparation/proceed"
+          style={itmeMenuActive('proceed')}
           disabled={disabled}
         >
-          <Link href="/">공지사항</Link>
-        </GnbItem>
+          조제 진행
+        </GnbLink>
+        <GnbLink
+          href="/preparation/history"
+          style={itmeMenuActive('history')}
+          disabled={disabled}
+        >
+          조제 내역
+        </GnbLink>
+        <GnbLink
+          href="/business-hours"
+          style={itmeMenuActive('business-hours')}
+          disabled={disabled}
+        >
+          영업시간 설정
+        </GnbLink>
+        <GnbLink
+          href="/security-set"
+          style={itmeMenuActive('security-set')}
+          disabled={disabled}
+        >
+          보안 설정
+        </GnbLink>
+        <GnbLink
+          href="/notice"
+          style={itmeMenuActive('notice')}
+          disabled={disabled}
+        >
+          공지사항
+        </GnbLink>
       </>
     </GnbBody>
   );

@@ -8,6 +8,8 @@ import {
   styled,
 } from '@mui/material';
 import colors from '@styles/colors';
+import Link from 'next/link';
+import { CSSProperties } from 'react';
 
 export const FlexCenter = styled(Grid)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -78,3 +80,39 @@ export const StyledMenu = styled((props: MenuProps) => (
     },
   },
 }));
+
+export const GnbATag = styled('a')(({ theme }) => ({
+  backgroundColor: colors.gray_11,
+  ...theme.typography.body2,
+  padding: 0,
+  textAlign: 'center',
+  color: '#999999',
+  textDecoration: 'none',
+  minWidth: 'auto',
+  letterSpacing: '-0.32px',
+}));
+
+export const GnbLink = (props: {
+  children: string;
+  href: string;
+  style: CSSProperties | undefined;
+  disabled?: boolean;
+}) => {
+  return (
+    <Box
+      sx={{
+        '& .disabled-link': {
+          pointerEvents: 'none',
+        },
+      }}
+    >
+      <Link
+        href={props.disabled ? '/' : props.href}
+        passHref
+        className={props.disabled ? 'disabled-link' : ''}
+      >
+        <GnbATag style={props.style}>{props.children}</GnbATag>
+      </Link>
+    </Box>
+  );
+};
