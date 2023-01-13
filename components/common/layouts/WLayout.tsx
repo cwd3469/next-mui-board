@@ -1,4 +1,4 @@
-import { SxProps, Theme } from '@mui/material';
+import { Box, styled, SxProps, Theme } from '@mui/material';
 import WauLogo from 'public/assets/logo/logo_login.png';
 import Image from 'next/image';
 import { Container, FlexCenter, ImageBox } from './styled';
@@ -37,3 +37,10 @@ export const WLayout = (props: {
     </FlexCenter>
   );
 };
+
+export const WBoxLayout = styled(Box)(({ theme }) => ({
+  backgroundColor: '#fff',
+  borderRadius: '12px',
+  overflow: 'hidden',
+  height: '706px',
+}));
