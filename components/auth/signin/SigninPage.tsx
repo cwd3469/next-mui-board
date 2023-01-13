@@ -219,7 +219,6 @@ const SigninPage = () => {
             variant="contained"
             sx={{
               width: '100%',
-              fontSize: '16px',
             }}
           >
             로그인

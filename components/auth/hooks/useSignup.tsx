@@ -55,12 +55,7 @@ const useSignup = (props: SignupStepThreeType) => {
   const formChanger = mobileValue ? mobileFormat(mobileValue) : '';
 
   /**약국 정보 입력 유효성 검사 */
-
   const disabledOn = useCallback(() => {
-    console.log(info);
-    console.log('-------------------------------');
-    console.log(infoErr);
-    console.log('-------------------------------');
     for (const key in info) {
       if (Object.prototype.hasOwnProperty.call(info, key)) {
         const element = info[key];
