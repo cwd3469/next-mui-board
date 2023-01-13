@@ -5,3 +5,4 @@ export const NOTICELIST = (filter: FilterNoticeType) => [
   'LIST',
   { ...filter },
 ];
+export const NOTICEDETAIL = (ulid: string) => ['NOTICE', 'DETAIL', ulid];
