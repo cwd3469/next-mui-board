@@ -24,7 +24,7 @@ export const ImageBox = styled(Box)({
 export const Container = styled(Box)(({ theme }) => ({
   backgroundColor: '#fff',
   width: '1200px',
-  padding: '40px 0px',
+  padding: '40px 0px 20px',
 }));
 
 export const GnbNavList = styled(Grid)(({ theme }) => ({
