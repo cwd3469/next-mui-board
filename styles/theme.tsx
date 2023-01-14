@@ -39,48 +39,62 @@ export const theme = createTheme({
   typography: {
     h1: {
       fontWeight: 'bold',
+      wordBreak: 'keep-all',
     },
     h2: {
       fontWeight: 'bold',
+      wordBreak: 'keep-all',
     },
     h3: {
       fontWeight: 'bold',
+      wordBreak: 'keep-all',
     },
     h4: {
       fontWeight: 'bold',
+      wordBreak: 'keep-all',
     },
     h5: {
       fontSize: '24px',
       fontWeight: 'bold',
+      wordBreak: 'keep-all',
     },
     h6: {
       fontSize: '20px',
       fontWeight: 'bold',
+      wordBreak: 'keep-all',
     },
     subtitle1: {
       fontSize: 18,
       fontWeight: 'bold',
+      wordBreak: 'keep-all',
     },
     subtitle2: {
       fontSize: 16,
       fontWeight: '400',
+      wordBreak: 'keep-all',
     },
     body1: {
       fontSize: 14,
       fontWeight: '400',
+      wordBreak: 'keep-all',
     },
     body2: {
       fontSize: 16,
+      wordBreak: 'keep-all',
     },
-    button: {},
+    button: {
+      wordBreak: 'keep-all',
+    },
     caption: {
       fontSize: 12,
       fontWeight: '400',
+      wordBreak: 'keep-all',
     },
     overline: {
       fontSize: 10,
       fontWeight: '100',
       letterSpacing: '1',
+      wordBreak: 'keep-all',
     },
   },
 });
