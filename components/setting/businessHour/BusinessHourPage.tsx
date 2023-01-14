@@ -13,6 +13,7 @@ import { useCallback, useState } from 'react';
 import useBusinesssSet from '@hooks/apis/setting/biseness/hooks/useBusinesssSet';
 import { forinArr } from '@utils/file';
 import { stringToDate } from '@utils/date';
+import WSubTitle from '@components/common/typography/WSubTitle';
 
 const BusinessHourPage = () => {
   const { businessData, weeks } = useBusinesssSet();
@@ -40,10 +41,8 @@ const BusinessHourPage = () => {
   return (
     <FlexCenterC gap="26px">
       <WBoxLayout padding="38px" width="100%">
-        <FlexStartC gap="16px">
-          <Typography variant="subtitle1" fontWeight="700" lineHeight="24px">
-            요일별 영업 시간 유무 설정
-          </Typography>
+        <FlexStartC gap="14px">
+          <WSubTitle title="요일별 영업 시간 유무 설정" />
           <Typography variant="body2" fontWeight="400" lineHeight="22px">
             해당 약국의 영업 시작 시간을 설정해 주세요.
           </Typography>
