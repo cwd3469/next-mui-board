@@ -34,7 +34,7 @@ export default function GnbMyInfo(props: { disabled?: boolean }) {
 
   const mypageOpen = () => {
     router.push({
-      pathname: `/doctor/myinfo/`,
+      pathname: `/myinfo`,
     });
   };
 
