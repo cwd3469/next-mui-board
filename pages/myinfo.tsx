@@ -1,16 +1,16 @@
 import { Gnb } from '@components/common/layouts/gnb/Gnb';
 import { WLayout } from '@components/common/layouts/WLayout';
-import SecurityPage from '@components/setting/security/SecurityPage';
+import DomesticMyPage from '@components/myInfo/domestic/DomesticMyPage';
 
-const Security = () => {
+const myinfo = () => {
   return (
     <div>
       <Gnb />
       <WLayout>
-        <SecurityPage />
+        <DomesticMyPage />
       </WLayout>
     </div>
   );
 };
 
-export default Security;
+export default myinfo;
