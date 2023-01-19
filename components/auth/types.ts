@@ -38,4 +38,14 @@ export interface AuthMobileViewType {
   onClickAuthNumSend: () => void;
   signupAuthOnClick: () => void;
   resetModalClose: () => void;
+  timerActice: () => void;
+  timerResend: () => void;
+}
+
+export interface AuthMobileNumber {
+  mobileNum: string;
+}
+
+export interface AuthNumberChack extends AuthMobileNumber {
+  code: string;
 }

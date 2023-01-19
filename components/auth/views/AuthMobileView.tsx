@@ -21,6 +21,8 @@ const AuthMobileView = (props: AuthMobileViewType) => {
     onClickAuthNumSend,
     signupAuthOnClick,
     resetModalClose,
+    timerActice,
+    timerResend,
     bgDisable,
     mobileDisabled,
   } = props;
@@ -74,11 +76,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
           <Grid container justifyContent={'flex-end'}>
             <Box sx={{ height: '20px' }}>
               {!authDisabled ? (
-                <AuthTimer
-                  time={3}
-                  action={onTimerDisabled}
-                  resend={() => onClickAuthNumSend()}
-                />
+                <AuthTimer time={3} action={timerActice} resend={timerResend} />
               ) : (
                 ''
               )}

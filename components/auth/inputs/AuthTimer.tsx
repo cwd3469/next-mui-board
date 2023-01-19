@@ -12,8 +12,10 @@ export default function AuthTimer(props: TimerResendInterface) {
   const [showBtn, setShowBtn] = useState<boolean>(false);
 
   useEffect(() => {
-    if (minutes === 0 && seconds <= 30) {
-      setShowBtn(true);
+    if (minutes <= 2) {
+      if (seconds <= 30) {
+        setShowBtn(true);
+      }
     } else {
       setShowBtn(false);
     }
