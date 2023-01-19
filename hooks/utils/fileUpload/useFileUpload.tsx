@@ -4,7 +4,7 @@ import imageCompression from 'browser-image-compression';
 import useValidation from '../useValidation';
 import { UidList } from './types';
 import useDropDrag from './useDropDrag';
-import { blobToFile, resizeFileCompression } from '@utils/file';
+import { blobToFile, forinArr, resizeFileCompression } from '@utils/file';
 import { ErrorType } from '@components/common/inputs/type';
 
 export interface UseMultiFileUpload {
@@ -16,6 +16,7 @@ export interface UseMultiFileUpload {
 const useFileUpload = (props: UseMultiFileUpload) => {
   const { multi, limit, modifyFile } = props;
   const validation = useValidation();
+  const [file, setFile] = useState<File[]>([]);
   const [imageSrc, setImageSrc] = useState<UidList[]>([]);
   const [err, setErr] = useState<ErrorType>({ msg: '', boo: false });
   const errorMsgOn = (msg: string) => {
@@ -58,6 +59,8 @@ const useFileUpload = (props: UseMultiFileUpload) => {
       const selectFile =
         e.type === 'drop' ? e.dataTransfer.files : e.target.files;
       if (selectFile) {
+        const fileArr = forinArr(selectFile);
+        setFile(fileArr);
         let temp: UidList[] = [...imageSrc];
         [].forEach.call(selectFile, async function (file: File, index: number) {
           if (validation.regExpImage.test(file.type)) {
@@ -115,6 +118,12 @@ const useFileUpload = (props: UseMultiFileUpload) => {
     }
   }, [modifyFile]);
 
+  useEffect(() => {
+    setImageSrc([]);
+    setFile([]);
+    setErr({ msg: '', boo: false });
+  }, []);
+
   return {
     onChangeFile,
     onDeleteuidList,
@@ -123,6 +132,7 @@ const useFileUpload = (props: UseMultiFileUpload) => {
     dragRef,
     isDragging,
     imageSrc,
+    file,
     err,
   };
 };

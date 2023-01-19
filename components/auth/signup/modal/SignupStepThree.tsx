@@ -17,10 +17,11 @@ import {
 } from '@components/common/inputs/textField/modules';
 import useSignup from '@components/auth/hooks/useSignup';
 import { useCallback } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import useMutationSignup from '@hooks/apis/auth/signup/useMutationSignup';
 
 const SignupStepThree = (props: SignupStepThreeType) => {
   const {
-    signInfoDto,
     formChanger,
     btnDisable,
     infoErr,
@@ -32,10 +33,10 @@ const SignupStepThree = (props: SignupStepThreeType) => {
     setInInfoErr,
     setInInfo,
   } = useSignup(props);
-
-  const onClickSignup = useCallback(() => {
-    console.log(signInfoDto);
-  }, [signInfoDto]);
+  const { onClickSignup } = useMutationSignup({
+    info: info,
+    mobileValue: props.mobileValue,
+  });
 
   return (
     <WAlert
@@ -129,11 +130,11 @@ const SignupStepThree = (props: SignupStepThreeType) => {
             </ItemInput>
             <ItemInput title="약국 팩스번호" require>
               <WFaxTextField
-                state={info.pharmacyTaxNum}
-                err={infoErr.pharmacyTaxNumErr}
+                state={info.pharmacyFaxNum}
+                err={infoErr.pharmacyFaxNumErr}
                 setState={setInInfo}
                 setErr={setInInfoErr}
-                keyId={'pharmacyTaxNum'}
+                keyId={'pharmacyFaxNum'}
               />
             </ItemInput>
             <ItemInput title="사업자 등록 번호" require>
@@ -156,10 +157,8 @@ const SignupStepThree = (props: SignupStepThreeType) => {
             <SignupFileUpload
               name="businessLicense"
               modifyFile={[]}
-              onDeleteLogoUid={() => setInInfo('', 'businessLicense')}
-              onUploadFile={(uild) =>
-                setInInfo(uild.fileUlid, 'businessLicense')
-              }
+              onDeleteLogoUid={() => setInInfo(undefined, 'businessLicense')}
+              onUploadFile={(uild, file) => setInInfo(file, 'businessLicense')}
             />
           </ItemInput>
           <ItemInput
@@ -170,9 +169,9 @@ const SignupStepThree = (props: SignupStepThreeType) => {
             <SignupFileUpload
               name="pharmacistLicense"
               modifyFile={[]}
-              onDeleteLogoUid={() => setInInfo('', 'pharmacistLicense')}
-              onUploadFile={(uild) =>
-                setInInfo(uild.fileUlid, 'pharmacistLicense')
+              onDeleteLogoUid={() => setInInfo(undefined, 'pharmacistLicense')}
+              onUploadFile={(uild, file) =>
+                setInInfo(file, 'pharmacistLicense')
               }
             />
           </ItemInput>
@@ -184,8 +183,8 @@ const SignupStepThree = (props: SignupStepThreeType) => {
             <SignupFileUpload
               name="bankbookCopy"
               modifyFile={[]}
-              onDeleteLogoUid={() => setInInfo('', 'bankbookCopy')}
-              onUploadFile={(uild) => setInInfo(uild.fileUlid, 'bankbookCopy')}
+              onDeleteLogoUid={() => setInInfo(undefined, 'bankbookCopy')}
+              onUploadFile={(uild, file) => setInInfo(file, 'bankbookCopy')}
             />
           </ItemInput>
         </Grid>
