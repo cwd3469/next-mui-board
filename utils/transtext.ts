@@ -57,7 +57,7 @@ export const transQueryUrl = (filter: FilterAllOtions) => {
       : ''
     : '';
 
-  return `${page}${code}${nameKo}${location}${status}${enterType}`;
+  return `${page}${code}${nameKo}${location}${status}${enterType}${isDone}`;
 };
 
 export const transQueryDate = (filter: FilterDateType) => {
