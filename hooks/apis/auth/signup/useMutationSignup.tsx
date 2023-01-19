@@ -1,4 +1,6 @@
 import { SignupInfo } from '@components/auth/signup/type';
+import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
+import { useToastContext } from '@hooks/utils/useToastContext';
 import { mobileFormatOff } from '@utils/formatNumber';
 import { useCallback, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
@@ -7,8 +9,11 @@ import { apiSignupInfo } from '.';
 const useMutationSignup = (props: {
   info?: SignupInfo;
   mobileValue: string;
+  handleOpenModal: () => void;
 }) => {
-  const { info, mobileValue } = props;
+  const { info, mobileValue, handleOpenModal } = props;
+  const toast = useToastContext();
+  const msg = useCodeMsgBundle();
   const [signupInfo, setSignupInfo] = useState<FormData>();
   const { mutate: mutateSignupInfo } = useMutation(apiSignupInfo);
 
@@ -16,14 +21,23 @@ const useMutationSignup = (props: {
     if (signupInfo) {
       mutateSignupInfo(signupInfo, {
         onSuccess(data, variables, context) {
-          console.log(data);
+          const code = data.data.code;
+          if (code !== '0000') {
+            toast?.on(msg.errMsg(code), 'warning');
+            return;
+          } else {
+            handleOpenModal();
+          }
         },
         onError(error, variables, context) {
-          console.log(error);
+          toast?.on(
+            '회원가입에 실패 하였습니다. \n 잠시후 다시 시도해 보세요.',
+            'error',
+          );
         },
       });
     }
-  }, [mutateSignupInfo, signupInfo]);
+  }, [handleOpenModal, msg, mutateSignupInfo, signupInfo, toast]);
   /**회원가입 신청 이벤트 */
 
   useEffect(() => {

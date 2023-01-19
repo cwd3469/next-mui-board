@@ -30,7 +30,6 @@ const useMobileAuthQuery = (props: UseMobileAuth) => {
           toast?.on(msg.errMsg(res.data.code), 'warning');
           return;
         } else {
-          console.log(res);
           onAbledAuthInput();
         }
       },

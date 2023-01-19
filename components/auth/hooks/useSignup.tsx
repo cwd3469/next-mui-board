@@ -41,6 +41,10 @@ const useSignup = (props: SignupStepThreeType) => {
     setModalOn(false);
   }, [handleClose, reset]);
 
+  const handleOpenModal = useCallback(() => {
+    setModalOn(true);
+  }, []);
+
   const addressOnChange = useCallback(
     (address: string, postCode: string) => {
       setInfo({
@@ -94,6 +98,7 @@ const useSignup = (props: SignupStepThreeType) => {
     open,
     addressOnChange,
     handleCloseAll,
+    handleOpenModal,
     setInInfoErr,
     setInInfo,
   };
