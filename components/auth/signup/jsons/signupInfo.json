@@ -13,10 +13,10 @@
     "pharmacyName": "",
     "pharmacyAddress": "",
     "pharmacyPhone": "",
-    "pharmacyTaxNum": "",
-    "businessLicense": "",
-    "pharmacistLicense": "",
-    "bankbookCopy": ""
+    "pharmacyFaxNum": "",
+    "businessLicense": null,
+    "pharmacistLicense": null,
+    "bankbookCopy": null
   },
   "errs": {
     "idErr": {
@@ -55,7 +55,7 @@
       "msg": "",
       "boo": false
     },
-    "pharmacyTaxNumErr": {
+    "pharmacyFaxNumErr": {
       "msg": "",
       "boo": false
     }
