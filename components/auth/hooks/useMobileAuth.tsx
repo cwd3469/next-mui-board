@@ -16,7 +16,9 @@ export default function useMobileAuth() {
   /// input value
   const [mobileValue, setMobile] = useState<string>('');
   const [authValue, setAuth] = useState<string>('');
-
+  //유효성 alert
+  const [authRequestDisabled, setAuthRequestDisabled] =
+    useState<boolean>(false);
   //유효성 alert
   const [authDisabled, setAuthDisabled] = useState<boolean>(true);
   const [numDisabled, setNumDisabled] = useState<boolean>(true);
@@ -86,11 +88,18 @@ export default function useMobileAuth() {
       });
     }
   };
-  /** 타이머 온 */
+
+  /** 인증 번호 초기화 액션*/
   const onTimerDisabled = () => {
-    toast?.on('인증번호 입력 유효 시간이 만료되었습니다', 'error');
     setAuthDisabled(true);
+    setAuthRequestDisabled(false);
+    setAuth('');
   };
+  /** 인증 번호 유효시간 아웃 액션*/
+  const onAuthTimeOut = useCallback(() => {
+    toast?.on('인증번호 입력 유효 시간이 만료되었습니다', 'error');
+    onTimerDisabled();
+  }, [toast]);
 
   useEffect(() => {
     if (mobileValue.length < 12) {
@@ -115,6 +124,7 @@ export default function useMobileAuth() {
     numDisabled,
     authError,
     mobileError,
+    onAuthTimeOut,
     onAbledAuthInput,
     onChangeAuthNum,
     onChangeMobile,
@@ -122,5 +132,7 @@ export default function useMobileAuth() {
     onFocusOutAuthNum,
     onTimerDisabled,
     onSetAuthDisabled,
+    setAuthRequestDisabled,
+    authRequestDisabled,
   };
 }
