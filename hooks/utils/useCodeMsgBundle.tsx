@@ -6,6 +6,8 @@ export class CodeMsgBundle {
     this.msg = 'msg';
   }
   public errMsg = (code: string) => {
+    console.log(code);
+
     switch (code) {
       //Global Response Code
       case '0010':
@@ -24,6 +26,16 @@ export class CodeMsgBundle {
         return '지원하지 않는 파일 형식입니다. \n 파일 확장자를 다시 확인해주세요';
       case '0022':
         return '필수 값을 입력하시지 않았습니다. \n 다시 확인 해주시길 바랍니다.';
+
+      case '0051':
+        return '휴면 계정입니다. \n 다시 확인 해주시길 바랍니다.';
+      case '0057':
+        return '이미 사용 중인 휴대폰 번호입니다. \n 다시 확인 해주시길 바랍니다.';
+      case '0055':
+        return '운영팀에 의해 정지된 계정입니다. \n 다시 확인 해주시길 바랍니다.';
+      case '0056':
+        return '병원 관리자에 의해 정지된 계정입니다. \n 다시 확인 해주시길 바랍니다.';
+
       // 인증
       case '0101':
         return '일치하는 계정 정보를 찾을 수 없습니다. \n 다시 확인 해주시길 바랍니다.';
@@ -97,6 +109,18 @@ export class CodeMsgBundle {
         return '이미 처방전 및 진료비가 입력된 비대면 진료입니다.';
       case '7115':
         return '종료 되지 않은 비대면 진료입니다.';
+      case '7116':
+        return '진료소 대기열이 가득차서 더이상 예약이 불가능합니다.';
+      case '7117':
+        return '보류 가능한 상태의 비대면진료가 아닙니다.';
+      case '7118':
+        return '진료비 결제 정보를 조회 할 수 없습니다.';
+      case '7119':
+        return '진료비 미결제건이 없습니다.';
+      case '7120':
+        return '진료비 주문정보를 찾을 수 없습니다.';
+      case '7121':
+        return '진료비 수정 가능 시간을 초과했습니다.';
 
       //Hospital-Service Response Code
       case '1000':
@@ -111,6 +135,8 @@ export class CodeMsgBundle {
         return '의사 프로필을 조회하지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       case '1021':
         return '의사 설정을 조회하지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+      case '1030':
+        return '진료지원 프로필을 조회하지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       // 외부 서비스
       case '9900':
         return '외부 연동 서비스에서 에러가 발생했습니다.\n 잠시후 다시 시도해주시길 바랍니다.';
