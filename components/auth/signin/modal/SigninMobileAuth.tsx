@@ -30,6 +30,7 @@ const SigninMobileAuth = (props: SigninMobileAuthType) => {
     onFocusOutAuthNum,
     onTimerDisabled,
     onSetAuthDisabled,
+    onAuthTimeOut,
   } = useMobileAuth();
   const toast = useToastContext();
   const [modalOn, setModalOn] = useState<boolean>(false);
@@ -138,6 +139,8 @@ const SigninMobileAuth = (props: SigninMobileAuthType) => {
         onClickAuthNumSend={onClickAuthNumSend}
         signupAuthOnClick={signupAuthOnClick}
         resetModalClose={resetModalClose}
+        timerActice={onAuthTimeOut}
+        timerResend={onTimerDisabled}
       />
     </>
   );
