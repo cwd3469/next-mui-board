@@ -8,23 +8,30 @@ import { AuthMobileViewType } from '../types';
 const AuthMobileView = (props: AuthMobileViewType) => {
   const {
     open,
+    //value
     authValue,
     mobileValue,
-    authDisabled,
+    //인증 코드 활성화
     numDisabled,
-    authError,
-    authOnChange,
-    mobileOnChange,
-    onTimerDisabled,
-    mobileError,
-    focusOutEvent,
-    onClickAuthNumSend,
-    signupAuthOnClick,
-    resetModalClose,
-    timerActice,
-    timerResend,
     bgDisable,
     mobileDisabled,
+    authDisabled,
+    //error
+    mobileError,
+    authError,
+    // value onChange
+    authOnChange,
+    mobileOnChange,
+    // focusOut
+    focusOutEvent,
+    // api
+    onClickAuthNumSend,
+    signupAuthOnClick,
+    // 모달 닫기
+    resetModalClose,
+    // 타이머 이벤트
+    timerActice,
+    timerResend,
   } = props;
 
   return (
@@ -56,7 +63,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
             </Box>
             <Box sx={{ width: '120px', height: '48px' }}>
               <AuthButton
-                disabled={mobileValue.length >= 12 ? false : true}
+                disabled={mobileValue.length >= 12 ? mobileDisabled : true}
                 onClick={onClickAuthNumSend}
               >
                 인증번호 발송

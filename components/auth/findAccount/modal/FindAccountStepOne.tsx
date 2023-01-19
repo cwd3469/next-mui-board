@@ -13,6 +13,7 @@ const FindAccountStepOne = (props: ModalType) => {
     numDisabled,
     authError,
     mobileError,
+    authRequestDisabled,
     onAbledAuthInput,
     onChangeAuthNum,
     onChangeMobile,
@@ -88,6 +89,7 @@ const FindAccountStepOne = (props: ModalType) => {
         open={props.open}
         authValue={authValue}
         mobileValue={mobileValue}
+        mobileDisabled={authRequestDisabled}
         authDisabled={authDisabled}
         bgDisable={bgDisable}
         numDisabled={numDisabled}

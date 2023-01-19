@@ -13,6 +13,7 @@ const SignupStepTwo = (props: ModalType) => {
     numDisabled,
     authError,
     mobileError,
+    authRequestDisabled,
     onAbledAuthInput,
     onChangeAuthNum,
     onChangeMobile,
@@ -22,8 +23,10 @@ const SignupStepTwo = (props: ModalType) => {
     onAuthTimeOut,
     onSetAuthDisabled,
   } = useMobileAuth();
+
   const [bgDisable, setBgDisable] = useState<boolean>(false);
   const [modalOn, setModalOn] = useState<boolean>(false);
+
   const { onClickMobileAuthRequest, onClickAuthCheck } = useMobileAuthQuery({
     mobileNumber: mobileValue,
     authNumber: authValue,
@@ -51,6 +54,7 @@ const SignupStepTwo = (props: ModalType) => {
         authDisabled={authDisabled}
         bgDisable={bgDisable}
         numDisabled={numDisabled}
+        mobileDisabled={authRequestDisabled}
         authError={authError}
         mobileError={mobileError}
         authOnChange={onChangeAuthNum}
