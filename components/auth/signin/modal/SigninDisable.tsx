@@ -3,12 +3,8 @@ import { Box, Grid, Stack, Typography } from '@mui/material';
 import { ModalType } from '@components/common/layouts/gnb/types';
 import WAlert from '@components/common/modals/WAlert';
 
-interface DisableType extends ModalType {
-  position?: string;
-}
-
-const SigninDisable = (props: DisableType) => {
-  const { open, handleClose, position } = props;
+const SigninDisable = (props: ModalType) => {
+  const { open, handleClose } = props;
   return (
     <WAlert
       open={open}

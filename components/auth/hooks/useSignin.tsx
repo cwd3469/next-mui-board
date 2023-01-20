@@ -5,19 +5,9 @@ import { ErrorType } from '@components/common/inputs/type';
 import { SigninDto, SigninErr, SigninState } from '../signin/type';
 
 const useSignin = () => {
-  const toast = useToastContext();
-  // const { mutate: postSigninMutate } = useSigninMutation();
   const [modalOn, setModalOn] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [accountType, setAccountType] = useState<string>('');
   const [modalLabel, setModalLabel] = useState<SigninState>('first');
-  const [tokenList, setTokenList] = useState<{
-    accessToken: string;
-    refreshToken: string;
-  }>({
-    accessToken: '',
-    refreshToken: '',
-  });
   const [siginInfo, setSignInfo] = useState<SigninDto>({
     accountId: '',
     password: '',
@@ -92,12 +82,9 @@ const useSignin = () => {
   return {
     modalOn,
     disabled,
-    accountType,
     modalLabel,
-    tokenList,
     siginInfo,
     siginErr,
-    setTokenList,
     onOpenModal,
     handleClose,
     setState,
