@@ -11,8 +11,6 @@ export type SigninState =
 
 export interface ProcessType extends ModalType {
   label: SigninState;
-  position: string;
-  tokenList: { accessToken: string; refreshToken: string };
 }
 
 export interface SigninDto {
@@ -20,9 +18,21 @@ export interface SigninDto {
   accountId: string;
   password: string;
 }
+export interface SigninMobileDto {
+  accountMobileNum: string;
+}
+export interface SigninVerifyDto {
+  verificationCode: string;
+  authenticationCode: string;
+}
 
 export interface SigninErr {
   [key: string]: ErrorType;
   accountId: ErrorType;
   password: ErrorType;
+}
+
+export interface SigninInfoType {
+  verificationCode: string;
+  accountMobileNum: string;
 }
