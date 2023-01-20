@@ -26,6 +26,7 @@ export interface AuthMobileViewType {
   authValue: string;
   mobileValue: string;
   authDisabled: boolean;
+  btnDisabled?: boolean;
   bgDisable: boolean;
   numDisabled: boolean;
   authError: ErrorType;
