@@ -14,6 +14,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
     //인증 코드 활성화
     numDisabled,
     bgDisable,
+    btnDisabled,
     mobileDisabled,
     authDisabled,
     //error
@@ -63,7 +64,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
             </Box>
             <Box sx={{ width: '120px', height: '48px' }}>
               <AuthButton
-                disabled={mobileValue.length >= 12 ? mobileDisabled : true}
+                disabled={mobileValue.length >= 12 ? btnDisabled : true}
                 onClick={onClickAuthNumSend}
               >
                 인증번호 발송
