@@ -1,4 +1,3 @@
-import { useAuthFileUpload } from '@hooks/apis/auth/signup';
 import { FileUid } from '@hooks/utils/fileUpload/types';
 import useFileUpload from '@hooks/utils/fileUpload/useFileUpload';
 import useValidation from '@hooks/utils/useValidation';
@@ -10,19 +9,25 @@ import { DefaltInfo, SignupFileLadel, ImageView } from './styled';
 export interface HospitalImgPickerType {
   modifyFile: File[];
   onDeleteLogoUid: () => void;
-  onUploadFile: (uid: FileUid) => void;
+  onUploadFile: (uid: FileUid, file: File) => void;
   name: string;
 }
 
 const SignupFileUpload = (props: HospitalImgPickerType) => {
   const { modifyFile, onDeleteLogoUid, onUploadFile, name } = props;
-  // const { mutate: mutateAuthFileUpload } = useAuthFileUpload();
   const vaild = useValidation();
-  const { onChangeFile, onDeleteuidList, dragRef, isDragging, imageSrc, err } =
-    useFileUpload({
-      multi: false,
-      modifyFile,
-    });
+  const {
+    onChangeFile,
+    onDeleteuidList,
+    file,
+    dragRef,
+    isDragging,
+    imageSrc,
+    err,
+  } = useFileUpload({
+    multi: false,
+    modifyFile,
+  });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChangeFileLoad = async (e: ChangeEvent<HTMLInputElement> | any) => {
     const selectFile =
@@ -38,17 +43,8 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
       formData.append('file', img);
       //TODO : 추후 api 적용하면 삭제 할 예정
       const uid = { fileUlid: fileList[0].name, sort: 0 };
-      onUploadFile(uid);
+      onUploadFile(uid, img);
       onChangeFile(e);
-
-      // mutateAuthFileUpload(formData, {
-      //   onSuccess: (data) => {
-      //     const { fileUlid } = data.data.data;
-      //     const uid = { fileUlid: fileUlid, sort: 0 };
-      //     onUploadFile(uid);
-      //     onChangeFile(e);
-      //   },
-      // });
     }
   };
 
@@ -59,7 +55,7 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
         type="file"
         id={name}
         style={{ display: 'none' }}
-        accept=".jpg,.png,.jpeg"
+        accept=".jpg,.png,.jpeg,.pdf"
         multiple={false}
       />
 
@@ -86,6 +82,7 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
                 <ImageView
                   inx={inx}
                   img={img}
+                  file={file[0]}
                   deleteImg={(index: number) => {
                     onDeleteuidList(index);
                     onDeleteLogoUid();

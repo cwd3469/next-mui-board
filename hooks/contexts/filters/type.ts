@@ -15,6 +15,10 @@ export interface DataPagition {
 export interface FilterNoticeType extends DataPagition {
   status?: string;
 }
+export interface FilterHistoryType extends DataPagition {
+  preparationStatus?: string;
+  deliveryStatus?: string;
+}
 
 export interface FilterDateType {
   [key: string]: string;
@@ -22,4 +26,12 @@ export interface FilterDateType {
   endDate: string;
 }
 
-export type FilterAllOtions = DataPagition | FilterNoticeType;
+export type FilterAllOtions =
+  | DataPagition
+  | FilterNoticeType
+  | FilterHistoryType;
+
+export type FilterListData = {
+  filter: FilterAllOtions;
+  date: FilterDateType;
+};

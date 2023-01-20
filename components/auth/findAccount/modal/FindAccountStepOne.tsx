@@ -13,6 +13,7 @@ const FindAccountStepOne = (props: ModalType) => {
     numDisabled,
     authError,
     mobileError,
+    authRequestDisabled,
     onAbledAuthInput,
     onChangeAuthNum,
     onChangeMobile,
@@ -20,6 +21,7 @@ const FindAccountStepOne = (props: ModalType) => {
     onFocusOutAuthNum,
     onTimerDisabled,
     onSetAuthDisabled,
+    onAuthTimeOut,
   } = useMobileAuth();
   //   const toast = useToastContext();
   const [bgDisable, setBgDisable] = useState<boolean>(false);
@@ -87,6 +89,8 @@ const FindAccountStepOne = (props: ModalType) => {
         open={props.open}
         authValue={authValue}
         mobileValue={mobileValue}
+        mobileDisabled={authRequestDisabled}
+        btnDisabled={authRequestDisabled}
         authDisabled={authDisabled}
         bgDisable={bgDisable}
         numDisabled={numDisabled}
@@ -99,6 +103,8 @@ const FindAccountStepOne = (props: ModalType) => {
         onClickAuthNumSend={onClickAuthNumSend}
         signupAuthOnClick={signupAuthOnClick}
         resetModalClose={resetModalClose}
+        timerActice={onAuthTimeOut}
+        timerResend={onTimerDisabled}
       />
       <FindAccountStepTwo open={modalOn} handleClose={resetModalClose} />
     </>

@@ -7,17 +7,11 @@ import SigninMobileAuth from './SigninMobileAuth';
 import SigninNotApproved from './SigninNotApproved';
 
 const SigninProcess = (props: ProcessType) => {
-  const { label, open, handleClose, position, tokenList } = props;
+  const { label, open, handleClose } = props;
 
   switch (label) {
     case 'disable':
-      return (
-        <SigninDisable
-          open={open}
-          handleClose={handleClose}
-          position={position}
-        />
-      );
+      return <SigninDisable open={open} handleClose={handleClose} />;
     case 'dormant':
       return <SigninDormant open={open} handleClose={handleClose} />;
     case 'not-approved':
@@ -27,13 +21,7 @@ const SigninProcess = (props: ProcessType) => {
     case 'excess':
       return <SigninExcessChangePw open={open} handleClose={handleClose} />;
     default:
-      return (
-        <SigninMobileAuth
-          open={open}
-          handleClose={handleClose}
-          tokenList={tokenList}
-        />
-      );
+      return <></>;
   }
 };
 

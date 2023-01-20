@@ -1,7 +1,7 @@
 import useMobileAuth from '@components/auth/hooks/useMobileAuth';
+import useMobileAuthQuery from '@hooks/apis/auth/common/useMobileAuthQuery';
 import AuthMobileView from '@components/auth/views/AuthMobileView';
 import { ModalType } from '@components/common/layouts/gnb/types';
-import { useToastContext } from '@hooks/utils/useToastContext';
 import { useCallback, useState } from 'react';
 import SignupStepThree from './SignupStepThree';
 
@@ -13,19 +13,30 @@ const SignupStepTwo = (props: ModalType) => {
     numDisabled,
     authError,
     mobileError,
+    authRequestDisabled,
     onAbledAuthInput,
     onChangeAuthNum,
     onChangeMobile,
     onClickReset,
     onFocusOutAuthNum,
     onTimerDisabled,
+    onAuthTimeOut,
     onSetAuthDisabled,
   } = useMobileAuth();
-  //   const toast = useToastContext();
+
   const [bgDisable, setBgDisable] = useState<boolean>(false);
   const [modalOn, setModalOn] = useState<boolean>(false);
-  //   const { mutate: postCommonMobileAuthMutate } = useCommonMobileAuth();
-  //   const { mutate: postCommonVerifyCodeMutate } = useCommonVerifyCode();
+
+  const { onClickMobileAuthRequest, onClickAuthCheck } = useMobileAuthQuery({
+    mobileNumber: mobileValue,
+    authNumber: authValue,
+    onAbledAuthInput: onAbledAuthInput,
+    onAuthAction: () => {
+      setModalOn(true);
+      setBgDisable(true);
+      onSetAuthDisabled();
+    },
+  });
 
   const resetModalClose = () => {
     onClickReset();
@@ -33,53 +44,6 @@ const SignupStepTwo = (props: ModalType) => {
     setBgDisable(false);
     setModalOn(false);
   };
-
-  const onClickAuthNumSend = useCallback(() => {
-    onAbledAuthInput();
-    // const mobile: MobileNumDto = { mobileNum: mobileFormatOff(mobileValue) };
-    // postCommonMobileAuthMutate(mobile, {
-    //   onSuccess: (res) => {
-    //     if (res.data.code !== '0000') {
-    //       toast?.on(msg.errMsg(res.data.code),'error');
-    //       return;
-    //     }
-    //     onAbledAuthInput();
-    //   },
-    //   onError: (err) => {
-    //     toast?.on(
-    //       '인증번호 발급에 실패 하였습니다. \n 잠시 후, 다시 시도해 주세요.',
-    //     ,'error');
-    //   },
-    // });
-  }, [onAbledAuthInput]);
-
-  const signupAuthOnClick = useCallback(() => {
-    setModalOn(true);
-    setBgDisable(true);
-    onSetAuthDisabled();
-    // const data = {
-    //   mobileNum: mobileFormatOff(mobileValue),
-    //   code: authValue,
-    // };
-    // postCommonVerifyCodeMutate(data, {
-    //   onSuccess: (res) => {
-    //     if (res.data.status === 'SUCCESS') {
-    //       setModalOn(true);
-    //       setAuthDisabled(true);
-    //       setBgDisable(true);
-    //     }
-    //     if (res.data.status === 'FAIL') {
-    //       toast?.on(msg.errMsg(res.data.code) , 'error');
-    //       return;
-    //     }
-    //   },
-    //   onError: (err) => {
-    //     toast?.on(
-    //       '인증번호가 일치하지 않습니다 \n 잠시 후, 다시 시도해 주세요.',
-    //     , 'error');
-    //   },
-    // });
-  }, [onSetAuthDisabled]);
 
   return (
     <>
@@ -90,18 +54,22 @@ const SignupStepTwo = (props: ModalType) => {
         authDisabled={authDisabled}
         bgDisable={bgDisable}
         numDisabled={numDisabled}
+        mobileDisabled={authRequestDisabled}
+        btnDisabled={authRequestDisabled}
         authError={authError}
         mobileError={mobileError}
         authOnChange={onChangeAuthNum}
         mobileOnChange={onChangeMobile}
         onTimerDisabled={onTimerDisabled}
         focusOutEvent={onFocusOutAuthNum}
-        onClickAuthNumSend={onClickAuthNumSend}
-        signupAuthOnClick={signupAuthOnClick}
+        onClickAuthNumSend={onClickMobileAuthRequest}
+        signupAuthOnClick={onClickAuthCheck}
         resetModalClose={resetModalClose}
+        timerActice={onAuthTimeOut}
+        timerResend={onTimerDisabled}
       />
       <SignupStepThree
-        mobileValue={'01033032222'}
+        mobileValue={mobileValue}
         open={modalOn}
         handleClose={resetModalClose}
       />

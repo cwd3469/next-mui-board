@@ -4,6 +4,7 @@ import { mobileFormat, mobileFormatOff } from '@utils/formatNumber';
 import {
   SignupInfo,
   SignupInfoError,
+  SignupInfoValue,
   SignupStepThreeType,
 } from '../signup/type';
 import { ErrorType } from '@components/common/inputs/type';
@@ -16,7 +17,7 @@ const useSignup = (props: SignupStepThreeType) => {
   const [infoErr, setInfoErr] = useState<SignupInfoError>(originData.errs);
   const [btnDisable, setBtnDisable] = useState<boolean>(true);
 
-  const setInInfo = useCallback((value: string, keyId: string) => {
+  const setInInfo = useCallback((value: SignupInfoValue, keyId: string) => {
     setInfo((prec) => {
       return { ...prec, [keyId]: value };
     });
@@ -39,6 +40,10 @@ const useSignup = (props: SignupStepThreeType) => {
     handleClose();
     setModalOn(false);
   }, [handleClose, reset]);
+
+  const handleOpenModal = useCallback(() => {
+    setModalOn(true);
+  }, []);
 
   const addressOnChange = useCallback(
     (address: string, postCode: string) => {
@@ -80,54 +85,11 @@ const useSignup = (props: SignupStepThreeType) => {
     }
   }, [info, infoErr]);
 
-  /**회원가입 신청 이벤트 */
-  const signInfoDto = useCallback(() => {
-    let dto = {
-      accountId: info.id,
-      password: info.pw,
-      reenterPassword: info.rePw,
-      adminNameKo: info.name,
-      adminMobileNum: mobileFormatOff(mobileValue),
-
-      pharmacyTaxNum: info.pharmacyTaxNum,
-      pharmacyName: info.pharmacyName,
-      pharmacyPhone: info.pharmacyPhone
-        ? mobileFormatOff(info.pharmacyPhone)
-        : '',
-
-      hospitalAddr: info.pharmacyAddress,
-      hospitalAddrDetail: info.addressDetail,
-      hospitalZipCode: info.postCode,
-      bizRegNum: info.buisNum,
-      bizCertFileUlid: info.businessLicense,
-      telecomUseCertFileUlid: info.pharmacistLicense,
-      passbookCopyFileUlid: info.bankbookCopy,
-    };
-    return dto;
-  }, [
-    info.id,
-    info.pw,
-    info.rePw,
-    info.name,
-    info.pharmacyTaxNum,
-    info.pharmacyName,
-    info.pharmacyPhone,
-    info.pharmacyAddress,
-    info.addressDetail,
-    info.postCode,
-    info.buisNum,
-    info.businessLicense,
-    info.pharmacistLicense,
-    info.bankbookCopy,
-    mobileValue,
-  ])();
-
   useEffect(() => {
     disabledOn();
   }, [disabledOn]);
 
   return {
-    signInfoDto,
     formChanger,
     btnDisable,
     infoErr,
@@ -136,6 +98,7 @@ const useSignup = (props: SignupStepThreeType) => {
     open,
     addressOnChange,
     handleCloseAll,
+    handleOpenModal,
     setInInfoErr,
     setInInfo,
   };

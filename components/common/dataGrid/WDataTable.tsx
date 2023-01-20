@@ -1,65 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import {
-  Box,
-  Grid,
-  Button,
-  Typography,
-  styled,
-  SxProps,
-  Theme,
-} from '@mui/material';
-import Image from 'next/image';
+import { Box, Grid, Typography, styled, SxProps, Theme } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import copyIcon from 'public/assets/icon/copyIcon.svg';
-import copyDisable from 'public/assets/icon/copyDisable.svg';
 import { Stack } from '@mui/system';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-
-export const GridButton = (props: {
-  onClick?: () => void;
-  children: string | JSX.Element;
-  disabled?: boolean;
-  style?: SxProps<Theme>;
-  startIcon?: JSX.Element;
-  endIcon?: JSX.Element;
-}) => {
-  const { onClick, children, disabled, style, startIcon, endIcon } = props;
-
-  return (
-    <Button
-      disabled={disabled}
-      variant="outlined"
-      color="info"
-      size="small"
-      onClick={onClick}
-      sx={{
-        borderRadius: '6px',
-        border: '1px solid #e0e1e2',
-        padding: '5px 8px',
-        '&.Mui-disabled': {
-          backgroundColor: '#f8f8f8',
-        },
-        ...style,
-      }}
-    >
-      <Grid container gap="7px" alignItems="center">
-        {startIcon ? (
-          startIcon
-        ) : (
-          <Image src={disabled ? copyDisable : copyIcon} alt="copy" />
-        )}
-        <Typography variant="caption" letterSpacing={'-1px'} marginTop="2px">
-          {children}
-        </Typography>
-        {endIcon ? endIcon : ''}
-      </Grid>
-    </Button>
-  );
-};
-GridButton.defaultProps = {
-  disable: false,
-};
 
 const NoData = (props: { txt?: string }) => {
   const { txt } = props;

@@ -16,7 +16,9 @@ export default function useMobileAuth() {
   /// input value
   const [mobileValue, setMobile] = useState<string>('');
   const [authValue, setAuth] = useState<string>('');
-
+  //유효성 alert
+  const [authRequestDisabled, setAuthRequestDisabled] =
+    useState<boolean>(false);
   //유효성 alert
   const [authDisabled, setAuthDisabled] = useState<boolean>(true);
   const [numDisabled, setNumDisabled] = useState<boolean>(true);
@@ -31,15 +33,6 @@ export default function useMobileAuth() {
     setMobile('');
     setAuth('');
   }, [errMsg]);
-
-  const onSetAuthDisabled = useCallback(() => {
-    setAuthDisabled(true);
-  }, []);
-
-  /**모든 모달 닫기 액션 */
-  const onClickReset = useCallback(() => {
-    reset();
-  }, [reset]);
 
   /**휴대폰번호 입력 액션*/
   const onChangeMobile = useCallback(
@@ -56,6 +49,7 @@ export default function useMobileAuth() {
   /**인증번호 입력불가 해제 액션*/
   const onAbledAuthInput = useCallback(() => {
     setAuthDisabled(false);
+    setAuthRequestDisabled(true);
     setAuth('');
   }, []);
 
@@ -86,11 +80,28 @@ export default function useMobileAuth() {
       });
     }
   };
-  /** 타이머 온 */
-  const onTimerDisabled = () => {
-    toast?.on('인증번호 입력 유효 시간이 만료되었습니다', 'error');
+
+  // 인증 코드 입력 창 닫기
+  const onSetAuthDisabled = useCallback(() => {
     setAuthDisabled(true);
+  }, []);
+
+  /**모든 모달 닫기 액션 */
+  const onClickReset = useCallback(() => {
+    reset();
+  }, [reset]);
+
+  /** 타이머 인증 번호 초기화 액션*/
+  const onTimerDisabled = () => {
+    setAuthDisabled(true);
+    setAuthRequestDisabled(false);
+    setAuth('');
   };
+  /** 타이머 인증 번호 유효시간 아웃 액션*/
+  const onAuthTimeOut = useCallback(() => {
+    toast?.on('인증번호 입력 유효 시간이 만료되었습니다', 'error');
+    onTimerDisabled();
+  }, [toast]);
 
   useEffect(() => {
     if (mobileValue.length < 12) {
@@ -115,6 +126,7 @@ export default function useMobileAuth() {
     numDisabled,
     authError,
     mobileError,
+    onAuthTimeOut,
     onAbledAuthInput,
     onChangeAuthNum,
     onChangeMobile,
@@ -122,5 +134,7 @@ export default function useMobileAuth() {
     onFocusOutAuthNum,
     onTimerDisabled,
     onSetAuthDisabled,
+    setAuthRequestDisabled,
+    authRequestDisabled,
   };
 }

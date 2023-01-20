@@ -8,21 +8,31 @@ import { AuthMobileViewType } from '../types';
 const AuthMobileView = (props: AuthMobileViewType) => {
   const {
     open,
+    //value
     authValue,
     mobileValue,
-    authDisabled,
+    //인증 코드 활성화
     numDisabled,
+    bgDisable,
+    btnDisabled,
+    mobileDisabled,
+    authDisabled,
+    //error
+    mobileError,
     authError,
+    // value onChange
     authOnChange,
     mobileOnChange,
-    onTimerDisabled,
-    mobileError,
+    // focusOut
     focusOutEvent,
+    // api
     onClickAuthNumSend,
     signupAuthOnClick,
+    // 모달 닫기
     resetModalClose,
-    bgDisable,
-    mobileDisabled,
+    // 타이머 이벤트
+    timerActice,
+    timerResend,
   } = props;
 
   return (
@@ -54,7 +64,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
             </Box>
             <Box sx={{ width: '120px', height: '48px' }}>
               <AuthButton
-                disabled={mobileValue.length >= 12 ? false : true}
+                disabled={mobileValue.length >= 12 ? btnDisabled : true}
                 onClick={onClickAuthNumSend}
               >
                 인증번호 발송
@@ -74,11 +84,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
           <Grid container justifyContent={'flex-end'}>
             <Box sx={{ height: '20px' }}>
               {!authDisabled ? (
-                <AuthTimer
-                  time={3}
-                  action={onTimerDisabled}
-                  resend={() => onClickAuthNumSend()}
-                />
+                <AuthTimer time={3} action={timerActice} resend={timerResend} />
               ) : (
                 ''
               )}

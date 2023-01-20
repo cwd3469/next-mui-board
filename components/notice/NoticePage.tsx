@@ -11,24 +11,7 @@ import { NoticeInterface } from './type';
 
 const NoticePage = () => {
   const { filter, setInFilter } = useContext(NoticeFilterContext);
-  // const { noticeData, totalPages } = useNoticeList(filter);
-  const noticeData: NoticeInterface[] = [
-    {
-      ulid: '1',
-      title: '챗봇 연동에 대한 안내사항',
-      status: '공지',
-      createAt: '2022.11.03',
-      number: 1,
-    },
-    {
-      ulid: '2',
-      title: '챗봇 연동에 대한 안내사항',
-      status: '업데이트',
-      createAt: '2022.11.04',
-      number: 2,
-    },
-  ];
-  const totalPages = 1;
+  const { noticeData, totalPages } = useNoticeList(filter);
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setInFilter(value, 'page');

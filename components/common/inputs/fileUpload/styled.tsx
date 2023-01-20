@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { UidList } from '@hooks/utils/fileUpload/types';
+import WPdfPreView from '@components/common/image/WPdfPreView';
 
 export const SignupFileLadel = styled('label')`
   width: 200px;
@@ -93,11 +94,12 @@ export const DefaltInfo = (props: { sx?: SxProps<Theme> }) => {
 
 export const ImageView = (props: {
   inx: number;
+  file: File;
   img: UidList | UidList;
   deleteImg: (index: number) => void;
   sx?: SxProps<Theme>;
 }) => {
-  const { inx, img, deleteImg, sx } = props;
+  const { inx, img, deleteImg, sx, file } = props;
   return (
     <Grid
       flexDirection="column"
@@ -113,12 +115,21 @@ export const ImageView = (props: {
         ...sx,
       }}
     >
-      <Image
-        src={img.type == 'application/pdf' ? '' : img.url}
-        alt="이미지"
-        layout="fill"
-        objectFit="cover"
-      />
+      {img.type == 'application/pdf' ? (
+        <Box
+          sx={{
+            '& .react-pdf__Page__canvas': {
+              width: '200px !important',
+              height: '300px !important',
+            },
+          }}
+        >
+          <WPdfPreView pdf={file} />
+        </Box>
+      ) : (
+        <Image src={img.url} alt="이미지" layout="fill" objectFit="cover" />
+      )}
+
       <DeleteBtn
         className="deleteBtn"
         onClick={() => {

@@ -17,8 +17,9 @@ export interface SignupFileUlid {
   passbookCopyFileUlid: string;
 }
 
+export type SignupInfoValue = string | File | undefined;
 export interface SignupInfo {
-  [key: string]: string;
+  [key: string]: SignupInfoValue;
   id: string;
   pw: string;
   rePw: string;
@@ -29,10 +30,11 @@ export interface SignupInfo {
   pharmacyName: string;
   pharmacyAddress: string;
   pharmacyPhone: string;
-  pharmacyTaxNum: string;
-  businessLicense: string;
-  pharmacistLicense: string;
-  bankbookCopy: string;
+  pharmacyFaxNum: string;
+  // File
+  businessLicense?: File;
+  pharmacistLicense?: File;
+  bankbookCopy?: File;
 }
 
 export interface SignupInfoError {
@@ -46,5 +48,5 @@ export interface SignupInfoError {
   pharmacyNameErr: ErrorType;
   pharmacyAddressErr: ErrorType;
   pharmacyPhoneErr: ErrorType;
-  pharmacyTaxNumErr: ErrorType;
+  pharmacyFaxNumErr: ErrorType;
 }
