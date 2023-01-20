@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import type { AppProps } from 'next/app';
@@ -13,6 +13,8 @@ import globals from '@styles/globals';
 import { Gnb } from '@components/common/layouts/gnb/Gnb';
 import { useRouter } from 'next/router';
 import { UserInfoProvider } from '@hooks/contexts/userInfoContext';
+import Script from 'next/script';
+import * as gtag from '@utils/gtag';
 
 LicenseInfo.setLicenseKey(`${process.env.NEXT_PUBLIC_MUI_PRO_KEY}`);
 
@@ -32,23 +34,54 @@ export default function App({ Component, pageProps }: AppProps) {
         },
       }),
   );
+  useEffect(() => {
+    const handleRouteChange = (url: URL) => {
+      gtag.pageview(url);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    router.events.on('hashChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+      router.events.off('hashChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
   return (
-    <UserInfoProvider>
-      <Global styles={globals} />
-      <ThemeProvider theme={theme}>
-        <ToastContextProvider>
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-              <ReactQueryDevtools initialIsOpen={true} />
-              <WProgressBar />
-              <Head>
-                <title>어다아파 약국 앱</title>
-              </Head>
-              <Component {...pageProps} />
-            </Hydrate>
-          </QueryClientProvider>
-        </ToastContextProvider>
-      </ThemeProvider>
-    </UserInfoProvider>
+    <>
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+      />
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+ gtag('config', '${gtag.GA_TRACKING_ID}', {
+   page_path: window.location.pathname,
+ });
+`,
+        }}
+      />
+      <UserInfoProvider>
+        <Global styles={globals} />
+        <ThemeProvider theme={theme}>
+          <ToastContextProvider>
+            <QueryClientProvider client={queryClient}>
+              <Hydrate state={pageProps.dehydratedState}>
+                <ReactQueryDevtools initialIsOpen={true} />
+                <WProgressBar />
+                <Head>
+                  <title>어다아파 약국 앱</title>
+                </Head>
+                <Component {...pageProps} />
+              </Hydrate>
+            </QueryClientProvider>
+          </ToastContextProvider>
+        </ThemeProvider>
+      </UserInfoProvider>
+    </>
   );
 }

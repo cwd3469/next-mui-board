@@ -22,8 +22,6 @@ interface Props {
 const UserInfoProvider = ({ children }: Props): JSX.Element => {
   const [userInfo, setUserInfo] = useState<UserInfoInterface>();
   const setInUserInfo = useCallback((info: UserInfoInterface) => {
-    console.log(info);
-
     setUserInfo(info);
   }, []);
 
@@ -31,7 +29,6 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
     const cookie = getCookie('accessToken');
     if (cookie) {
       const userinfo: UserInfoInterface = jwtDecode(cookie as string);
-      console.log(userinfo);
       setUserInfo(userinfo);
     }
   }, []);
