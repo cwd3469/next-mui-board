@@ -9,7 +9,7 @@ import { userInfoContext } from '@hooks/contexts/userInfoContext';
 
 export default function GnbMyInfo(props: { disabled?: boolean }) {
   const { disabled } = props;
-  const userInfo = React.useContext(userInfoContext);
+  const { userInfo } = React.useContext(userInfoContext);
   const router = useRouter();
 
   const gnbInfo = React.useCallback(() => {
