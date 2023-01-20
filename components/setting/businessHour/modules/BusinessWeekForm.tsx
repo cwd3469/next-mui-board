@@ -82,7 +82,11 @@ const BusinessWeekForm = (props: WeekFormType) => {
       <Typography
         variant="body2"
         fontWeight="500"
-        color={week === 'sun' || week === 'holiday' ? '#f11919' : '#333'}
+        color={
+          week === 'sundayOperation' || week === 'holidayOperation'
+            ? '#f11919'
+            : '#333'
+        }
         paddingRight="6px"
       >
         {name}
