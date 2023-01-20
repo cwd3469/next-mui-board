@@ -10,11 +10,28 @@ export const apiCommonMobileAuth = (prams: AuthMobileNumber) => {
   });
 };
 
+export const apiTokenValidation = (token: string) => {
+  const refreshToken = { refreshToken: token };
+  return instance({
+    method: 'post',
+    url: `/auth/api/v1/refresh`,
+    data: JSON.stringify(refreshToken),
+  });
+};
+
 /**공용 / 점유 인증 확인 api */
 export const apiCommonAuthCheck = (prams: AuthNumberChack) => {
   return instance({
     method: 'post',
     url: `/auth/api/v1/mobile-authentication/verify`,
     data: prams,
+  });
+};
+
+/**핑 api */
+export const ping = () => {
+  return instance({
+    method: 'get',
+    url: `/pharmacy/api/v2/ping`,
   });
 };
