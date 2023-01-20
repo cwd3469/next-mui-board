@@ -1,7 +1,19 @@
 import { UserInfoInterface } from '@components/auth/types';
-import { createContext, useEffect, useState } from 'react';
+import { getCookie } from 'cookies-next';
+import jwtDecode from 'jwt-decode';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
-const userInfoContext = createContext<UserInfoInterface | undefined>(undefined);
+interface UserInfoContext {
+  userInfo?: UserInfoInterface;
+  setInUserInfo: (info: UserInfoInterface) => void;
+}
+
+const userInfoContext = createContext<UserInfoContext>({
+  userInfo: undefined,
+  setInUserInfo: (info: UserInfoInterface) => {
+    return;
+  },
+});
 
 interface Props {
   children: JSX.Element | JSX.Element[];
@@ -9,32 +21,28 @@ interface Props {
 
 const UserInfoProvider = ({ children }: Props): JSX.Element => {
   const [userInfo, setUserInfo] = useState<UserInfoInterface>();
-  const user = {
-    accountId: 'pharmcy7878',
-    roles: ['PHARMACY_BASIC'],
-    nameKo: '이약사',
-    accountNonExpired: true,
-    accountNonLocked: true,
-    needResetPassword: true,
-    accountType: 'PHARMACY',
-    credentialsNonExpired: false,
-    disabledReason: '',
-    enabled: false,
-    exp: 1670490927,
-    iat: 1670487327,
-    iss: 'WhatAilsYou Auth-Serve',
-    mobileNum: '01048999939',
-    service: 'PHARMACY',
-    sub: '01GKGGWKCWA9QS6TBC8XBPJ1JY',
-    ulid: '01GKGGWKCWA9QS6TBC8XBPJ1JY',
-  };
-  useEffect(() => {
-    setUserInfo(user);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const setInUserInfo = useCallback((info: UserInfoInterface) => {
+    console.log(info);
+
+    setUserInfo(info);
   }, []);
 
+  useEffect(() => {
+    const cookie = getCookie('accessToken');
+    if (cookie) {
+      const userinfo: UserInfoInterface = jwtDecode(cookie as string);
+      console.log(userinfo);
+      setUserInfo(userinfo);
+    }
+  }, []);
+
+  const value = {
+    userInfo: userInfo,
+    setInUserInfo: setInUserInfo,
+  };
+
   return (
-    <userInfoContext.Provider value={userInfo}>
+    <userInfoContext.Provider value={value}>
       {children}
     </userInfoContext.Provider>
   );

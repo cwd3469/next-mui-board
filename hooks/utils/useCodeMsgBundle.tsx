@@ -6,8 +6,6 @@ export class CodeMsgBundle {
     this.msg = 'msg';
   }
   public errMsg = (code: string) => {
-    console.log(code);
-
     switch (code) {
       //Global Response Code
       case '0010':
