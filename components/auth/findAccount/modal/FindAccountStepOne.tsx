@@ -90,6 +90,7 @@ const FindAccountStepOne = (props: ModalType) => {
         authValue={authValue}
         mobileValue={mobileValue}
         mobileDisabled={authRequestDisabled}
+        btnDisabled={authRequestDisabled}
         authDisabled={authDisabled}
         bgDisable={bgDisable}
         numDisabled={numDisabled}

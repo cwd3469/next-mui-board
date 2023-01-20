@@ -55,6 +55,7 @@ const SignupStepTwo = (props: ModalType) => {
         bgDisable={bgDisable}
         numDisabled={numDisabled}
         mobileDisabled={authRequestDisabled}
+        btnDisabled={authRequestDisabled}
         authError={authError}
         mobileError={mobileError}
         authOnChange={onChangeAuthNum}
