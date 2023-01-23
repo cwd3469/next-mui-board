@@ -19,7 +19,7 @@ export const apiHistoryList = (prams: FilterListData) => {
     },
   });
 };
-/** 조제 내역 목록
+/** 조제 내역 요청자 정보
  * GET API
  */
 export const apiHistoryPreparationRequest = (prams: string) => {
@@ -29,6 +29,22 @@ export const apiHistoryPreparationRequest = (prams: string) => {
   return instance({
     method: 'get',
     url: `apiHistoryPreparationRequest/${prams}`,
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
+
+/** 조제 내역 처방전 정보
+ * GET API
+ */
+export const apiHistoryPrescription = (prams: string) => {
+  const token = getCookie('accessToken');
+  const accessToken = typeof token === 'string' ? token : '';
+
+  return instance({
+    method: 'get',
+    url: `apiHistoryPrescription/${prams}`,
     headers: {
       Authorization: accessToken,
     },

@@ -15,3 +15,5 @@ export const PREPARATIONREQUEST = (id: string) => [
   'REQUEST',
   { id },
 ];
+
+export const PRESCRIPTION = (id: string) => ['PRESCRIPTION', 'HISTORY', { id }];
