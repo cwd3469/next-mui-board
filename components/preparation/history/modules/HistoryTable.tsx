@@ -11,7 +11,8 @@ import {
   TruckIcon,
   UserIcon,
 } from '@components/common/dataDisplay/WIcons';
-import PreparationRequesterModal from '@components/preparation/modals/PreparationRequesterModal';
+import RequesterModal from '@components/preparation/modals/RequesterModal';
+import PrescriptionModal from '@components/preparation/modals/PrescriptionModal';
 
 const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
   const { data } = props;
@@ -168,9 +169,10 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '처방전 보기',
       width: 120,
       renderCell: (prams) => {
-        const { status, deliveryStatus } = prams.row;
+        const { status, deliveryStatus, ulid } = prams.row;
         return (
           <GridButton
+            onClick={() => prescriptionIdOnOff(ulid, true)}
             startIcon={<CheckIcon />}
             disabled={
               status === 'CANCEL'
@@ -214,10 +216,19 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
     <>
       <WDataTable rows={rows} columns={columns} />
       {requesterId ? (
-        <PreparationRequesterModal
+        <RequesterModal
           id={requesterId}
           open={requesterOpen}
           handleClose={() => requesterOnOff('', false)}
+        />
+      ) : (
+        ''
+      )}
+      {prescriptionId ? (
+        <PrescriptionModal
+          id={prescriptionId}
+          open={prescriptionOpen}
+          handleClose={() => prescriptionIdOnOff('', false)}
         />
       ) : (
         ''
