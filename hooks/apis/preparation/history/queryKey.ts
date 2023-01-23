@@ -9,3 +9,9 @@ export const HISTORYLIST = (props: FilterListData) => [
   'LIST',
   { ...props.filter, ...props.date },
 ];
+
+export const PREPARATIONREQUEST = (id: string) => [
+  'PREPARATION',
+  'REQUEST',
+  { id },
+];
