@@ -50,3 +50,19 @@ export const apiHistoryPrescription = (prams: string) => {
     },
   });
 };
+
+/** 조제 내역 배송요청
+ * GET API
+ */
+export const apiDeliveryRequest = (prams: string) => {
+  const token = getCookie('accessToken');
+  const accessToken = typeof token === 'string' ? token : '';
+
+  return instance({
+    method: 'get',
+    url: `apiDeliveryRequest/${prams}`,
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
