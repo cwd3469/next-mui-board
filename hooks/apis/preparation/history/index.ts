@@ -66,3 +66,18 @@ export const apiDeliveryRequest = (prams: string) => {
     },
   });
 };
+/** 조제 내역 상태 알림
+ * GET API
+ */
+export const apiHistoryNoti = () => {
+  const token = getCookie('accessToken');
+  const accessToken = typeof token === 'string' ? token : '';
+
+  return instance({
+    method: 'get',
+    url: `apiHistory/noti`,
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
