@@ -19,6 +19,7 @@ const RequesterModal = (props: RequesterModalType) => {
       handleClose={handleClose}
       title="요청자 정보"
       maxWidth="sm"
+      activeOn
     >
       {data ? (
         <Stack gap="16px" paddingBottom="40px">
