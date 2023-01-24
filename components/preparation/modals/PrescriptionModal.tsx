@@ -21,6 +21,7 @@ const PrescriptionModal = (props: PrescriptionModalType) => {
       maxWidth="xl"
       titleSx={{ padding: '50px 0px 16px' }}
       btnTitle="인쇄하기"
+      activeOn
     >
       <Stack gap="16px" padding="0px 40px">
         <Grid container justifyContent="flex-end">

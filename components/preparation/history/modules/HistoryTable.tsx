@@ -13,6 +13,7 @@ import {
 } from '@components/common/dataDisplay/WIcons';
 import RequesterModal from '@components/preparation/modals/RequesterModal';
 import PrescriptionModal from '@components/preparation/modals/PrescriptionModal';
+import DeliveryRequestModal from '@components/preparation/modals/DeliveryRequestModal';
 
 const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
   const { data } = props;
@@ -21,6 +22,8 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
   const [prescriptionId, setPrescriptionId] = useState<string>('');
   const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
   const [deliveryId, setDeliveryId] = useState<string>('');
+  const [deliveryMode, setDeliveryMode] =
+    useState<'sameDay' | 'delivery' | ''>('');
   const [deliveryOpen, setDeliveryOpen] = useState<boolean>(false);
 
   const rows = data.map((item, index) => {
@@ -36,10 +39,14 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
     setPrescriptionId(id);
     setPrescriptionOpen(open);
   }, []);
-  const deliveryIdOnOff = useCallback((id: string, open: boolean) => {
-    setDeliveryId(id);
-    setDeliveryOpen(open);
-  }, []);
+  const deliveryIdOnOff = useCallback(
+    (id: string, open: boolean, mode: 'sameDay' | 'delivery' | '') => {
+      setDeliveryId(id);
+      setDeliveryOpen(open);
+      setDeliveryMode(mode);
+    },
+    [],
+  );
 
   const onNoticeDetail = useCallback(
     (id: string) => {
@@ -193,9 +200,11 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 요청',
       width: 120,
       renderCell: (prams) => {
-        const { status, deliveryStatus } = prams.row;
+        const { status, deliveryStatus, ulid, deliveryForm } = prams.row;
+        const mode = deliveryForm === 'DELIVERY' ? 'delivery' : 'sameDay';
         return (
           <GridButton
+            onClick={() => deliveryIdOnOff(ulid, true, mode)}
             startIcon={<TruckIcon />}
             disabled={
               status === 'CANCEL'
@@ -229,6 +238,16 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
           id={prescriptionId}
           open={prescriptionOpen}
           handleClose={() => prescriptionIdOnOff('', false)}
+        />
+      ) : (
+        ''
+      )}
+      {deliveryId ? (
+        <DeliveryRequestModal
+          mode={deliveryMode}
+          id={deliveryId}
+          open={deliveryOpen}
+          handleClose={() => deliveryIdOnOff('', false, '')}
         />
       ) : (
         ''
