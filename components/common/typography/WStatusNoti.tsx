@@ -19,7 +19,7 @@ export const WNotiTypography = styled(Typography)(({ theme }) => ({
 export const WNotiBox = styled(Box)(({ theme }) => ({
   width: '2px',
   height: '14px',
-  backgroundColor: '#666',
+  backgroundColor: '#ddd',
 }));
 
 const WStatusNoti = (props: {

@@ -28,7 +28,10 @@ const useMutateDeliveryRequest = (props: UseDeliveryRequestType) => {
           }
         },
         onError: (errMsg) => {
-          toast?.on(`아이디 또는 비밀번호를 확인해 주세요.`, 'error');
+          toast?.on(
+            `택배 수거 요청에 실패하였습니다 잠시 후, 다시 시도해 주세요.`,
+            'error',
+          );
         },
       });
     }
@@ -47,7 +50,10 @@ const useMutateDeliveryRequest = (props: UseDeliveryRequestType) => {
           }
         },
         onError: (errMsg) => {
-          toast?.on(`아이디 또는 비밀번호를 확인해 주세요.`, 'error');
+          toast?.on(
+            `기사 호출 요청에 실패하였습니다 잠시 후, 다시 시도해 주세요.`,
+            'error',
+          );
         },
       });
     }
