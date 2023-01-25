@@ -5,7 +5,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['cdn.pixabay.com'],
+    domains: ['cdn.pixabay.com', 'pds.dailypharm.com'],
   },
   webpack(config, { webpack }) {
     config.module.rules.unshift({

@@ -1,3 +1,4 @@
+import { WeekDataBundlePharmacy } from '@components/setting/businessHour/type';
 import instance from '@hooks/apis/instance';
 import { getCookie } from 'cookies-next';
 
@@ -10,9 +11,25 @@ export const apiBusinesssSet = () => {
 
   return instance({
     method: 'get',
-    url: `url/business/setting`,
+    url: `pharmacy/api/v2/profile/pharmacy`,
     headers: {
       Authorization: accessToken,
     },
   });
 };
+
+export const apiPharmacyProflieModify = (prams: WeekDataBundlePharmacy) => {
+  const token = getCookie('accessToken');
+  const accessToken = typeof token === 'string' ? token : '';
+
+  return instance({
+    method: 'put',
+    url: `pharmacy/api/v2/profile/pharmacy`,
+    data: prams,
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
+
+export const BUSINESS = () => ['BUSINESS', 'SET', 'GET'];

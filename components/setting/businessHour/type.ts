@@ -4,13 +4,16 @@ export interface WeekendDto {
   hasOperation: boolean;
 }
 export interface WeekDataBundle {
-  [key: string]: WeekendDto;
-  mon: WeekendDto;
-  tue: WeekendDto;
-  wed: WeekendDto;
-  thu: WeekendDto;
-  fri: WeekendDto;
-  set: WeekendDto;
-  sun: WeekendDto;
-  holiday: WeekendDto;
+  [key: string]: WeekendDto | string | undefined;
+  mondayOperation: WeekendDto;
+  tuesdayOperation: WeekendDto;
+  wednesdayOperation: WeekendDto;
+  thursdayOperation: WeekendDto;
+  fridayOperation: WeekendDto;
+  saturdayOperation: WeekendDto;
+  sundayOperation: WeekendDto;
+  holidayOperation: WeekendDto;
+}
+export interface WeekDataBundlePharmacy extends WeekDataBundle {
+  pharmacyUlid?: string;
 }

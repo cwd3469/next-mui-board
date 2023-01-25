@@ -12,7 +12,14 @@ export const GridButton = (props: {
   startIcon?: JSX.Element;
   endIcon?: JSX.Element;
 }) => {
-  const { onClick, children, disabled, style, startIcon, endIcon } = props;
+  const {
+    onClick,
+    children,
+    disabled,
+    style,
+    startIcon: StartIcon,
+    endIcon: EndIcon,
+  } = props;
 
   return (
     <Button
@@ -31,19 +38,24 @@ export const GridButton = (props: {
         gap: '4px',
         '&.Mui-disabled': {
           backgroundColor: '#f8f8f8',
+          '& .WIcon': {
+            '& path': {
+              fill: '#999',
+            },
+          },
         },
         ...style,
       }}
     >
-      {startIcon ? (
-        startIcon
+      {StartIcon ? (
+        StartIcon
       ) : (
         <Image src={disabled ? copyDisable : copyIcon} alt="copy" />
       )}
       <Typography variant="caption" letterSpacing={'-1px'} marginTop="2px">
         {children}
       </Typography>
-      {endIcon ? endIcon : ''}
+      {EndIcon ? EndIcon : ''}
     </Button>
   );
 };

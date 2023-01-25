@@ -4,6 +4,7 @@ import { HistoryFilterContext } from '@hooks/contexts/filters/HistoryFilterConte
 import { Stack } from '@mui/material';
 import { useContext, useEffect } from 'react';
 import HistoryFilter from './modules/HistoryFilter';
+import HistoryStatusNoti from './modules/HistoryStatusNoti';
 import HistoryTable from './modules/HistoryTable';
 
 const HistoryPage = () => {
@@ -16,7 +17,10 @@ const HistoryPage = () => {
 
   return (
     <Stack gap="20px">
-      <HistoryFilter />
+      <Stack gap="10px">
+        <HistoryStatusNoti />
+        <HistoryFilter />
+      </Stack>
       <HistoryTable data={historyListData} />
       <WPagination
         paddingTop="4px"

@@ -19,6 +19,9 @@ export interface FilterHistoryType extends DataPagition {
   preparationStatus?: string;
   deliveryStatus?: string;
 }
+export interface FilterProceedType extends DataPagition {
+  paymentStatus?: string;
+}
 
 export interface FilterDateType {
   [key: string]: string;
@@ -29,7 +32,8 @@ export interface FilterDateType {
 export type FilterAllOtions =
   | DataPagition
   | FilterNoticeType
-  | FilterHistoryType;
+  | FilterHistoryType
+  | FilterProceedType;
 
 export type FilterListData = {
   filter: FilterAllOtions;

@@ -33,6 +33,7 @@ export class Validation {
   regKorean: RegExp;
   regKoEnNum: RegExp;
   regKoEnNumPass: RegExp;
+  regRefusalDispensing: RegExp;
   regNonReimbures: RegExp;
   regRefusal: RegExp;
   regBusiNum: RegExp;
@@ -114,6 +115,9 @@ export class Validation {
 
     /**한글 영어 숫자 입력 받기*/
     this.regKoEnNum = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,15}$/;
+
+    /**조제 거절 입력*/
+    this.regRefusalDispensing = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,20}$/;
 
     /**환자 전달 사항 입력 */
     this.regCommunications = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,200}$/;

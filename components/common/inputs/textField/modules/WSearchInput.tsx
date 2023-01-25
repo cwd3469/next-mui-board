@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Theme } from '@mui/system';
 
 export const SearchTextField = styled(TextField)(({ theme }) => ({
-  width: '276px',
+  width: '300px',
   backgroundColor: '#fff',
   ...theme.typography.body1,
   borderRadius: '6px',

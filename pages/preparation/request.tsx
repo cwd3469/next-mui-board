@@ -1,5 +1,6 @@
 import { Gnb } from '@components/common/layouts/gnb/Gnb';
 import { WLayout } from '@components/common/layouts/WLayout';
+import RequestPage from '@components/preparation/request/RequestPage';
 import { RequestFilterProvider } from '@hooks/contexts/filters/RequestFilterContext';
 
 const Request = () => {
@@ -7,7 +8,9 @@ const Request = () => {
     <RequestFilterProvider>
       <div>
         <Gnb />
-        <WLayout>조제 요청</WLayout>
+        <WLayout>
+          <RequestPage />
+        </WLayout>
       </div>
     </RequestFilterProvider>
   );
