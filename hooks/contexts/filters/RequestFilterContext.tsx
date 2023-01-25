@@ -1,18 +1,27 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import dayjs from 'dayjs';
 import { createContext, useCallback, useState } from 'react';
-import { FilterNoticeType, FilterValue } from './type';
+import { DataPagition, FilterDateType, FilterValue } from './type';
 
 const RequestFilterContext = createContext<{
-  filter: FilterNoticeType;
+  filter: DataPagition;
   setInFilter: (value: FilterValue, keyId: string) => void;
+  date: FilterDateType;
+  setInDate: (date: FilterDateType) => void;
 }>({
   filter: {
     code: '0',
     page: 1,
     keyword: '',
-    status: '',
   },
   setInFilter: (value: FilterValue, keyId: string) => {
+    return;
+  },
+  date: {
+    startDate: dayjs().format('YYYY-MM-DD'),
+    endDate: dayjs().format('YYYY-MM-DD'),
+  },
+  setInDate: (date: FilterDateType) => {
     return;
   },
 });
@@ -22,11 +31,14 @@ interface Props {
 }
 
 const RequestFilterProvider = ({ children }: Props): JSX.Element => {
-  const [filter, setFilter] = useState<FilterNoticeType>({
+  const [filter, setFilter] = useState<DataPagition>({
     code: '0',
     page: 1,
     keyword: '',
-    status: '',
+  });
+  const [date, setDate] = useState<FilterDateType>({
+    startDate: dayjs().format('YYYY-MM-DD'),
+    endDate: dayjs().format('YYYY-MM-DD'),
   });
 
   const setInFilter = useCallback((value: FilterValue, keyId: string) => {
@@ -35,11 +47,17 @@ const RequestFilterProvider = ({ children }: Props): JSX.Element => {
     });
   }, []);
 
+  const setInDate = useCallback((date: FilterDateType) => {
+    setDate(date);
+  }, []);
+
   return (
     <RequestFilterContext.Provider
       value={{
         filter,
         setInFilter,
+        date,
+        setInDate,
       }}
     >
       {children}

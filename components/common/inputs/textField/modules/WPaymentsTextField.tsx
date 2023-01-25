@@ -82,6 +82,11 @@ const WPaymentsTextField = (props: WTextFieldModulesType) => {
       disabled={disabled}
       placeholder="조제비를 입력 해주세요."
       helper={'1,000만 원 미만까지만 입력 가능합니다.'}
+      sx={{
+        '& .MuiOutlinedInput-input': {
+          textAlign: 'end',
+        },
+      }}
     />
   );
 };
