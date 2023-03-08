@@ -167,11 +167,10 @@ const SignupStepThree = (props: SignupStepThreeType) => {
             >
               <SignupFileUpload
                 name="businessLicense"
-                modifyFile={[]}
                 onDeleteLogoUid={() =>
                   signup.setInInfo(undefined, 'businessLicense')
                 }
-                onUploadFile={(uild, file) =>
+                onUploadFile={(file) =>
                   signup.setInInfo(file, 'businessLicense')
                 }
               />
@@ -183,11 +182,10 @@ const SignupStepThree = (props: SignupStepThreeType) => {
             >
               <SignupFileUpload
                 name="pharmacistLicense"
-                modifyFile={[]}
                 onDeleteLogoUid={() =>
                   signup.setInInfo(undefined, 'pharmacistLicense')
                 }
-                onUploadFile={(uild, file) =>
+                onUploadFile={(file) =>
                   signup.setInInfo(file, 'pharmacistLicense')
                 }
               />
@@ -199,13 +197,10 @@ const SignupStepThree = (props: SignupStepThreeType) => {
             >
               <SignupFileUpload
                 name="bankbookCopy"
-                modifyFile={[]}
                 onDeleteLogoUid={() =>
                   signup.setInInfo(undefined, 'bankbookCopy')
                 }
-                onUploadFile={(uild, file) =>
-                  signup.setInInfo(file, 'bankbookCopy')
-                }
+                onUploadFile={(file) => signup.setInInfo(file, 'bankbookCopy')}
               />
             </ItemInput>
           </Grid>
