@@ -15,7 +15,6 @@ export interface HospitalImgPickerType {
 
 const SignupFileUpload = (props: HospitalImgPickerType) => {
   const { onDeleteLogoUid, onUploadFile, name } = props;
-  const vaild = useValidation();
 
   const onChangeFileLoad = useCallback(
     async (

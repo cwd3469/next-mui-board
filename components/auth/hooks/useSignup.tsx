@@ -68,23 +68,27 @@ const useSignup = (props: SignupStepThreeType) => {
   const disabledOn = useCallback(() => {
     for (const key in info) {
       if (Object.prototype.hasOwnProperty.call(info, key)) {
-        const element = info[key];
-        if (element) {
-          for (const k in infoErr) {
-            if (Object.prototype.hasOwnProperty.call(infoErr, k)) {
-              const el = infoErr[k];
-              if (el.boo) {
-                setBtnDisable(true);
-                return;
-              }
-              if (!el.boo) {
-                setBtnDisable(false);
+        if (key !== 'addressDetail') {
+          const element = info[key];
+          if (element) {
+            for (const k in infoErr) {
+              if (Object.prototype.hasOwnProperty.call(infoErr, k)) {
+                if (k !== 'addressDetailErr') {
+                  const el = infoErr[k];
+                  if (el.boo) {
+                    setBtnDisable(true);
+                    return;
+                  }
+                  if (!el.boo) {
+                    setBtnDisable(false);
+                  }
+                }
               }
             }
+          } else {
+            setBtnDisable(true);
+            return;
           }
-        } else {
-          setBtnDisable(true);
-          return;
         }
       }
     }
