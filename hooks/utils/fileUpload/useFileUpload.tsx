@@ -8,120 +8,199 @@ import { blobToFile, forinArr, resizeFileCompression } from '@utils/file';
 import { ErrorType } from '@components/common/inputs/type';
 
 export interface UseMultiFileUpload {
-  multi: boolean;
+  multi?: boolean;
   limit?: number;
-  modifyFile: File[];
+  onfileUpload?: (
+    e: ChangeEvent<HTMLInputElement> | any,
+    fileLoader: (event: ChangeEvent<HTMLInputElement> | any) => void,
+  ) => Promise<void>;
 }
 
 const useFileUpload = (props: UseMultiFileUpload) => {
-  const { multi, limit, modifyFile } = props;
+  const { multi, limit } = props;
   const validation = useValidation();
-  const [file, setFile] = useState<File[]>([]);
+  const [files, setFile] = useState<File[]>([]);
   const [imageSrc, setImageSrc] = useState<UidList[]>([]);
   const [err, setErr] = useState<ErrorType>({ msg: '', boo: false });
   const errorMsgOn = (msg: string) => {
     setErr({ msg, boo: true });
   };
+  /** useFileUpload 파일 삭제 기능  */
+  const onDeleteuidList = useCallback(
+    (number: number) => {
+      if (imageSrc.length === 1) {
+        setImageSrc([]);
+        setFile([]);
+        return;
+      }
+      const newList = imageSrc.filter((item, index) => {
+        return index !== number;
+      });
+      const newFile = files.filter((item, index) => {
+        return index !== number;
+      });
+      setFile(newFile);
+      setImageSrc(newList);
+    },
+    [files, imageSrc],
+  );
 
-  const onDeleteuidList = (number: number) => {
-    if (imageSrc.length === 1) {
-      setImageSrc([]);
-      return;
-    }
-    const newList = imageSrc.filter((item, index) => {
-      return index !== number;
-    });
-
-    setImageSrc(newList);
-  };
-
-  const onFile = (file: File) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const objectURL = URL.createObjectURL(file);
-      const csv: string = reader.result as string;
-      let fileObj: UidList = {
-        id: file.name,
-        src: csv,
-        index: file.lastModified,
-        type: file.type,
-        url: objectURL,
-      };
-      setImageSrc((prec) => [...prec, fileObj]);
-      setErr({ msg: '', boo: true });
-      return;
-    };
-  };
-
+  /** 파일 업로드 onChange 기능 */
   const onChangeFile = useCallback(
     (e: ChangeEvent<HTMLInputElement> | any) => {
-      const selectFile =
-        e.type === 'drop' ? e.dataTransfer.files : e.target.files;
-      if (selectFile) {
-        const fileArr = forinArr(selectFile);
-        setFile(fileArr);
-        let temp: UidList[] = [...imageSrc];
-        [].forEach.call(selectFile, async function (file: File, index: number) {
-          if (validation.regExpImage.test(file.type)) {
-            const regBoo = validation.regExpFile.test(file.type);
-            const reader = new FileReader();
-            let resizeFile = regBoo ? file : await resizeFileCompression(file);
-            reader.readAsDataURL(resizeFile);
-            reader.onload = () => {
-              const csv: string = reader.result as string;
-              const objectURL = URL.createObjectURL(file);
-              const fileObj = {
-                id: file.name,
-                src: csv,
-                index: file.lastModified,
-                type: file.type,
-                url: objectURL,
-              };
+      if (props.onfileUpload) {
+        props.onfileUpload(e, (event: ChangeEvent<HTMLInputElement> | any) => {
+          const selectFile =
+            event.type === 'drop'
+              ? event.dataTransfer.files
+              : event.target.files;
+          if (selectFile) {
+            const fileArr = forinArr(selectFile);
+            let fileList: File[] = [];
+            let temp: UidList[] = [];
+            [].forEach.call(
+              selectFile,
+              async function (file: File, index: number) {
+                if (validation.regExpImage.test(file.type)) {
+                  const reader = new FileReader();
+                  let imageImg =
+                    file.type === 'application/pdf'
+                      ? file
+                      : file.size < 1000000
+                      ? file
+                      : await resizeFileCompression(file);
+                  reader.readAsDataURL(imageImg);
+                  reader.onload = () => {
+                    const csv: string = reader.result as string;
+                    const objectURL = URL.createObjectURL(imageImg);
+                    const fileObj = {
+                      id: imageImg.name,
+                      src: csv,
+                      index: imageImg.lastModified,
+                      type: imageImg.type,
+                      url: objectURL,
+                    };
 
-              if (multi) {
-                if (limit)
-                  if (temp.length >= limit) {
-                    temp.shift();
-                    temp = [...temp, fileObj];
-                    return;
-                  }
-                temp.push(fileObj);
-                return;
-              } else {
-                temp = [fileObj];
-                return;
-              }
-            };
-            reader.onloadend = () => {
-              setImageSrc(temp);
-              setErr({ msg: '', boo: true });
-            };
-          } else {
-            errorMsgOn('첨부파일은 pdf, jpg, png로 된 이미지만 가능합니다.');
-            return;
+                    if (multi) {
+                      temp.push(fileObj);
+                      fileList.push(imageImg);
+                      return;
+                    } else {
+                      temp = [fileObj];
+                      fileList = [imageImg];
+                      return;
+                    }
+                  };
+                  reader.onloadend = () => {
+                    if (setImageSrc) {
+                      const arr = [...imageSrc, ...temp];
+                      const fileArr = [...files, ...fileList];
+                      if (multi) {
+                        if (limit) {
+                          if (arr.length <= limit) {
+                            setImageSrc(arr);
+                            setFile(fileArr);
+                          } else {
+                            const fileSlice = fileArr.slice(-limit);
+                            const slice = arr.slice(-limit);
+                            setImageSrc(slice);
+                            setFile(fileSlice);
+                          }
+                        }
+                      } else {
+                        setImageSrc(temp);
+                        setFile(fileList);
+                      }
+                    }
+                  };
+                } else {
+                  errorMsgOn(
+                    '첨부파일은 pdf, jpg, png로 된 이미지만 가능합니다.',
+                  );
+                  return;
+                }
+              },
+            );
           }
         });
       }
     },
-    [imageSrc, limit, multi, validation.regExpFile, validation.regExpImage],
+    [files, imageSrc, limit, multi, props, validation.regExpImage],
   );
 
+  /** useFileUpload 파일 업로드 기준 파일 업로드  기능 */
+  const onFile = useCallback(
+    (fileList: File[]) => {
+      if (fileList.length) {
+        let fileList: File[] = [];
+        let temp: UidList[] = [];
+        [].forEach.call(
+          fileList.length,
+          async function (file: File, index: number) {
+            if (validation.regExpImage.test(file.type)) {
+              const reader = new FileReader();
+              let imageImg =
+                file.type === 'application/pdf'
+                  ? file
+                  : file.size < 1000000
+                  ? file
+                  : await resizeFileCompression(file);
+              reader.readAsDataURL(imageImg);
+              reader.onload = () => {
+                const csv: string = reader.result as string;
+                const objectURL = URL.createObjectURL(imageImg);
+                const fileObj = {
+                  id: imageImg.name,
+                  src: csv,
+                  index: imageImg.lastModified,
+                  type: imageImg.type,
+                  url: objectURL,
+                };
+                temp.push(fileObj);
+                fileList.push(imageImg);
+              };
+              reader.onloadend = () => {
+                if (setImageSrc) {
+                  setImageSrc(temp);
+                  setFile(fileList);
+                }
+              };
+            } else {
+              errorMsgOn('첨부파일은 pdf, jpg, png로 된 이미지만 가능합니다.');
+              return;
+            }
+          },
+        );
+      }
+    },
+    [validation.regExpImage],
+  );
+  /**useFileUpload 드레그 드랍 파일 업로드 기능 */
   const { dragRef, isDragging } = useDropDrag({ onChangeFile });
 
-  const onModifyFile = useCallback(() => {
-    if (modifyFile.length) {
-      for (let i = 0; i < modifyFile.length; i++) {
-        const element = modifyFile[i];
-        onFile(element);
+  //TODO:수정이 필요함
+  const onModifyFile = useCallback(
+    (baseFile: File[] | undefined) => {
+      if (baseFile) {
+        if (baseFile.length) {
+          onFile(baseFile);
+        }
+      } else {
+        if (setImageSrc) {
+          setImageSrc([]);
+        }
+        setFile([]);
       }
-    }
-  }, [modifyFile]);
+    },
+    [onFile],
+  );
 
   useEffect(() => {
-    setImageSrc([]);
-    setFile([]);
-    setErr({ msg: '', boo: false });
+    return () => {
+      setImageSrc([]);
+      setFile([]);
+      setErr({ msg: '', boo: false });
+    };
   }, []);
 
   return {
@@ -132,7 +211,7 @@ const useFileUpload = (props: UseMultiFileUpload) => {
     dragRef,
     isDragging,
     imageSrc,
-    file,
+    files,
     err,
   };
 };
