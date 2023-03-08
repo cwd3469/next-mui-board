@@ -33,7 +33,8 @@ export class Validation {
   regExpFile: RegExp;
   regExFaxNumber: RegExp;
   regNameKo: RegExp;
-  regKoEnNum: RegExp;
+  regPharmacyName: RegExp;
+  regAddressDetail: RegExp;
   regRefusalDispensing: RegExp;
   regRefusal: RegExp;
   regExpExpenses: RegExp;
@@ -108,8 +109,10 @@ export class Validation {
     /** PDF 파일만 */
     this.regExpFile = /pdf/i;
 
-    /**한글 영어 숫자 입력 받기*/
-    this.regKoEnNum = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,15}$/;
+    /**약국 이름 받기*/
+    this.regPharmacyName = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,15}$/;
+    /**상세 주소 받기*/
+    this.regAddressDetail = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,15}$/;
   }
   /**모바일 번호 입력 형태 변경 및 체크 메소드*/
   mobileCheck(param: ValidInterface): void {
