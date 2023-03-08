@@ -1,17 +1,24 @@
 import WTextField from '@components/common/inputs/textField';
 import WAlert from '@components/common/modals/WAlert';
 import { Box, Grid, Stack } from '@mui/material';
+import { useDebounceFn } from 'ahooks';
 import AuthTimer from '../inputs/AuthTimer';
 import { AuthButton, TermsGrid } from '../signup/styled';
 import { AuthMobileViewType } from '../types';
 
 const AuthMobileView = (props: AuthMobileViewType) => {
+  const signupAuthOnClick = useDebounceFn(props.signupAuthOnClick, {
+    wait: 300,
+  });
+  const onClickAuthNumSend = useDebounceFn(props.onClickAuthNumSend, {
+    wait: 300,
+  });
   return (
     <WAlert
       open={props.open}
       handleClose={props.resetModalClose}
       maxWidth={'xl'}
-      handleEvent={props.signupAuthOnClick}
+      handleEvent={signupAuthOnClick.run}
       bgDisable={props.bgDisable}
       disabled={props.numDisabled}
       btnTitle="다음"
@@ -38,7 +45,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
                 disabled={
                   props.mobileValue.length >= 12 ? props.btnDisabled : true
                 }
-                onClick={props.onClickAuthNumSend}
+                onClick={onClickAuthNumSend.run}
               >
                 인증번호 발송
               </AuthButton>
