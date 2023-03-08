@@ -32,7 +32,11 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
       if (value.length <= 5) {
         if (valid.regNameKo.test(value)) {
           setState(value, keyId);
-          passMsg();
+          if (value.length >= 2) {
+            passMsg();
+          } else {
+            errMsg();
+          }
         } else {
           errMsg();
         }
@@ -45,7 +49,6 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      focusInEvent={passMsg}
       error={err}
       disabled={disabled}
       placeholder="담당자 이름을 입력 해주세요."
