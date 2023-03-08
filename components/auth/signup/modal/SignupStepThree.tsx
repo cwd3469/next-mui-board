@@ -41,7 +41,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
         closeBtnOn
         title="약국 정보 입력"
       >
-        <Stack>
+        <Stack gap="40px">
           <Grid container justifyContent={'space-between'}>
             <Stack width="344px" gap="8px">
               <ItemInput title="아이디" require>
