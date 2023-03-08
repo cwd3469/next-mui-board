@@ -5,6 +5,7 @@
   },
   "data": {
     "id": "",
+    "email": "",
     "pw": "",
     "rePw": "",
     "addressDetail": "",
@@ -20,6 +21,10 @@
   },
   "errs": {
     "idErr": {
+      "msg": "",
+      "boo": false
+    },
+    "emailErr": {
       "msg": "",
       "boo": false
     },
