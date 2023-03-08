@@ -28,7 +28,9 @@ export const TermsButton = styled(Button)(({ theme }) => ({
   color: '#ccc',
   minWidth: 'auto',
   minHeight: 'auto',
-  textDecoration: 'underline',
+  borderBottom: '1px solid #ccc',
+  lineHeight: '1',
+  borderRadius: 0,
 }));
 
 export const AuthButton = styled(Button)(({ theme }) => ({
