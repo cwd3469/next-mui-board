@@ -6,31 +6,40 @@ const WSubTitle = (props: {
   require?: boolean;
   sx?: SxProps<Theme>;
   onClick?: () => void;
+  className?: string;
 }) => {
-  const { title, require, subTitle, sx, onClick } = props;
   return (
     <Grid
+      className={props.className}
       container
       alignItems={'center'}
       gap="2px"
-      sx={{ cursor: onClick ? 'pointer' : 'default', ...sx }}
-      onClick={onClick}
+      sx={{ cursor: props.onClick ? 'pointer' : 'default', ...props.sx }}
+      onClick={props.onClick}
     >
-      <Typography variant="subtitle1" className={'mainTitle'}>
-        {title}
+      <Typography variant="subtitle1" className={'wSubTitle-title'}>
+        {props.title}
       </Typography>
-      {require ? (
-        <Typography variant="body2" color="#4ac6ff" className={'require'}>
+      {props.require ? (
+        <Typography
+          variant="body2"
+          color="#4ac6ff"
+          className={'wSubTitle-require'}
+        >
           (필수)
         </Typography>
       ) : (
         ''
       )}
-      {subTitle ? (
+      {props.subTitle ? (
         <>
           <Box width="10px" />
-          <Typography variant="body1" color="#4E4E4E" className={'subTitle'}>
-            {subTitle}
+          <Typography
+            variant="body1"
+            color="#4E4E4E"
+            className={'wSubTitle-subTitle'}
+          >
+            {props.subTitle}
           </Typography>
         </>
       ) : (
