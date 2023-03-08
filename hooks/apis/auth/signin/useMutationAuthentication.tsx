@@ -21,19 +21,14 @@ interface UseMutationAuthentication {
   authenticationCode: string;
   hanbleClose: () => void;
   onOpenTextFiled: () => void;
-  onOpenModal: () => void;
+  onOpenModal?: () => void;
   onOpenProcess: (label: SigninState) => void;
 }
 
+/** 휴대폰 인증 mutation custom hook
+ * 로그인 ( SigninMobileAuth )
+ */
 const useMutationAuthentication = (props: UseMutationAuthentication) => {
-  const {
-    info,
-    authenticationCode,
-    hanbleClose,
-    onOpenTextFiled,
-    onOpenModal,
-    onOpenProcess,
-  } = props;
   const router = useRouter();
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
@@ -43,7 +38,7 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
   //휴대폰 인증 요청
   const onClickMobileAuthRequest = useCallback(() => {
     const dto: SigninMobileDto = {
-      accountMobileNum: mobileFormatOff(info.accountMobileNum),
+      accountMobileNum: mobileFormatOff(props.info.accountMobileNum),
     };
     mutateSigninAuth(dto, {
       onSuccess(res, variables, context) {
@@ -52,12 +47,12 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
         if (code !== '0000') {
           toast?.on(msg.errMsg(code), 'warning');
           if (code === '9999') {
-            hanbleClose();
+            props.hanbleClose();
             return;
           }
           return;
         } else {
-          onOpenTextFiled();
+          props.onOpenTextFiled();
           return;
         }
       },
@@ -68,19 +63,12 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
         );
       },
     });
-  }, [
-    hanbleClose,
-    info.accountMobileNum,
-    msg,
-    mutateSigninAuth,
-    onOpenTextFiled,
-    toast,
-  ]);
+  }, [msg, mutateSigninAuth, props, toast]);
   //휴대폰 인증 번호 검사
   const onClickMobileAuthVerify = useCallback(() => {
     const dto: SigninVerifyDto = {
-      verificationCode: info.verificationCode,
-      authenticationCode: authenticationCode,
+      verificationCode: props.info.verificationCode,
+      authenticationCode: props.authenticationCode,
     };
     mutateSigninAuthVerify(dto, {
       onSuccess(res, variables, context) {
@@ -90,18 +78,18 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
           switch (code) {
             /// 가입 대기
             case '0050':
-              onOpenProcess('not-approved');
+              props.onOpenProcess('not-approved');
               return;
             /// 휴면 상태
             case '0051':
-              onOpenProcess('dormant');
+              props.onOpenProcess('dormant');
               return;
             /// 운영팀에 의해 정지된 계정
             case '0055':
-              onOpenProcess('disable');
+              props.onOpenProcess('disable');
               return;
             case '9999':
-              hanbleClose();
+              props.hanbleClose();
               return;
             default:
               toast?.on(msg.errMsg(code), 'warning');
@@ -113,24 +101,15 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
           setCookie('refreshToken', refreshToken);
           const userinfo: UserInfoInterface = jwtDecode(accessToken as string);
           setInUserInfo(userinfo);
-          onOpenModal();
+          if (props.onOpenModal) {
+            props.onOpenModal();
+          }
           router.replace('/preparation/request');
           return;
         }
       },
     });
-  }, [
-    info.verificationCode,
-    authenticationCode,
-    mutateSigninAuthVerify,
-    onOpenProcess,
-    hanbleClose,
-    toast,
-    msg,
-    setInUserInfo,
-    onOpenModal,
-    router,
-  ]);
+  }, [props, mutateSigninAuthVerify, toast, msg, setInUserInfo, router]);
 
   return { onClickMobileAuthRequest, onClickMobileAuthVerify };
 };
