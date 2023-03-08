@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import signupInfo from '../signup/jsons/signupInfo.json';
-import { mobileFormat, mobileFormatOff } from '@utils/formatNumber';
+import { mobileFormat } from '@utils/formatNumber';
 import {
   SignupInfo,
   SignupInfoError,
@@ -17,34 +17,39 @@ const useSignup = (props: SignupStepThreeType) => {
   const [infoErr, setInfoErr] = useState<SignupInfoError>(originData.errs);
   const [btnDisable, setBtnDisable] = useState<boolean>(true);
 
+  /**useSignup info updata 기능*/
   const setInInfo = useCallback((value: SignupInfoValue, keyId: string) => {
     setInfo((prec) => {
       return { ...prec, [keyId]: value };
     });
   }, []);
+  /**useSignup infoErr updata 기능*/
   const setInInfoErr = useCallback((err: ErrorType, keyId: string) => {
     setInfoErr((prec) => {
       return { ...prec, [keyId + 'Err']: err };
     });
   }, []);
 
+  /**useSignup info infoErr reset 기능*/
   const reset = useCallback(() => {
     setInfo(originData.data);
     setInfoErr(originData.errs);
-
     setBtnDisable(true);
   }, [originData]);
 
+  /**useSignup 모달 off 기능*/
   const handleCloseAll = useCallback(() => {
     reset();
     handleClose();
     setModalOn(false);
   }, [handleClose, reset]);
 
+  /**useSignup 계정 상태 알림 모달 on 기능*/
   const handleOpenModal = useCallback(() => {
     setModalOn(true);
   }, []);
 
+  /**useSignup info post update 기능*/
   const addressOnChange = useCallback(
     (address: string, postCode: string) => {
       setInfo({
@@ -56,10 +61,10 @@ const useSignup = (props: SignupStepThreeType) => {
     [info],
   );
 
-  /**약국전화번호 '-' 추가*/
+  /** useSignup 약국전화번호 '-' 추가*/
   const formChanger = mobileValue ? mobileFormat(mobileValue) : '';
 
-  /**약국 정보 입력 유효성 검사 */
+  /**useSignup 약국 정보 입력 유효성 검사 */
   const disabledOn = useCallback(() => {
     for (const key in info) {
       if (Object.prototype.hasOwnProperty.call(info, key)) {
