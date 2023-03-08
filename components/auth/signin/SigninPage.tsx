@@ -9,6 +9,7 @@ import { WButton } from '@components/common/button/WButton';
 import useSignin from '../hooks/useSignin';
 import useMutationSignin from '@hooks/apis/auth/signin/useMutationSignin';
 import SigninMobileAuth from './modal/SigninMobileAuth';
+import { useDebounceFn } from 'ahooks';
 
 const SigninPage = () => {
   const {
@@ -25,6 +26,9 @@ const SigninPage = () => {
   const { onClickSignin } = useMutationSignin({
     info: siginInfo,
     onOpenModal,
+  });
+  const onClickSigninHook = useDebounceFn(onClickSignin, {
+    wait: 300,
   });
   return (
     <Stack>
@@ -54,7 +58,7 @@ const SigninPage = () => {
         <Box sx={{ paddingTop: '1px' }} />
         <Stack gap="5px">
           <WButton
-            onClick={onClickSignin}
+            onClick={onClickSigninHook.run}
             disabled={disabled}
             variant="contained"
             sx={{
