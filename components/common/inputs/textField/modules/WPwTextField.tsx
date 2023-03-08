@@ -57,7 +57,6 @@ const WPwTextField = (props: WTextFieldModulesType) => {
       type="password"
       value={stateTxt}
       onChange={onChangeInfo}
-      focusInEvent={passMsg}
       focusOutEvent={() => onFocusOut(stateTxt)}
       disabled={disabled}
       error={err}
