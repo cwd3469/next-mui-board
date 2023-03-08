@@ -15,6 +15,7 @@ const WAlert = (props: WAlertProps) => {
       closeBtnOn={props.closeBtnOn}
       titleSx={props.titleSx}
       style={props.style}
+      className={props.className}
       action={
         <WDialogActions>
           <ModalButton

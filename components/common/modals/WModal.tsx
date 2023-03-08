@@ -30,6 +30,7 @@ const WModal = (props: WModalProps) => {
 
   return (
     <WDialog
+      className={props.className}
       open={props.open}
       onClose={props.handleClose}
       maxWidth={props.maxWidth}
@@ -46,6 +47,7 @@ const WModal = (props: WModalProps) => {
       {props.closeBtnOn ? <WModalClose onClick={props.handleClose} /> : ''}
       {props.title ? (
         <Stack
+          className="title-stack"
           gap="16px"
           padding="64px 40px 56px"
           sx={props.titleSx}
