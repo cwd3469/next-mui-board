@@ -160,8 +160,8 @@ export const ItemInput = (props: {
     <Stack
       gap="16px"
       sx={{
-        gap: '8px',
-        width: '320px',
+        gap: '16px',
+        width: '100%',
         ...props.sx,
       }}
     >
