@@ -18,6 +18,7 @@ import {
 import useSignup from '@components/auth/hooks/useSignup';
 import useMutationSignup from '@hooks/apis/auth/signup/useMutationSignup';
 import SigninNotApproved from '@components/auth/signin/modal/SigninNotApproved';
+import WEmailTextField from '@components/common/inputs/textField/modules/WEmailTextField';
 
 const SignupStepThree = (props: SignupStepThreeType) => {
   const signup = useSignup(props);
@@ -81,12 +82,12 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                 />
               </ItemInput>
               <ItemInput title="담당자 이메일" require>
-                <WAdminNameTextField
-                  state={signup.info.name}
-                  err={signup.infoErr.nameErr}
+                <WEmailTextField
+                  state={signup.info.email}
+                  err={signup.infoErr.emailErr}
                   setState={signup.setInInfo}
                   setErr={signup.setInInfoErr}
-                  keyId={'name'}
+                  keyId={'email'}
                 />
               </ItemInput>
               <ItemInput title="담당자 휴대폰 번호">
