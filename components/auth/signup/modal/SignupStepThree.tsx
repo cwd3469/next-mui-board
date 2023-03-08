@@ -20,6 +20,7 @@ import useMutationSignup from '@hooks/apis/auth/signup/useMutationSignup';
 import SigninNotApproved from '@components/auth/signin/modal/SigninNotApproved';
 import WEmailTextField from '@components/common/inputs/textField/modules/WEmailTextField';
 import { makeStyles } from '@mui/styles';
+import { useDebounceFn } from 'ahooks';
 
 const useStyles = makeStyles((theme) => ({
   modalStyle: {
@@ -37,7 +38,9 @@ const SignupStepThree = (props: SignupStepThreeType) => {
     mobileValue: props.mobileValue,
     handleOpenModal: signup.handleOpenModal,
   });
-
+  const onClickSignupHook = useDebounceFn(onClickSignup, {
+    wait: 300,
+  });
   return (
     <>
       <WAlert
@@ -45,7 +48,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
         handleClose={signup.handleCloseAll}
         maxWidth={'xl'}
         btnTitle="다음"
-        handleEvent={onClickSignup}
+        handleEvent={onClickSignupHook.run}
         disabled={signup.btnDisable}
         activeOn
         closeBtnOn
