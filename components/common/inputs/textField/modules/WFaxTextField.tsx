@@ -8,14 +8,6 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
   const stateTxt = state as string;
   const valid = useValidation();
 
-  const onFocusInInfo = useCallback(() => {
-    const errMsg = {
-      msg: '',
-      boo: false,
-    };
-    setErr(errMsg, keyId);
-  }, [keyId, setErr]);
-
   const errMsg = useCallback(() => {
     setErr(
       {
@@ -55,7 +47,6 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      focusInEvent={onFocusInInfo}
       helper={'숫자만 입력이 가능합니다.'}
       placeholder={'약국 팩스번호를 입력해 주세요.'}
       disabled={disabled}
