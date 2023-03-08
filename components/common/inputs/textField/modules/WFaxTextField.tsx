@@ -57,7 +57,7 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
       onChange={onChangeInfo}
       focusInEvent={onFocusInInfo}
       helper={'숫자만 입력이 가능합니다.'}
-      placeholder={'약국 팩스번호를 입력해주세요.'}
+      placeholder={'약국 팩스번호를 입력해 주세요.'}
       disabled={disabled}
       error={err}
     />

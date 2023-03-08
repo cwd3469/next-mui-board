@@ -65,8 +65,8 @@ const WUseridTextField = (props: WTextFieldModulesType) => {
       onChange={onChangeInfo}
       focusOutEvent={() => onFocusOutInfo(stateTxt)}
       focusInEvent={onFocusInInfo}
-      helper={'영문, 숫자 최대 20자리 까지 입력이 가능합니다.'}
-      placeholder={'아이디를 입력해주세요.'}
+      helper={'4자 이상의 영문 소문자 또는 숫자를 입력해 주세요.'}
+      placeholder={'4자 이상의 영문 소문자 또는 숫자를 입력해 주세요.'}
       disabled={disabled ? disabled : false}
       error={err}
     />

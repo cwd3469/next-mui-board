@@ -48,7 +48,7 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
       focusInEvent={passMsg}
       error={err}
       disabled={disabled}
-      placeholder="약국명를 입력 해주세요."
+      placeholder="약국명를 입력해 주세요."
       helper={'최대 15자리까지 입력 가능합니다.'}
     />
   );

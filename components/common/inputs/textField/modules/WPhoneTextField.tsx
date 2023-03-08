@@ -19,7 +19,7 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '조건에 맞는 약국 전화번호를 입력해주세요.',
+        msg: '조건에 맞는 약국 전화번호를 입력해 주세요.',
         boo: true,
       },
       keyId,
@@ -68,7 +68,7 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
       onChange={onChangeInfo}
       focusInEvent={onFocusInInfo}
       helper={'8~11자 이내의 약국 전화번호를 입력해 주세요.'}
-      placeholder={'약국전화번호를 입력해주세요.'}
+      placeholder={'약국전화번호를 입력해 주세요.'}
       disabled={disabled}
       error={err}
     />

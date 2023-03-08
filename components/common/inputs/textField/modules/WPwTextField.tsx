@@ -62,9 +62,9 @@ const WPwTextField = (props: WTextFieldModulesType) => {
       disabled={disabled}
       error={err}
       maxRows={16}
-      placeholder="비밀번호를 입력해 주세요."
+      placeholder="영문 대소문자,숫자,특수문자 중 3종류 이상 포함해 주세요."
       helper={
-        '최소 8자리 이상 영어 대문자, 소문자, 숫자, 특수문자 중 3종류이상 포함해주세요.'
+        '최소 8자리 이상 영어 대문자, 소문자, 숫자, 특수문자 중 3종류이상 포함해 주세요.'
       }
     />
   );

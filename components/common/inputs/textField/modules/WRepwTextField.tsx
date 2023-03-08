@@ -67,8 +67,8 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
       disabled={disabled}
       error={err}
       maxRows={16}
-      placeholder="비밀번호를 다시 입력하세요."
-      helper={'비밀번호와 동일하게 입력해주세요.'}
+      placeholder="비밀번호를 다시 입력해 주세요."
+      helper={'비밀번호와 동일하게 입력해 주세요.'}
     />
   );
 };

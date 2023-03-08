@@ -48,7 +48,7 @@ const WRefusalDispenTextField = (props: WTextFieldModulesType) => {
       error={err}
       focusInEvent={passMsg}
       disabled={disabled}
-      placeholder="조제 거절 사유를 입력 해주세요."
+      placeholder="조제 거절 사유를 입력해 주세요."
       helper={'20자 이내의 조제 거절 사유를 입력해 주세요.'}
     />
   );
