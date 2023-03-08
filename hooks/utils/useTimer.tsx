@@ -1,23 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export interface TimerInterface {
   action: () => void;
   time: number;
+  seconds?: number;
 }
 
 export interface TimerResendInterface extends TimerInterface {
   resend: () => void;
+  isReStart?: boolean;
+  showTime?: {
+    minutes: number;
+    seconds: number;
+  };
 }
 
 export default function useTimer(props: TimerInterface) {
   const { time, action } = props;
-  const [minutes, setMinutes] = useState<number>(time);
+  const [, updateState] = useState<number>();
+  const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
-
+  const forceUpdate = useCallback(() => updateState(1), []);
   const reStart = () => {
     setMinutes(time);
-    setSeconds(0);
+    setSeconds(props.seconds ? props.seconds : 0);
+    forceUpdate();
   };
+  useEffect(() => {
+    setMinutes(time);
+    setSeconds(props.seconds ? props.seconds : 0);
+  }, [props.seconds, time]);
+
+  useEffect(() => {
+    forceUpdate();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -38,6 +56,6 @@ export default function useTimer(props: TimerInterface) {
     return () => clearInterval(countdown);
   }, [minutes, seconds, action]);
 
-  let timer = `${minutes}:${seconds < 10 ? 0 + seconds : seconds}`;
+  let timer = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   return { timer, minutes, seconds, reStart };
 }
