@@ -8,6 +8,7 @@ import useTerms from '../../hooks/useTerms';
 import SignupTerms from './SignupTerms';
 import SignupStepTwo from './SignupStepTwo';
 import { makeStyles } from '@mui/styles';
+import { useDebounceFn } from 'ahooks';
 
 const useStyles = makeStyles((theme) => ({
   subTitle: {
@@ -46,15 +47,21 @@ const SignupStepOne = (props: ModalType) => {
     setTermsOn(false);
     setBgDisable(false);
   };
+  const handleEvent = useDebounceFn(
+    () => {
+      setModalOn(true);
+      setBgDisable(true);
+    },
+    {
+      wait: 300,
+    },
+  );
 
   return (
     <WAlert
       open={props.open}
       handleClose={onCloseModal}
-      handleEvent={() => {
-        setModalOn(true);
-        setBgDisable(true);
-      }}
+      handleEvent={handleEvent.run}
       disabled={termHook.disabled}
       bgDisable={bgDisable}
       maxWidth="xl"
