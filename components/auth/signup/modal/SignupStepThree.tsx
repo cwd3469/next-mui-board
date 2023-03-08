@@ -54,7 +54,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
       >
         <Stack gap="40px">
           <Grid container justifyContent={'space-between'}>
-            <Stack width="344px" gap="16px">
+            <Stack width="344px" gap="8px">
               <ItemInput title="아이디" require>
                 <WUseridTextField
                   state={signup.info.id}
@@ -107,7 +107,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                 </Box>
               </ItemInput>
             </Stack>
-            <Stack width="320px" gap="16px">
+            <Stack width="320px" gap="8px">
               <ItemInput title="약국명" require>
                 <WPharmcyNameTextField
                   state={signup.info.pharmacyName}
