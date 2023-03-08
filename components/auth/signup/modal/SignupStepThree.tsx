@@ -16,137 +16,132 @@ import {
   WUseridTextField,
 } from '@components/common/inputs/textField/modules';
 import useSignup from '@components/auth/hooks/useSignup';
-import { useCallback } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import useMutationSignup from '@hooks/apis/auth/signup/useMutationSignup';
 import SigninNotApproved from '@components/auth/signin/modal/SigninNotApproved';
 
 const SignupStepThree = (props: SignupStepThreeType) => {
-  const {
-    formChanger,
-    btnDisable,
-    infoErr,
-    modalOn,
-    info,
-    open,
-    addressOnChange,
-    handleCloseAll,
-    handleOpenModal,
-    setInInfoErr,
-    setInInfo,
-  } = useSignup(props);
+  const signup = useSignup(props);
   const { onClickSignup } = useMutationSignup({
-    info: info,
+    info: signup.info,
     mobileValue: props.mobileValue,
-    handleOpenModal: handleOpenModal,
+    handleOpenModal: signup.handleOpenModal,
   });
 
   return (
     <>
       <WAlert
-        open={open}
-        handleClose={handleCloseAll}
+        open={signup.open}
+        handleClose={signup.handleCloseAll}
         maxWidth={'xl'}
         btnTitle="다음"
         handleEvent={onClickSignup}
-        disabled={btnDisable}
+        disabled={signup.btnDisable}
         activeOn
         closeBtnOn
         title="약국 정보 입력"
       >
         <Stack>
           <Grid container justifyContent={'space-between'}>
-            <Stack width="320px" gap="8px">
+            <Stack width="344px" gap="8px">
               <ItemInput title="아이디" require>
                 <WUseridTextField
-                  state={info.id}
-                  err={infoErr.idErr}
-                  setState={setInInfo}
-                  setErr={setInInfoErr}
+                  state={signup.info.id}
+                  err={signup.infoErr.idErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
                   keyId={'id'}
                 />
               </ItemInput>
-              <ItemInput title="비밀번호" require>
+              <ItemInput title="비밀번호 입력" require>
                 <WPwTextField
-                  state={info.pw}
-                  err={infoErr.pwErr}
-                  setState={setInInfo}
-                  setErr={setInInfoErr}
+                  state={signup.info.pw}
+                  err={signup.infoErr.pwErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
                   keyId={'pw'}
                 />
               </ItemInput>
               <ItemInput title="비밀번호 확인" require>
                 <WRepwTextField
-                  pw={info.pw}
-                  state={info.rePw}
-                  err={infoErr.rePwErr}
-                  setState={setInInfo}
-                  setErr={setInInfoErr}
+                  pw={signup.info.pw}
+                  state={signup.info.rePw}
+                  err={signup.infoErr.rePwErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
                   keyId={'rePw'}
                 />
               </ItemInput>
               <ItemInput title="담당자 이름" require>
                 <WAdminNameTextField
-                  state={info.name}
-                  err={infoErr.nameErr}
-                  setState={setInInfo}
-                  setErr={setInInfoErr}
+                  state={signup.info.name}
+                  err={signup.infoErr.nameErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
+                  keyId={'name'}
+                />
+              </ItemInput>
+              <ItemInput title="담당자 이메일" require>
+                <WAdminNameTextField
+                  state={signup.info.name}
+                  err={signup.infoErr.nameErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
                   keyId={'name'}
                 />
               </ItemInput>
               <ItemInput title="담당자 휴대폰 번호">
                 <Box padding="14px 0">
-                  <Typography>{formChanger}</Typography>
+                  <Typography>{signup.formChanger}</Typography>
                 </Box>
               </ItemInput>
             </Stack>
             <Stack width="320px" gap="8px">
               <ItemInput title="약국명" require>
                 <WPharmcyNameTextField
-                  state={info.pharmacyName}
-                  err={infoErr.pharmacyNameErr}
-                  setState={setInInfo}
-                  setErr={setInInfoErr}
+                  state={signup.info.pharmacyName}
+                  err={signup.infoErr.pharmacyNameErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
                   keyId={'pharmacyName'}
                 />
               </ItemInput>
               <ItemInput title="약국 주소" require>
-                <WAddressSearch setAddress={addressOnChange} />
+                <WAddressSearch setAddress={signup.addressOnChange} />
               </ItemInput>
               <Box height="20px" />
               <ItemInput title="약국 상세 주소">
                 <WAddressDetailTextField
-                  state={info.addressDetail}
-                  err={infoErr.addressDetailErr}
-                  setState={setInInfo}
-                  setErr={setInInfoErr}
+                  state={signup.info.addressDetail}
+                  err={signup.infoErr.addressDetailErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
                   keyId={'addressDetail'}
                 />
               </ItemInput>
               <ItemInput title="약국 전화 번호" require>
                 <WPhoneTextField
-                  state={info.pharmacyPhone}
-                  err={infoErr.pharmacyPhoneErr}
-                  setState={setInInfo}
-                  setErr={setInInfoErr}
+                  state={signup.info.pharmacyPhone}
+                  err={signup.infoErr.pharmacyPhoneErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
                   keyId={'pharmacyPhone'}
                 />
               </ItemInput>
               <ItemInput title="약국 팩스번호" require>
                 <WFaxTextField
-                  state={info.pharmacyFaxNum}
-                  err={infoErr.pharmacyFaxNumErr}
-                  setState={setInInfo}
-                  setErr={setInInfoErr}
+                  state={signup.info.pharmacyFaxNum}
+                  err={signup.infoErr.pharmacyFaxNumErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
                   keyId={'pharmacyFaxNum'}
                 />
               </ItemInput>
               <ItemInput title="사업자 등록 번호" require>
                 <WBusinessNumTextField
-                  state={info.buisNum}
-                  err={infoErr.buisNumErr}
-                  setState={setInInfo}
-                  setErr={setInInfoErr}
+                  state={signup.info.buisNum}
+                  err={signup.infoErr.buisNumErr}
+                  setState={signup.setInInfo}
+                  setErr={signup.setInInfoErr}
                   keyId={'buisNum'}
                 />
               </ItemInput>
@@ -161,9 +156,11 @@ const SignupStepThree = (props: SignupStepThreeType) => {
               <SignupFileUpload
                 name="businessLicense"
                 modifyFile={[]}
-                onDeleteLogoUid={() => setInInfo(undefined, 'businessLicense')}
+                onDeleteLogoUid={() =>
+                  signup.setInInfo(undefined, 'businessLicense')
+                }
                 onUploadFile={(uild, file) =>
-                  setInInfo(file, 'businessLicense')
+                  signup.setInInfo(file, 'businessLicense')
                 }
               />
             </ItemInput>
@@ -176,10 +173,10 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                 name="pharmacistLicense"
                 modifyFile={[]}
                 onDeleteLogoUid={() =>
-                  setInInfo(undefined, 'pharmacistLicense')
+                  signup.setInInfo(undefined, 'pharmacistLicense')
                 }
                 onUploadFile={(uild, file) =>
-                  setInInfo(file, 'pharmacistLicense')
+                  signup.setInInfo(file, 'pharmacistLicense')
                 }
               />
             </ItemInput>
@@ -191,14 +188,21 @@ const SignupStepThree = (props: SignupStepThreeType) => {
               <SignupFileUpload
                 name="bankbookCopy"
                 modifyFile={[]}
-                onDeleteLogoUid={() => setInInfo(undefined, 'bankbookCopy')}
-                onUploadFile={(uild, file) => setInInfo(file, 'bankbookCopy')}
+                onDeleteLogoUid={() =>
+                  signup.setInInfo(undefined, 'bankbookCopy')
+                }
+                onUploadFile={(uild, file) =>
+                  signup.setInInfo(file, 'bankbookCopy')
+                }
               />
             </ItemInput>
           </Grid>
         </Stack>
       </WAlert>
-      <SigninNotApproved open={modalOn} handleClose={handleCloseAll} />
+      <SigninNotApproved
+        open={signup.modalOn}
+        handleClose={signup.handleCloseAll}
+      />
     </>
   );
 };
