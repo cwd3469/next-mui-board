@@ -8,7 +8,7 @@ const WUseridTextField = (props: WTextFieldModulesType) => {
   const stateTxt = state as string;
   const valid = useValidation();
 
-  const onFocusInInfo = useCallback(() => {
+  const successMsg = useCallback(() => {
     const errMsg = {
       msg: '',
       boo: false,
@@ -16,56 +16,56 @@ const WUseridTextField = (props: WTextFieldModulesType) => {
     setErr(errMsg, keyId);
   }, [keyId, setErr]);
 
-  const onFocusOutInfo = useCallback(
-    (txt: string) => {
-      if (!valid.regExEng.test(txt)) {
-        const errMsg = {
-          msg: '조건에 맞는 아이디를 입력해 주세요.',
-          boo: true,
-        };
-        setErr(errMsg, keyId);
-        return;
-      }
-      if (txt.length < 4) {
-        const errMsg = {
-          msg: '조건에 맞는 아이디를 입력해 주세요.',
-          boo: true,
-        };
-        setErr(errMsg, keyId);
-        return;
-      }
-    },
-    [keyId, setErr, valid.regExEng],
-  );
-
   const onChangeInfo = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const text = e.target.value;
-      if (text.length <= 20) {
-        if (valid.regExpId.test(text)) {
-          setState(text, keyId);
-          const msg = { msg: '', boo: false };
-          setErr(msg, keyId);
-          onFocusOutInfo(text);
-        } else {
-          const errMsg = {
-            msg: '조건에 맞는 아이디를 입력해 주세요.',
+      const { value: txt } = e.target;
+      const errorMsg = () =>
+        setErr(
+          {
+            msg: '조건에 맞는 아이디를 입력해주세요.',
             boo: true,
-          };
-          setErr(errMsg, keyId);
+          },
+          keyId,
+        );
+
+      if (txt.length <= 20) {
+        if (valid.regExpId.test(txt)) {
+          setState(txt, keyId);
+          if (valid.regExpIdEnglishOnly.test(txt)) {
+            errorMsg();
+            return;
+          }
+          if (valid.regExpIdNumberOnly.test(txt)) {
+            errorMsg();
+            return;
+          }
+          if (valid.regExpIdCheck.test(txt)) {
+            successMsg();
+          } else {
+            errorMsg();
+          }
+        } else {
+          errorMsg();
         }
       }
     },
-    [keyId, onFocusOutInfo, setErr, setState, valid.regExpId],
+    [
+      keyId,
+      setErr,
+      setState,
+      successMsg,
+      valid.regExpId,
+      valid.regExpIdCheck,
+      valid.regExpIdEnglishOnly,
+      valid.regExpIdNumberOnly,
+    ],
   );
 
   return (
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      focusOutEvent={() => onFocusOutInfo(stateTxt)}
-      focusInEvent={onFocusInInfo}
-      helper={'4자 이상의 영문 소문자 또는 숫자를 입력해 주세요.'}
+      helper={'영문 또는 숫자 조합으로 최대  4~20자 이내로 입력해 주세요.'}
       placeholder={'4자 이상의 영문 소문자 또는 숫자를 입력해 주세요.'}
       disabled={disabled ? disabled : false}
       error={err}
