@@ -37,7 +37,6 @@ export const AuthButton = styled(Button)(({ theme }) => ({
   width: '100%',
   height: '100%',
   backgroundColor: '#4ac6ff',
-  ...theme.typography.body2,
   color: '#fff',
   '&:hover': {
     backgroundColor: '#DCDCDC',
