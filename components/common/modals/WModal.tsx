@@ -71,7 +71,7 @@ const WModal = (props: WModalProps) => {
       ) : (
         ''
       )}
-      <WDialogContent>
+      <WDialogContent sx={{ width: contentsWidth(maxWidth) }}>
         <WDialogLayout>{children}</WDialogLayout>
       </WDialogContent>
       {action}
