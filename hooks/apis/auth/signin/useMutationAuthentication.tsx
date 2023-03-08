@@ -45,7 +45,7 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
         const code = res.data.code;
         const data = res.data.data;
         if (code !== '0000') {
-          toast?.on(msg.errMsg(code), 'warning');
+          toast?.on(msg.errMsg(code), 'info');
           if (code === '9999') {
             props.hanbleClose();
             return;
@@ -92,7 +92,7 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
               props.hanbleClose();
               return;
             default:
-              toast?.on(msg.errMsg(code), 'warning');
+              toast?.on(msg.errMsg(code), 'info');
               return;
           }
         } else {

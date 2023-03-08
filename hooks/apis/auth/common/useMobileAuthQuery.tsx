@@ -27,7 +27,7 @@ const useMobileAuthQuery = (props: UseMobileAuth) => {
     mutateCommonMobileAuth(dto, {
       onSuccess: (res, variables, context) => {
         if (res.data.code !== '0000') {
-          toast?.on(msg.errMsg(res.data.code), 'warning');
+          toast?.on(msg.errMsg(res.data.code), 'info');
           return;
         } else {
           onAbledAuthInput();

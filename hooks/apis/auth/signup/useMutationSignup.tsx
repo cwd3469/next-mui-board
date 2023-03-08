@@ -23,7 +23,7 @@ const useMutationSignup = (props: {
         onSuccess(data, variables, context) {
           const code = data.data.code;
           if (code !== '0000') {
-            toast?.on(msg.errMsg(code), 'warning');
+            toast?.on(msg.errMsg(code), 'info');
             return;
           } else {
             handleOpenModal();

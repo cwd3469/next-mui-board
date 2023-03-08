@@ -32,7 +32,7 @@ const usePrescriptionImage = (props: usePrescriptionImageType) => {
   // useEffect(() => {
   //   if (respones) {
   //     if (code !== '0000') {
-  //       toast?.on(msg.errMsg(code), 'error');
+  //       toast?.on(msg.errMsg(code), 'info');
   //     }
   //   }
   // }, [code, respones, msg, toast]);

@@ -42,7 +42,7 @@ const FindAccountStepOne = (props: ModalType) => {
     // postCommonMobileAuthMutate(mobile, {
     //   onSuccess: (res) => {
     //     if (res.data.code !== '0000') {
-    //       toast?.on(msg.errMsg(res.data.code),'error');
+    //       toast?.on(msg.errMsg(res.data.code),'info');
     //       return;
     //     }
     //     onAbledAuthInput();
