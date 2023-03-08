@@ -75,7 +75,7 @@ export const DefaltInfo = (props: { sx?: SxProps<Theme> }) => {
         width="97px"
         letterSpacing={'-1px'}
       >
-        파일 형식 JPGE, PNG (최대 1MB)
+        파일 형식 JPG,PNG,PDF
       </Typography>
       <UploadBtn className="uploadBtn">
         <Image src={upload} alt="업로드" width="15px" />
