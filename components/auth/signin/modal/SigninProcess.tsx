@@ -3,7 +3,6 @@ import SigninDisable from './SigninDisable';
 import SigninDormant from './SigninDormant';
 import SigninExcessChangePw from './SigninExcessChangePw';
 import SigninFirstChangePw from './SigninFirstChangePw';
-import SigninMobileAuth from './SigninMobileAuth';
 import SigninNotApproved from './SigninNotApproved';
 
 const SigninProcess = (props: ProcessType) => {
