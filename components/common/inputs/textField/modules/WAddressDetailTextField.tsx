@@ -32,7 +32,6 @@ const WAddressDetailTextField = (props: WTextFieldModulesType) => {
       if (value.length <= 15) {
         if (valid.regAddressDetail.test(value)) {
           setState(value, keyId);
-
           passMsg();
         } else {
           errMsg();
@@ -47,7 +46,6 @@ const WAddressDetailTextField = (props: WTextFieldModulesType) => {
       value={stateTxt}
       onChange={onChangeInfo}
       error={err}
-      focusInEvent={passMsg}
       disabled={disabled}
       placeholder="약국상세 주소를 입력 해주세요."
       helper={'최대 15자리까지 입력 가능합니다.'}
