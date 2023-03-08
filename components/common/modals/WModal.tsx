@@ -11,20 +11,6 @@ import {
 import React from 'react';
 
 const WModal = (props: WModalProps) => {
-  const {
-    open,
-    handleClose,
-    children,
-    subTitle,
-    title,
-    maxWidth,
-    bgDisable,
-    closeBtnOn,
-    titleSx,
-    action,
-    style,
-  } = props;
-
   const contentsWidth = (Breakpoint: Breakpoint | undefined) => {
     switch (Breakpoint) {
       case 'xs':
@@ -44,37 +30,41 @@ const WModal = (props: WModalProps) => {
 
   return (
     <WDialog
-      open={open}
-      onClose={handleClose}
-      maxWidth={maxWidth}
+      open={props.open}
+      onClose={props.handleClose}
+      maxWidth={props.maxWidth}
       sx={{
         '& .MuiBackdrop-root': {
-          backgroundColor: bgDisable
+          backgroundColor: props.bgDisable
             ? 'rgba(0, 0, 0, 0)'
             : 'rgba(0, 0, 0, 0.5)',
         },
-        ...style,
+        ...props.style,
       }}
     >
       {' '}
-      {closeBtnOn ? <WModalClose onClick={handleClose} /> : ''}
-      {title ? (
+      {props.closeBtnOn ? <WModalClose onClick={props.handleClose} /> : ''}
+      {props.title ? (
         <Stack
           gap="16px"
           padding="64px 40px 56px"
-          sx={titleSx}
-          width={contentsWidth(maxWidth)}
+          sx={props.titleSx}
+          width={contentsWidth(props.maxWidth)}
         >
-          {title ? <WDialogTitle>{title}</WDialogTitle> : ''}
-          {subTitle ? <WDialogContentText>{subTitle}</WDialogContentText> : ''}
+          {props.title ? <WDialogTitle>{props.title}</WDialogTitle> : ''}
+          {props.subTitle ? (
+            <WDialogContentText>{props.subTitle}</WDialogContentText>
+          ) : (
+            ''
+          )}
         </Stack>
       ) : (
         ''
       )}
-      <WDialogContent sx={{ width: contentsWidth(maxWidth) }}>
-        <WDialogLayout>{children}</WDialogLayout>
+      <WDialogContent sx={{ width: contentsWidth(props.maxWidth) }}>
+        <WDialogLayout>{props.children}</WDialogLayout>
       </WDialogContent>
-      {action}
+      {props.action}
     </WDialog>
   );
 };
