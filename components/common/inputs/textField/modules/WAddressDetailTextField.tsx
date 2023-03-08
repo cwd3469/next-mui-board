@@ -30,7 +30,7 @@ const WAddressDetailTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 15) {
-        if (valid.regKoEnNum.test(value)) {
+        if (valid.regAddressDetail.test(value)) {
           setState(value, keyId);
 
           passMsg();
@@ -39,7 +39,7 @@ const WAddressDetailTextField = (props: WTextFieldModulesType) => {
         }
       }
     },
-    [errMsg, keyId, passMsg, setState, valid.regKoEnNum],
+    [errMsg, keyId, passMsg, setState, valid.regAddressDetail],
   );
 
   return (
