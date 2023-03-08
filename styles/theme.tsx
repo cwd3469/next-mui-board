@@ -13,9 +13,9 @@ export const theme = createTheme({
       light: '#8a72f9',
     },
     info: {
-      main: '#d3d3d3',
+      main: '#000',
       dark: '#b7b7b7',
-      contrastText: '#888888',
+      contrastText: '#ffffff',
       light: '#e4e4e4',
     },
     warning: {
@@ -39,62 +39,61 @@ export const theme = createTheme({
   typography: {
     h1: {
       fontWeight: 'bold',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     h2: {
       fontWeight: 'bold',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     h3: {
       fontWeight: 'bold',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     h4: {
       fontWeight: 'bold',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     h5: {
-      fontSize: '24px',
+      fontSize: '1.500rem',
       fontWeight: 'bold',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     h6: {
-      fontSize: '20px',
+      fontSize: '1.250rem',
       fontWeight: 'bold',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     subtitle1: {
-      fontSize: 18,
+      fontSize: '1.125rem',
       fontWeight: 'bold',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     subtitle2: {
-      fontSize: 16,
+      fontSize: '1.000rem',
       fontWeight: '400',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     body1: {
-      fontSize: 14,
+      fontSize: '0.875rem',
       fontWeight: '400',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     body2: {
-      fontSize: 16,
-      wordBreak: 'keep-all',
+      fontSize: '1.000rem',
+      letterSpacing: '-0.0625rem',
     },
     button: {
-      wordBreak: 'keep-all',
+      fortSize: '0.875rem',
+      letterSpacing: '-0.0625rem',
     },
     caption: {
-      fontSize: 12,
+      fontSize: '0.750rem',
       fontWeight: '400',
-      wordBreak: 'keep-all',
+      letterSpacing: '-0.0625rem',
     },
     overline: {
-      fontSize: 10,
-      fontWeight: '100',
-      letterSpacing: '1',
-      wordBreak: 'keep-all',
+      fontSize: '0.625rem',
+      letterSpacing: '2px',
     },
   },
 });
