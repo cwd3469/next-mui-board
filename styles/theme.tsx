@@ -39,57 +39,57 @@ export const theme = createTheme({
   typography: {
     h1: {
       fontWeight: 'bold',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     h2: {
       fontWeight: 'bold',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     h3: {
       fontWeight: 'bold',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     h4: {
       fontWeight: 'bold',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     h5: {
       fontSize: '1.500rem',
       fontWeight: 'bold',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     h6: {
       fontSize: '1.250rem',
       fontWeight: 'bold',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     subtitle1: {
       fontSize: '1.125rem',
       fontWeight: 'bold',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     subtitle2: {
       fontSize: '1.000rem',
       fontWeight: '400',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     body1: {
       fontSize: '0.875rem',
       fontWeight: '400',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     body2: {
       fontSize: '1.000rem',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     button: {
       fortSize: '0.875rem',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     caption: {
       fontSize: '0.750rem',
       fontWeight: '400',
-      letterSpacing: '-0.0625rem',
+      letterSpacing: '-0.0125rem',
     },
     overline: {
       fontSize: '0.625rem',
