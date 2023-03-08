@@ -47,7 +47,7 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 16) {
-        if (valid.regExpPass.test(value)) {
+        if (valid.regExpPassword.test(value)) {
           setState(value, keyId);
           onFocusOut(value);
         } else {
@@ -55,7 +55,7 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
         }
       }
     },
-    [errMsg, keyId, onFocusOut, setState, valid.regExpPass],
+    [errMsg, keyId, onFocusOut, setState, valid.regExpPassword],
   );
 
   return (

@@ -39,7 +39,7 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const txt = e.target.value;
       if (txt.length <= 20) {
-        if (txt.length !== 0 && !valid.regExNumberOnly.test(txt)) {
+        if (txt.length !== 0 && !valid.regExpPhoneNumber.test(txt)) {
           errMsg();
           return;
         }
@@ -57,8 +57,8 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
       keyId,
       passMsg,
       setState,
-      valid.regExNumberOnly,
       valid.regExpPhone,
+      valid.regExpPhoneNumber,
     ],
   );
 

@@ -30,7 +30,7 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 5) {
-        if (valid.regKorean.test(value)) {
+        if (valid.regNameKo.test(value)) {
           setState(value, keyId);
           passMsg();
         } else {
@@ -38,7 +38,7 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
         }
       }
     },
-    [errMsg, keyId, passMsg, setState, valid.regKorean],
+    [errMsg, keyId, passMsg, setState, valid.regNameKo],
   );
 
   return (

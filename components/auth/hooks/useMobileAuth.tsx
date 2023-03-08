@@ -57,7 +57,7 @@ export default function useMobileAuth() {
   const onChangeAuthNum = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.value.length < 7) {
-        validation.onlyNumber({
+        validation.authNumder({
           txt: e.target.value,
           pass: setAuth,
           error: setAuthError,

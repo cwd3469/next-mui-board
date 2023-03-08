@@ -19,8 +19,18 @@ import useSignup from '@components/auth/hooks/useSignup';
 import useMutationSignup from '@hooks/apis/auth/signup/useMutationSignup';
 import SigninNotApproved from '@components/auth/signin/modal/SigninNotApproved';
 import WEmailTextField from '@components/common/inputs/textField/modules/WEmailTextField';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  modalStyle: {
+    '& .title-stack': {
+      padding: '64px 40px 20px',
+    },
+  },
+}));
 
 const SignupStepThree = (props: SignupStepThreeType) => {
+  const classes = useStyles();
   const signup = useSignup(props);
   const { onClickSignup } = useMutationSignup({
     info: signup.info,
@@ -40,10 +50,11 @@ const SignupStepThree = (props: SignupStepThreeType) => {
         activeOn
         closeBtnOn
         title="약국 정보 입력"
+        className={classes.modalStyle}
       >
         <Stack gap="40px">
           <Grid container justifyContent={'space-between'}>
-            <Stack width="344px" gap="8px">
+            <Stack width="344px" gap="16px">
               <ItemInput title="아이디" require>
                 <WUseridTextField
                   state={signup.info.id}
@@ -96,7 +107,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                 </Box>
               </ItemInput>
             </Stack>
-            <Stack width="320px" gap="8px">
+            <Stack width="320px" gap="16px">
               <ItemInput title="약국명" require>
                 <WPharmcyNameTextField
                   state={signup.info.pharmacyName}
