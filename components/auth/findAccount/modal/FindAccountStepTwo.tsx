@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import { ModalType } from '@components/common/layouts/gnb/types';
-import { VerifyRes } from '../type';
+import { VerifyDto } from '../type';
 import useChangePw from '@components/auth/hooks/useChangePw';
 import { useToastContext } from '@hooks/utils/useToastContext';
 import WConfirm from '@components/common/modals/WConfirm';
@@ -10,28 +10,48 @@ import {
   WRepwTextField,
 } from '@components/common/inputs/textField/modules';
 import WSubTitle from '@components/common/typography/WSubTitle';
+import { useMutation } from 'react-query';
+import { apiFindAccountPwReset } from '@hooks/apis/auth/findAccount';
+import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
 
 interface FindAccountStepTwoType extends ModalType {
-  res?: VerifyRes;
+  info?: {
+    verificationCode: string;
+    maskedAccountId: string;
+    accountUlid: string;
+  };
 }
 
 const FindAccountStepTwo = (props: FindAccountStepTwoType) => {
   const { state, errs, disable, setInInfo, setInInfoErr } = useChangePw();
   const toast = useToastContext();
-  const userId = 'test*****';
+  const msg = useCodeMsgBundle();
+  const { mutate: mutateFindAccountPwReset } = useMutation(
+    apiFindAccountPwReset,
+  );
   const pwChangeEvent = useCallback(() => {
-    const dto = {
-      pw: state.pw,
-      repw: state.repw,
-    };
-    let status = 200;
-    if (status === 200) {
-      props.handleClose();
-      console.log(dto);
-    } else {
-      toast?.on('입력하신 비밀번호와 일치하지 않습니다.', 'error');
+    if (props.info) {
+      const dto: VerifyDto = {
+        accountUlid: props.info.accountUlid,
+        verificationCode: props.info.verificationCode,
+        password: state.pw,
+        reenterPassword: state.repw,
+      };
+      mutateFindAccountPwReset(dto, {
+        onSuccess(data, variables, context) {
+          if (data.data.code === '0000') {
+            props.handleClose();
+          } else {
+            toast?.on(msg.errMsg(data.data.code), 'info');
+            return;
+          }
+        },
+        onError: (err) => {
+          toast?.on('입력하신 비밀번호와 일치하지 않습니다.', 'error');
+        },
+      });
     }
-  }, [props, state.pw, state.repw, toast]);
+  }, [msg, mutateFindAccountPwReset, props, state.pw, state.repw, toast]);
 
   return (
     <WConfirm
@@ -64,8 +84,10 @@ const FindAccountStepTwo = (props: FindAccountStepTwoType) => {
               fontWeight="400"
             >
               회원님의 아이디는{' '}
-              <span style={{ color: '#4AC6FF' }}>{userId}</span> (으)로 등록되어
-              있습니다
+              <span style={{ color: '#4AC6FF' }}>
+                {props.info ? props.info.maskedAccountId : ''}
+              </span>{' '}
+              (으)로 등록되어 있습니다
             </Typography>
             <Typography
               variant="body2"
