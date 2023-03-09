@@ -38,7 +38,11 @@ const FindAccount = () => {
         계정 찾기{' '}
         <ArrowForwardIosIcon sx={{ fontSize: '11px', width: '18px' }} />
       </Button>
-      <FindAccountStepOne open={open} handleClose={modalClose} />
+      {open ? (
+        <FindAccountStepOne open={open} handleClose={modalClose} />
+      ) : (
+        <></>
+      )}
     </Grid>
   );
 };
