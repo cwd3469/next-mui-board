@@ -13,6 +13,7 @@ import WSubTitle from '@components/common/typography/WSubTitle';
 import { useMutation } from 'react-query';
 import { apiFindAccountPwReset } from '@hooks/apis/auth/findAccount';
 import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
+import { useDebounceFn } from 'ahooks';
 
 interface FindAccountStepTwoType extends ModalType {
   info?: {
@@ -52,12 +53,14 @@ const FindAccountStepTwo = (props: FindAccountStepTwoType) => {
       });
     }
   }, [msg, mutateFindAccountPwReset, props, state.pw, state.repw, toast]);
-
+  const onReChangePassword = useDebounceFn(pwChangeEvent, {
+    wait: 300,
+  });
   return (
     <WConfirm
       open={props.open}
       handleClose={props.handleClose}
-      handleEvent={pwChangeEvent}
+      handleEvent={onReChangePassword.run}
       btnTitle={'비밀번호 변경'}
       disabled={disable}
       activeOn

@@ -3,11 +3,15 @@ import { useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SignupStepOne from './modal/SignupStepOne';
 import SignupStepThree from './modal/SignupStepThree';
+import { useDebounceFn } from 'ahooks';
 
 const Signup = () => {
   const [modalOn, setModalOn] = useState<boolean>(false);
   const handleOpen = () => setModalOn(true);
   const handleClose = () => setModalOn(false);
+  const onOpenModal = useDebounceFn(handleOpen, {
+    wait: 300,
+  });
   return (
     <Grid container justifyContent={'space-between'} gap="10px">
       <Typography
@@ -28,7 +32,7 @@ const Signup = () => {
           letterSpacing: '-0.13px',
         }}
         variant="text"
-        onClick={handleOpen}
+        onClick={onOpenModal.run}
       >
         약국 담당자 회원가입{' '}
         <ArrowForwardIosIcon sx={{ fontSize: '11px', width: '18px' }} />
