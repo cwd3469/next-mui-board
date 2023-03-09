@@ -7,7 +7,7 @@ export default function MyDocument() {
     <Html lang="en">
       <Head>
         <meta name="description" content="WhatAilsYou Backoffice" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/assets/logo/logo_launcher_symbol.png" />
       </Head>
       <body>
         <Main />

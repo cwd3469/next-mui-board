@@ -48,8 +48,8 @@ const SigninPage = () => {
       <Grid container justifyContent={'center'} sx={{ paddingBottom: '108px' }}>
         <Logo
           sx={{
-            width: '266px',
-            height: '58px',
+            width: '215px',
+            height: '90px',
           }}
         />
       </Grid>

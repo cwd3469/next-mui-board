@@ -1,5 +1,5 @@
 import { Box, styled, SxProps, Theme } from '@mui/material';
-import WauLogo from 'public/assets/logo/logo_login.png';
+import WauLogo from 'public/assets/logo/new_logo_01@3x.png';
 import Image from 'next/image';
 import { Container, FlexCenter, ImageBox } from './styled';
 

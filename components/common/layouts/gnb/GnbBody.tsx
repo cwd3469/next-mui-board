@@ -47,8 +47,8 @@ const GnbBody = (props: GnbBodyType) => {
         <GnbNavList>
           <Logo
             sx={{
-              width: '130px',
-              height: '28px',
+              width: '124px',
+              height: '52px',
             }}
           />
           <Box width={'14px'} />
