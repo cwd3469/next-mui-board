@@ -30,6 +30,10 @@ interface WTextFieldProps {
 const TextInput = styled(TextField)({
   '& .MuiInputBase-input': {
     padding: '14px 12px',
+    '&::placeholder': {
+      fontSize: '14px',
+      color: '#999',
+    },
   },
   '& input:valid + fieldset': {
     borderColor: '#CDCDCD',
