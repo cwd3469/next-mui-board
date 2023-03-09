@@ -16,12 +16,12 @@ const FindAccount = () => {
       alignItems={'center'}
     >
       <Typography
-        variant="button"
         display="block"
         fontWeight="normal"
         lineHeight={'1'}
         color="#555555"
         letterSpacing="-0.13px"
+        fontSize="13px"
       >
         계정을 잊어버리셨나요?
       </Typography>
