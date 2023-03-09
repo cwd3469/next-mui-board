@@ -1,4 +1,4 @@
-import upload from 'public/assets/icon/upload.svg';
+import upload from 'public/assets/icon/fetherLogOut.svg';
 import closeIcon from 'public/assets/icon/closeIcon.svg';
 import {
   Box,
@@ -63,7 +63,6 @@ export const DefaltInfo = (props: { sx?: SxProps<Theme> }) => {
         variant="body1"
         color="#666"
         lineHeight={'1'}
-        letterSpacing={'-1px'}
       >
         파일을 드래그 해보세요.
       </Typography>
@@ -72,8 +71,7 @@ export const DefaltInfo = (props: { sx?: SxProps<Theme> }) => {
         variant="caption"
         color="#999"
         lineHeight={'1.3'}
-        width="97px"
-        letterSpacing={'-1px'}
+        width="100%"
       >
         파일 형식 JPG,PNG,PDF
       </Typography>
@@ -83,7 +81,10 @@ export const DefaltInfo = (props: { sx?: SxProps<Theme> }) => {
           variant="caption"
           color="#333"
           lineHeight={'1'}
-          letterSpacing={'-1px'}
+          sx={{
+            fontSize: '12px',
+            fontWeight: '500',
+          }}
         >
           파일 등록하기
         </Typography>

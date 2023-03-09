@@ -107,7 +107,7 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
               <DefaltInfo
                 sx={{
                   '& .uploadBtn': {
-                    marginTop: '25px',
+                    marginTop: '15px',
                   },
                 }}
               />
