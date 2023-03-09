@@ -31,7 +31,7 @@ const WSnackBar = (props: WSnackBarType) => {
       autoHideDuration={6000}
       onClose={close}
       anchorOrigin={{
-        vertical: 'bottom',
+        vertical: 'top',
         horizontal: 'center',
       }}
     >
@@ -46,7 +46,7 @@ const WSnackBar = (props: WSnackBarType) => {
           height: '70px',
         }}
       >
-        <Box maxWidth="300px">
+        <Box sx={{ minWidth: '260px', overflowY: 'hidden' }}>
           {msg.split('\n').map((item, index) => {
             return (
               <Typography lineHeight={'1.2'} key={index} fontSize="14px">
