@@ -44,7 +44,6 @@ const WModal = (props: WModalProps) => {
       }}
     >
       {' '}
-      {props.closeBtnOn ? <WModalClose onClick={props.handleClose} /> : ''}
       {props.title ? (
         <Stack
           className="title-stack"
@@ -67,6 +66,7 @@ const WModal = (props: WModalProps) => {
         <WDialogLayout>{props.children}</WDialogLayout>
       </WDialogContent>
       {props.action}
+      {props.closeBtnOn ? <WModalClose onClick={props.handleClose} /> : ''}
     </WDialog>
   );
 };
