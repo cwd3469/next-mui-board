@@ -22,6 +22,7 @@ export interface SignupInfo {
   [key: string]: SignupInfoValue;
   id: string;
   pw: string;
+  email: string;
   rePw: string;
   addressDetail: string;
   name: string;
@@ -42,6 +43,7 @@ export interface SignupInfoError {
   idErr: ErrorType;
   pwErr: ErrorType;
   rePwErr: ErrorType;
+  emailErr: ErrorType;
   addressDetailErr: ErrorType;
   nameErr: ErrorType;
   buisNumErr: ErrorType;

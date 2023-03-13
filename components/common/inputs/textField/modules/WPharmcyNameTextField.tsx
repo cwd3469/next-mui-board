@@ -30,7 +30,7 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 15) {
-        if (valid.regKoEnNum.test(value)) {
+        if (valid.regPharmacyName.test(value)) {
           setState(value, keyId);
           passMsg();
         } else {
@@ -38,7 +38,7 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
         }
       }
     },
-    [errMsg, keyId, passMsg, setState, valid.regKoEnNum],
+    [errMsg, keyId, passMsg, setState, valid.regPharmacyName],
   );
 
   return (
@@ -48,7 +48,7 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
       focusInEvent={passMsg}
       error={err}
       disabled={disabled}
-      placeholder="약국명를 입력 해주세요."
+      placeholder="약국명를 입력해 주세요."
       helper={'최대 15자리까지 입력 가능합니다.'}
     />
   );

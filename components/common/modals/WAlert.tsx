@@ -4,57 +4,38 @@ import WModal from './WModal';
 import { WAlertProps } from './types';
 
 const WAlert = (props: WAlertProps) => {
-  const {
-    // modal
-    handleClose,
-    subTitle,
-    title,
-    open,
-    children,
-    maxWidth,
-    bgDisable,
-    closeBtnOn,
-    titleSx,
-    style,
-    // alert
-    activeOn,
-    btnTitle,
-    btnTextColor,
-    disabled,
-    handleEvent,
-  } = props;
-
   return (
     <WModal
-      handleClose={handleClose}
-      subTitle={subTitle}
-      title={title}
-      open={open}
-      maxWidth={maxWidth}
-      bgDisable={bgDisable}
-      closeBtnOn={closeBtnOn}
-      titleSx={titleSx}
-      style={style}
+      handleClose={props.handleClose}
+      subTitle={props.subTitle}
+      title={props.title}
+      open={props.open}
+      maxWidth={props.maxWidth}
+      bgDisable={props.bgDisable}
+      closeBtnOn={props.closeBtnOn}
+      titleSx={props.titleSx}
+      style={props.style}
+      className={props.className}
       action={
         <WDialogActions>
           <ModalButton
-            className={`actionBtn ${activeOn ? 'active' : ''} ${
-              typeof disabled !== 'undefined' ? 'active' : ''
+            className={`actionBtn ${props.activeOn ? 'active' : ''} ${
+              typeof props.disabled !== 'undefined' ? 'active' : ''
             }`}
-            disabled={disabled ? disabled : false}
+            disabled={props.disabled ? props.disabled : false}
             variant="contained"
             color="info"
-            onClick={handleEvent ? handleEvent : handleClose}
+            onClick={props.handleEvent ? props.handleEvent : props.handleClose}
             sx={{
               width: '100%',
             }}
           >
-            {btnTitle ? btnTitle : '닫기'}
+            {props.btnTitle ? props.btnTitle : '닫기'}
           </ModalButton>
         </WDialogActions>
       }
     >
-      {children}
+      {props.children}
     </WModal>
   );
 };

@@ -109,6 +109,7 @@ export const WModalClose = (props: { onClick?: () => void }) => {
   const { onClick } = props;
   return (
     <Button
+      className="wModalClose"
       color="info"
       onClick={onClick}
       sx={{

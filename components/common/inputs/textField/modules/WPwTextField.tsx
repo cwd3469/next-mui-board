@@ -41,7 +41,7 @@ const WPwTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 16) {
-        if (valid.regExpPass.test(value)) {
+        if (valid.regExpPassword.test(value)) {
           setState(value, keyId);
           onFocusOut(value);
         } else {
@@ -49,7 +49,7 @@ const WPwTextField = (props: WTextFieldModulesType) => {
         }
       }
     },
-    [errMsg, keyId, onFocusOut, setState, valid.regExpPass],
+    [errMsg, keyId, onFocusOut, setState, valid.regExpPassword],
   );
 
   return (
@@ -57,14 +57,13 @@ const WPwTextField = (props: WTextFieldModulesType) => {
       type="password"
       value={stateTxt}
       onChange={onChangeInfo}
-      focusInEvent={passMsg}
       focusOutEvent={() => onFocusOut(stateTxt)}
       disabled={disabled}
       error={err}
       maxRows={16}
-      placeholder="비밀번호를 입력해 주세요."
+      placeholder="영문 대소문자,숫자,특수문자 중 3종류 이상 포함해 주세요."
       helper={
-        '최소 8자리 이상 영어 대문자, 소문자, 숫자, 특수문자 중 3종류이상 포함해주세요.'
+        '최소 8자리 이상 영어 대문자, 소문자, 숫자, 특수문자 중 3종류이상 포함해 주세요.'
       }
     />
   );

@@ -23,7 +23,7 @@ const useMutationSignup = (props: {
         onSuccess(data, variables, context) {
           const code = data.data.code;
           if (code !== '0000') {
-            toast?.on(msg.errMsg(code), 'warning');
+            toast?.on(msg.errMsg(code), 'info');
             return;
           } else {
             handleOpenModal();
@@ -44,6 +44,7 @@ const useMutationSignup = (props: {
     if (info) {
       const formData = new FormData();
       formData.append('accountId', info.id as string);
+      formData.append('adminEmail', info.email as string);
       formData.append('password', info.pw as string);
       formData.append('reenterPassword', info.rePw as string);
       formData.append('adminNameKo', info.name as string);

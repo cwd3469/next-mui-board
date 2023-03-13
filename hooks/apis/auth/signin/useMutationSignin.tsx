@@ -26,7 +26,7 @@ const useMutationSignin = (props: UseMutationSignin) => {
           const code = res.data.code;
           const data = res.data.data;
           if (code !== '0000') {
-            toast?.on(msg.errMsg(code), 'warning');
+            toast?.on(msg.errMsg(code), 'info');
           } else {
             onOpenModal('success');
             setInInfo(data);

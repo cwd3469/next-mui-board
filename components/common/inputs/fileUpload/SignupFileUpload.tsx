@@ -1,57 +1,54 @@
 import { FileUid } from '@hooks/utils/fileUpload/types';
+import useDropDrag from '@hooks/utils/fileUpload/useDropDrag';
 import useFileUpload from '@hooks/utils/fileUpload/useFileUpload';
 import useValidation from '@hooks/utils/useValidation';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { blobToFile, forinArr, resizeFileCompression } from '@utils/file';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useCallback, useEffect } from 'react';
 import { DefaltInfo, SignupFileLadel, ImageView } from './styled';
 
 export interface HospitalImgPickerType {
-  modifyFile: File[];
   onDeleteLogoUid: () => void;
-  onUploadFile: (uid: FileUid, file: File) => void;
+  onUploadFile: (file: File) => void;
   name: string;
 }
 
 const SignupFileUpload = (props: HospitalImgPickerType) => {
-  const { modifyFile, onDeleteLogoUid, onUploadFile, name } = props;
-  const vaild = useValidation();
-  const {
-    onChangeFile,
-    onDeleteuidList,
-    file,
-    dragRef,
-    isDragging,
-    imageSrc,
-    err,
-  } = useFileUpload({
-    multi: false,
-    modifyFile,
+  const { onDeleteLogoUid, onUploadFile, name } = props;
+
+  const onChangeFileLoad = useCallback(
+    async (
+      e: ChangeEvent<HTMLInputElement> | any,
+      fileLoader: (event: ChangeEvent<HTMLInputElement> | any) => void,
+    ) => {
+      const selectFile =
+        e.type === 'drop' ? e.dataTransfer.files : e.target.files;
+      const fileList = forinArr(selectFile);
+      if (fileList.length) {
+        const imgName = fileList[0].name;
+        const item: File = fileList[0];
+        let imageImg =
+          item.type === 'application/pdf'
+            ? item
+            : item.size < 1000000
+            ? item
+            : await resizeFileCompression(item);
+        const img = blobToFile(imageImg, imgName);
+        onUploadFile(img);
+        fileLoader(e);
+      }
+    },
+    [onUploadFile],
+  );
+
+  const fileUploadHook = useFileUpload({
+    onfileUpload: onChangeFileLoad,
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onChangeFileLoad = async (e: ChangeEvent<HTMLInputElement> | any) => {
-    const selectFile =
-      e.type === 'drop' ? e.dataTransfer.files : e.target.files;
-    const fileList = forinArr(selectFile);
-    if (fileList.length) {
-      const imgName = fileList[0].name;
-      const item = fileList[0];
-      const regBoo = vaild.regExpFile.test(item.type);
-      let resizeFile = regBoo ? item : await resizeFileCompression(item);
-      const img = blobToFile(resizeFile, imgName);
-      const formData = new FormData();
-      formData.append('file', img);
-      //TODO : 추후 api 적용하면 삭제 할 예정
-      const uid = { fileUlid: fileList[0].name, sort: 0 };
-      onUploadFile(uid, img);
-      onChangeFile(e);
-    }
-  };
 
   return (
     <Grid container flexDirection="column">
       <input
-        onChange={onChangeFileLoad}
+        onChange={fileUploadHook.onChangeFile}
         type="file"
         id={name}
         style={{ display: 'none' }}
@@ -60,8 +57,8 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
       />
 
       <Grid container gap="10px" justifyContent={'flex-start'}>
-        {imageSrc.length ? (
-          imageSrc.map((img, inx) => {
+        {fileUploadHook.imageSrc.length ? (
+          fileUploadHook.imageSrc.map((img, inx) => {
             return (
               <Stack key={inx}>
                 <Typography
@@ -82,9 +79,9 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
                 <ImageView
                   inx={inx}
                   img={img}
-                  file={file[0]}
+                  file={fileUploadHook.files[0]}
                   deleteImg={(index: number) => {
-                    onDeleteuidList(index);
+                    fileUploadHook.onDeleteuidList(index);
                     onDeleteLogoUid();
                   }}
                   sx={{
@@ -103,14 +100,14 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
           <Stack>
             <Box height="40px" />
             <SignupFileLadel
-              className={isDragging ? 'drag-in' : 'drag-out'}
-              ref={dragRef}
+              className={fileUploadHook.isDragging ? 'drag-in' : 'drag-out'}
+              ref={fileUploadHook.dragRef}
               htmlFor={name}
             >
               <DefaltInfo
                 sx={{
                   '& .uploadBtn': {
-                    marginTop: '25px',
+                    marginTop: '15px',
                   },
                 }}
               />
@@ -121,7 +118,7 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
       <Box height="5px" />
       <Box width="100%" height="12px">
         <Typography color="red" lineHeight="1">
-          {err.boo ? err.msg : ''}
+          {fileUploadHook.err.boo ? fileUploadHook.err.msg : ''}
         </Typography>
       </Box>
     </Grid>

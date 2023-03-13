@@ -1,5 +1,6 @@
-export interface VerifyRes {
+export interface VerifyDto {
   accountUlid: string;
-  maskedAccountId: string;
   verificationCode: string;
+  password: string;
+  reenterPassword: string;
 }

@@ -31,7 +31,7 @@ const useListProceed = (parms: FilterListData) => {
   // useEffect(() => {
   //   if (data) {
   //     if (code !== '0000') {
-  //       toast?.on(msg.errMsg(code), 'error');
+  //       toast?.on(msg.errMsg(code), 'info');
   //     }
   //   }
   // }, [code, data, msg, toast]);

@@ -1,48 +1,26 @@
 import WTextField from '@components/common/inputs/textField';
 import WAlert from '@components/common/modals/WAlert';
 import { Box, Grid, Stack } from '@mui/material';
+import { useDebounceFn } from 'ahooks';
 import AuthTimer from '../inputs/AuthTimer';
 import { AuthButton, TermsGrid } from '../signup/styled';
 import { AuthMobileViewType } from '../types';
 
 const AuthMobileView = (props: AuthMobileViewType) => {
-  const {
-    open,
-    //value
-    authValue,
-    mobileValue,
-    //인증 코드 활성화
-    numDisabled,
-    bgDisable,
-    btnDisabled,
-    mobileDisabled,
-    authDisabled,
-    //error
-    mobileError,
-    authError,
-    // value onChange
-    authOnChange,
-    mobileOnChange,
-    // focusOut
-    focusOutEvent,
-    // api
-    onClickAuthNumSend,
-    signupAuthOnClick,
-    // 모달 닫기
-    resetModalClose,
-    // 타이머 이벤트
-    timerActice,
-    timerResend,
-  } = props;
-
+  const signupAuthOnClick = useDebounceFn(props.signupAuthOnClick, {
+    wait: 300,
+  });
+  const onClickAuthNumSend = useDebounceFn(props.onClickAuthNumSend, {
+    wait: 300,
+  });
   return (
     <WAlert
-      open={open}
-      handleClose={resetModalClose}
+      open={props.open}
+      handleClose={props.resetModalClose}
       maxWidth={'xl'}
-      handleEvent={signupAuthOnClick}
-      bgDisable={bgDisable}
-      disabled={numDisabled}
+      handleEvent={signupAuthOnClick.run}
+      bgDisable={props.bgDisable}
+      disabled={props.numDisabled}
       btnTitle="다음"
       title="휴대폰번호 인증"
       closeBtnOn
@@ -54,18 +32,20 @@ const AuthMobileView = (props: AuthMobileViewType) => {
           <TermsGrid sx={{ alignItems: 'flex-start' }}>
             <Box sx={{ width: '257px' }}>
               <WTextField
-                value={mobileValue}
-                onChange={mobileOnChange}
-                placeholder={'휴대폰번호를 입력'}
+                value={props.mobileValue}
+                onChange={props.mobileOnChange}
+                placeholder={'휴대폰번호'}
                 helper="숫자 11자리를 입력해 주세요."
-                error={mobileError}
-                disabled={mobileDisabled}
+                error={props.mobileError}
+                disabled={props.mobileDisabled}
               />
             </Box>
             <Box sx={{ width: '120px', height: '48px' }}>
               <AuthButton
-                disabled={mobileValue.length >= 12 ? btnDisabled : true}
-                onClick={onClickAuthNumSend}
+                disabled={
+                  props.mobileValue.length >= 12 ? props.btnDisabled : true
+                }
+                onClick={onClickAuthNumSend.run}
               >
                 인증번호 발송
               </AuthButton>
@@ -73,18 +53,26 @@ const AuthMobileView = (props: AuthMobileViewType) => {
           </TermsGrid>
           {/*  인증번호 */}
           <WTextField
-            error={authError}
-            value={authValue}
-            onChange={authOnChange}
-            disabled={authDisabled}
+            error={props.authError}
+            value={props.authValue}
+            onChange={props.authOnChange}
+            disabled={props.authDisabled}
             placeholder={'인증번호'}
             helper="숫자만 입력해주세요"
-            focusOutEvent={focusOutEvent}
+            focusOutEvent={props.focusOutEvent}
           />
           <Grid container justifyContent={'flex-end'}>
             <Box sx={{ height: '20px' }}>
-              {!authDisabled ? (
-                <AuthTimer time={3} action={timerActice} resend={timerResend} />
+              {!props.authDisabled ? (
+                <AuthTimer
+                  showTime={{
+                    minutes: 2,
+                    seconds: 30,
+                  }}
+                  time={3}
+                  action={props.timerActice}
+                  resend={props.timerResend}
+                />
               ) : (
                 ''
               )}

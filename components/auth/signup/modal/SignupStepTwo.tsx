@@ -6,70 +6,62 @@ import { useCallback, useState } from 'react';
 import SignupStepThree from './SignupStepThree';
 
 const SignupStepTwo = (props: ModalType) => {
-  const {
-    authValue,
-    mobileValue,
-    authDisabled,
-    numDisabled,
-    authError,
-    mobileError,
-    authRequestDisabled,
-    onAbledAuthInput,
-    onChangeAuthNum,
-    onChangeMobile,
-    onClickReset,
-    onFocusOutAuthNum,
-    onTimerDisabled,
-    onAuthTimeOut,
-    onSetAuthDisabled,
-  } = useMobileAuth();
-
+  const mobileAuthHook = useMobileAuth();
   const [bgDisable, setBgDisable] = useState<boolean>(false);
   const [modalOn, setModalOn] = useState<boolean>(false);
 
-  const { onClickMobileAuthRequest, onClickAuthCheck } = useMobileAuthQuery({
-    mobileNumber: mobileValue,
-    authNumber: authValue,
-    onAbledAuthInput: onAbledAuthInput,
-    onAuthAction: () => {
-      setModalOn(true);
-      setBgDisable(true);
-      onSetAuthDisabled();
-    },
-  });
+  /**SignupStepTwo SignupStepThree 모달 on 기능*/
+  const onAuthAction = useCallback(() => {
+    setModalOn(true);
+    setBgDisable(true);
+    mobileAuthHook.onSetAuthDisabled();
+  }, [mobileAuthHook]);
 
-  const resetModalClose = () => {
-    onClickReset();
+  /**SignupStepTwo props data*/
+  const mobileAuthQueryProp = {
+    mobileNumber: mobileAuthHook.mobileValue,
+    authNumber: mobileAuthHook.authValue,
+    onAbledAuthInput: mobileAuthHook.onAbledAuthInput,
+    onAuthAction: onAuthAction,
+  };
+
+  /**SignupStepTwo 공통 휴대폰 인증 발송 , 확인 기능*/
+  const { onClickMobileAuthRequest, onClickAuthCheck } =
+    useMobileAuthQuery(mobileAuthQueryProp);
+
+  /**SignupStepTwo 공통 휴대폰 인증 발송 , 확인 기능*/
+  const resetModalClose = useCallback(() => {
+    mobileAuthHook.onClickReset();
     props.handleClose();
     setBgDisable(false);
     setModalOn(false);
-  };
+  }, [mobileAuthHook, props]);
 
   return (
     <>
       <AuthMobileView
         open={props.open}
-        authValue={authValue}
-        mobileValue={mobileValue}
-        authDisabled={authDisabled}
+        authValue={mobileAuthHook.authValue}
+        mobileValue={mobileAuthHook.mobileValue}
+        authDisabled={mobileAuthHook.authDisabled}
         bgDisable={bgDisable}
-        numDisabled={numDisabled}
-        mobileDisabled={authRequestDisabled}
-        btnDisabled={authRequestDisabled}
-        authError={authError}
-        mobileError={mobileError}
-        authOnChange={onChangeAuthNum}
-        mobileOnChange={onChangeMobile}
-        onTimerDisabled={onTimerDisabled}
-        focusOutEvent={onFocusOutAuthNum}
+        numDisabled={mobileAuthHook.numDisabled}
+        mobileDisabled={mobileAuthHook.authRequestDisabled}
+        btnDisabled={mobileAuthHook.authRequestDisabled}
+        authError={mobileAuthHook.authError}
+        mobileError={mobileAuthHook.mobileError}
+        authOnChange={mobileAuthHook.onChangeAuthNum}
+        mobileOnChange={mobileAuthHook.onChangeMobile}
+        onTimerDisabled={mobileAuthHook.onTimerDisabled}
+        focusOutEvent={mobileAuthHook.onFocusOutAuthNum}
         onClickAuthNumSend={onClickMobileAuthRequest}
         signupAuthOnClick={onClickAuthCheck}
         resetModalClose={resetModalClose}
-        timerActice={onAuthTimeOut}
-        timerResend={onTimerDisabled}
+        timerActice={mobileAuthHook.onAuthTimeOut}
+        timerResend={mobileAuthHook.onTimerDisabled}
       />
       <SignupStepThree
-        mobileValue={mobileValue}
+        mobileValue={mobileAuthHook.mobileValue}
         open={modalOn}
         handleClose={resetModalClose}
       />

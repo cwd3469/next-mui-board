@@ -1,112 +1,69 @@
 import useMobileAuth from '@components/auth/hooks/useMobileAuth';
 import AuthMobileView from '@components/auth/views/AuthMobileView';
 import { ModalType } from '@components/common/layouts/gnb/types';
-import { useToastContext } from '@hooks/utils/useToastContext';
+import useMobileAuthFindAccount from '@hooks/apis/auth/findAccount/useMobileAuthFindAccount';
 import { useCallback, useState } from 'react';
 import FindAccountStepTwo from './FindAccountStepTwo';
 
 const FindAccountStepOne = (props: ModalType) => {
-  const {
-    authValue,
-    mobileValue,
-    authDisabled,
-    numDisabled,
-    authError,
-    mobileError,
-    authRequestDisabled,
-    onAbledAuthInput,
-    onChangeAuthNum,
-    onChangeMobile,
-    onClickReset,
-    onFocusOutAuthNum,
-    onTimerDisabled,
-    onSetAuthDisabled,
-    onAuthTimeOut,
-  } = useMobileAuth();
-  //   const toast = useToastContext();
+  const mobileAuthHook = useMobileAuth();
   const [bgDisable, setBgDisable] = useState<boolean>(false);
   const [modalOn, setModalOn] = useState<boolean>(false);
-  //   const { mutate: postCommonMobileAuthMutate } = useCommonMobileAuth();
-  //   const { mutate: postCommonVerifyCodeMutate } = useCommonVerifyCode();
 
+  /**FindAccountStepOne SignupStepThree 모달 on 기능*/
+  const onAuthAction = useCallback(() => {
+    setModalOn(true);
+    setBgDisable(true);
+    mobileAuthHook.onSetAuthDisabled();
+  }, [mobileAuthHook]);
+
+  /**FindAccountStepOne SignupStepThree 모달 on 기능*/
   const resetModalClose = () => {
-    onClickReset();
+    mobileAuthHook.onClickReset();
     props.handleClose();
     setBgDisable(false);
     setModalOn(false);
   };
+  /**FindAccountStepOne props data*/
+  const mobileAuthQueryProp = {
+    mobileNumber: mobileAuthHook.mobileValue,
+    authNumber: mobileAuthHook.authValue,
+    onAbledAuthInput: mobileAuthHook.onAbledAuthInput,
+    onAuthAction: onAuthAction,
+  };
 
-  const onClickAuthNumSend = useCallback(() => {
-    onAbledAuthInput();
-    // const mobile: MobileNumDto = { mobileNum: mobileFormatOff(mobileValue) };
-    // postCommonMobileAuthMutate(mobile, {
-    //   onSuccess: (res) => {
-    //     if (res.data.code !== '0000') {
-    //       toast?.on(msg.errMsg(res.data.code),'error');
-    //       return;
-    //     }
-    //     onAbledAuthInput();
-    //   },
-    //   onError: (err) => {
-    //     toast?.on(
-    //       '인증번호 발급에 실패 하였습니다. \n 잠시 후, 다시 시도해 주세요.',
-    //     ,'error');
-    //   },
-    // });
-  }, [onAbledAuthInput]);
-
-  const signupAuthOnClick = useCallback(() => {
-    setModalOn(true);
-    setBgDisable(true);
-    onSetAuthDisabled();
-    // const data = {
-    //   mobileNum: mobileFormatOff(mobileValue),
-    //   code: authValue,
-    // };
-    // postCommonVerifyCodeMutate(data, {
-    //   onSuccess: (res) => {
-    //     if (res.data.status === 'SUCCESS') {
-    //       setModalOn(true);
-    //       setAuthDisabled(true);
-    //       setBgDisable(true);
-    //     }
-    //     if (res.data.status === 'FAIL') {
-    //       toast?.on(msg.errMsg(res.data.code) , 'error');
-    //       return;
-    //     }
-    //   },
-    //   onError: (err) => {
-    //     toast?.on(
-    //       '인증번호가 일치하지 않습니다 \n 잠시 후, 다시 시도해 주세요.',
-    //     , 'error');
-    //   },
-    // });
-  }, [onSetAuthDisabled]);
+  /**FindAccountStepOne 계정 찾기 휴대폰 인증 발송 , 확인 기능*/
+  const { onClickMobileAuthRequest, onClickAuthCheck, accountInfo } =
+    useMobileAuthFindAccount(mobileAuthQueryProp);
 
   return (
     <>
       <AuthMobileView
         open={props.open}
-        authValue={authValue}
-        mobileValue={mobileValue}
-        mobileDisabled={authRequestDisabled}
-        btnDisabled={authRequestDisabled}
-        authDisabled={authDisabled}
+        authValue={mobileAuthHook.authValue}
+        mobileValue={mobileAuthHook.mobileValue}
+        authDisabled={mobileAuthHook.authDisabled}
         bgDisable={bgDisable}
-        numDisabled={numDisabled}
-        authError={authError}
-        mobileError={mobileError}
-        authOnChange={onChangeAuthNum}
-        mobileOnChange={onChangeMobile}
-        onTimerDisabled={onTimerDisabled}
-        focusOutEvent={onFocusOutAuthNum}
-        onClickAuthNumSend={onClickAuthNumSend}
-        signupAuthOnClick={signupAuthOnClick}
+        numDisabled={mobileAuthHook.numDisabled}
+        mobileDisabled={mobileAuthHook.authRequestDisabled}
+        btnDisabled={mobileAuthHook.authRequestDisabled}
+        authError={mobileAuthHook.authError}
+        mobileError={mobileAuthHook.mobileError}
+        authOnChange={mobileAuthHook.onChangeAuthNum}
+        mobileOnChange={mobileAuthHook.onChangeMobile}
+        onTimerDisabled={mobileAuthHook.onTimerDisabled}
+        focusOutEvent={mobileAuthHook.onFocusOutAuthNum}
+        onClickAuthNumSend={onClickMobileAuthRequest}
+        signupAuthOnClick={onClickAuthCheck}
         resetModalClose={resetModalClose}
-        timerActice={onAuthTimeOut}
-        timerResend={onTimerDisabled}
+        timerActice={mobileAuthHook.onAuthTimeOut}
+        timerResend={mobileAuthHook.onTimerDisabled}
       />
-      <FindAccountStepTwo open={modalOn} handleClose={resetModalClose} />
+      <FindAccountStepTwo
+        open={modalOn}
+        handleClose={resetModalClose}
+        info={accountInfo}
+      />
     </>
   );
 };

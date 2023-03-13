@@ -3,65 +3,43 @@ import WModal from './WModal';
 import { WConfirmProps } from './types';
 
 export const WConfirm = (props: WConfirmProps) => {
-  const {
-    // modal
-    handleClose,
-    subTitle,
-    title,
-    open,
-    children,
-    maxWidth,
-    bgDisable,
-    closeBtnOn,
-    titleSx,
-    style,
-    // alert
-    btnTitle,
-    activeOn,
-    btnTextColor,
-    disabled,
-    handleEvent,
-    // confirm
-    closeBtnEvent,
-    closeBtnTitle,
-    closeBtnColor,
-  } = props;
-
   return (
     <WModal
-      handleClose={handleClose}
-      subTitle={subTitle}
-      title={title}
-      open={open}
-      maxWidth={maxWidth}
-      bgDisable={bgDisable}
-      closeBtnOn={closeBtnOn}
-      titleSx={titleSx}
-      style={style}
+      handleClose={props.handleClose}
+      subTitle={props.subTitle}
+      title={props.title}
+      open={props.open}
+      maxWidth={props.maxWidth}
+      bgDisable={props.bgDisable}
+      closeBtnOn={props.closeBtnOn}
+      titleSx={props.titleSx}
+      style={props.style}
       action={
         <WDialogActions>
           <ModalButton
             className="closeBtn"
             variant="contained"
             color="info"
-            onClick={closeBtnEvent ? closeBtnEvent : handleClose}
+            onClick={
+              props.closeBtnEvent ? props.closeBtnEvent : props.handleClose
+            }
           >
-            {closeBtnTitle ? closeBtnTitle : '닫기'}
+            {props.closeBtnTitle ? props.closeBtnTitle : '닫기'}
           </ModalButton>
           <ModalButton
-            className={`actionBtn ${activeOn ? 'active' : ''} ${
-              typeof disabled !== 'undefined' ? 'active' : ''
+            className={`actionBtn ${props.activeOn ? 'active' : ''} ${
+              typeof props.disabled !== 'undefined' ? 'active' : ''
             }`}
-            disabled={disabled ? disabled : false}
+            disabled={props.disabled ? props.disabled : false}
             variant="contained"
-            onClick={handleEvent ? handleEvent : handleClose}
+            onClick={props.handleEvent ? props.handleEvent : props.handleClose}
           >
-            {btnTitle ? btnTitle : '확인'}
+            {props.btnTitle ? props.btnTitle : '확인'}
           </ModalButton>
         </WDialogActions>
       }
     >
-      {children}
+      {props.children}
     </WModal>
   );
 };

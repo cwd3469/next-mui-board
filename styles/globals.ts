@@ -126,16 +126,15 @@ const glodal = css`
     border-spacing: 0;
   }
   @font-face {
-    font-family: 'Pretendard'; // 이름 선언
-    src: url('https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css'); // 내가 저장한 경로!
-  }
-  @font-face {
-    font-family: 'NanumBarunGothic';
-    src: url('https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css'); // 내가 저장한 경로!
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css');
   }
 
   * {
-    font-family: 'Pretendard' !important;
+    font-family: 'Pretendard Variable', Pretendard, -apple-system,
+      BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
+      'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif !important;
   }
   body {
     background-color: #f8f8f8;

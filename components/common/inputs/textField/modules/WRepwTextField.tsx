@@ -47,7 +47,7 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 16) {
-        if (valid.regExpPass.test(value)) {
+        if (valid.regExpPassword.test(value)) {
           setState(value, keyId);
           onFocusOut(value);
         } else {
@@ -55,7 +55,7 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
         }
       }
     },
-    [errMsg, keyId, onFocusOut, setState, valid.regExpPass],
+    [errMsg, keyId, onFocusOut, setState, valid.regExpPassword],
   );
 
   return (
@@ -67,8 +67,8 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
       disabled={disabled}
       error={err}
       maxRows={16}
-      placeholder="비밀번호를 다시 입력하세요."
-      helper={'비밀번호와 동일하게 입력해주세요.'}
+      placeholder="비밀번호를 다시 입력해 주세요."
+      helper={'비밀번호와 동일하게 입력해 주세요.'}
     />
   );
 };

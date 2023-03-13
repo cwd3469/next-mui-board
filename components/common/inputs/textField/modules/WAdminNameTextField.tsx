@@ -30,22 +30,25 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 5) {
-        if (valid.regKorean.test(value)) {
+        if (valid.regNameKo.test(value)) {
           setState(value, keyId);
-          passMsg();
+          if (value.length >= 2) {
+            passMsg();
+          } else {
+            errMsg();
+          }
         } else {
           errMsg();
         }
       }
     },
-    [errMsg, keyId, passMsg, setState, valid.regKorean],
+    [errMsg, keyId, passMsg, setState, valid.regNameKo],
   );
 
   return (
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      focusInEvent={passMsg}
       error={err}
       disabled={disabled}
       placeholder="담당자 이름을 입력 해주세요."

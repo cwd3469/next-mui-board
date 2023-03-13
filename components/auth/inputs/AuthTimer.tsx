@@ -4,22 +4,25 @@ import { Grid, Typography } from '@mui/material';
 import { TimerButton } from '../signup/styled';
 
 export default function AuthTimer(props: TimerResendInterface) {
+  const { resend, showTime, isReStart } = props;
   const { timer, minutes, seconds, reStart } = useTimer({
     action: props.action,
     time: props.time,
   });
-  const { resend } = props;
+
   const [showBtn, setShowBtn] = useState<boolean>(false);
+  const lastMinutes = showTime ? showTime.minutes : 0;
+  const lastSeconds = showTime ? showTime.seconds : 30;
 
   useEffect(() => {
-    if (minutes <= 2) {
-      if (seconds <= 30) {
+    if (minutes <= lastMinutes) {
+      if (seconds <= lastSeconds) {
         setShowBtn(true);
       }
     } else {
       setShowBtn(false);
     }
-  }, [minutes, seconds]);
+  }, [lastMinutes, lastSeconds, minutes, seconds]);
 
   return (
     <Grid
@@ -33,7 +36,9 @@ export default function AuthTimer(props: TimerResendInterface) {
         <TimerButton
           onClick={() => {
             resend();
-            reStart();
+            if (isReStart) {
+              reStart();
+            }
           }}
         >
           재발송

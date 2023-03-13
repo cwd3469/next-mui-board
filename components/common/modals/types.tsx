@@ -25,6 +25,7 @@ export interface WModalType {
   closeBtnOn?: boolean;
   titleSx?: SxProps<Theme>;
   style?: SxProps<Theme>;
+  className?: string;
 }
 
 export interface WModalProps extends WModalType {

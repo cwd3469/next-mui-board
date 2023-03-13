@@ -28,14 +28,15 @@ export const TermsButton = styled(Button)(({ theme }) => ({
   color: '#ccc',
   minWidth: 'auto',
   minHeight: 'auto',
-  textDecoration: 'underline',
+  borderBottom: '1px solid #ccc',
+  lineHeight: '1',
+  borderRadius: 0,
 }));
 
 export const AuthButton = styled(Button)(({ theme }) => ({
   width: '100%',
   height: '100%',
   backgroundColor: '#4ac6ff',
-  ...theme.typography.body2,
   color: '#fff',
   '&:hover': {
     backgroundColor: '#DCDCDC',
@@ -159,8 +160,8 @@ export const ItemInput = (props: {
     <Stack
       gap="16px"
       sx={{
-        gap: '8px',
-        width: '320px',
+        gap: '16px',
+        width: '100%',
         ...props.sx,
       }}
     >

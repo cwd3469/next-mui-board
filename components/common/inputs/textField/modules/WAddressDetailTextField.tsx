@@ -30,16 +30,15 @@ const WAddressDetailTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 15) {
-        if (valid.regKoEnNum.test(value)) {
+        if (valid.regAddressDetail.test(value)) {
           setState(value, keyId);
-
           passMsg();
         } else {
           errMsg();
         }
       }
     },
-    [errMsg, keyId, passMsg, setState, valid.regKoEnNum],
+    [errMsg, keyId, passMsg, setState, valid.regAddressDetail],
   );
 
   return (
@@ -47,7 +46,6 @@ const WAddressDetailTextField = (props: WTextFieldModulesType) => {
       value={stateTxt}
       onChange={onChangeInfo}
       error={err}
-      focusInEvent={passMsg}
       disabled={disabled}
       placeholder="약국상세 주소를 입력 해주세요."
       helper={'최대 15자리까지 입력 가능합니다.'}
