@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { userInfoContext } from './userInfoContext';
+import { userInfoContext } from '../userInfoContext';
 
 const ReactQueryClientProvider = (props: {
   children: JSX.Element | JSX.Element[];
@@ -18,6 +18,7 @@ const ReactQueryClientProvider = (props: {
             refetchOnReconnect: false,
             refetchInterval: 1800000,
             retry: 1,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onSuccess(data: any) {
               if (router.pathname !== '/signin') {
                 if (
