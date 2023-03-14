@@ -1,3 +1,4 @@
+import { UserInfoContext } from '@hooks/contexts/user/UserInfoContext';
 import {
   Box,
   Button,
@@ -9,7 +10,7 @@ import {
 } from '@mui/material';
 import colors from '@styles/colors';
 import Link from 'next/link';
-import { CSSProperties } from 'react';
+import { CSSProperties, useContext } from 'react';
 
 export const FlexCenter = styled(Grid)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -98,6 +99,7 @@ export const GnbLink = (props: {
   style: CSSProperties | undefined;
   disabled?: boolean;
 }) => {
+  const { handleTokenInfo } = useContext(UserInfoContext);
   return (
     <Box
       sx={{
@@ -111,7 +113,9 @@ export const GnbLink = (props: {
         passHref
         className={props.disabled ? 'disabled-link' : ''}
       >
-        <GnbATag style={props.style}>{props.children}</GnbATag>
+        <GnbATag style={props.style} onClick={handleTokenInfo}>
+          {props.children}
+        </GnbATag>
       </Link>
     </Box>
   );
