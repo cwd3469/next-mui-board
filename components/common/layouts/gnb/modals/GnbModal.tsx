@@ -1,8 +1,8 @@
 import React from 'react';
 import WConfirmModal from '@components/common/modals/WConfirm';
 import { Stack, Typography } from '@mui/material';
-import { GnbMobalType } from './types';
-import { WLayout } from '../WLayout';
+import { GnbMobalType } from '../types';
+import { WLayout } from '../../WLayout';
 
 const GnbModal = (props: GnbMobalType) => {
   const { open, handleClose, timer, resend } = props;
