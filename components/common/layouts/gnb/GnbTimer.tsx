@@ -6,7 +6,7 @@ import { useToastContext } from '@hooks/utils/useToastContext';
 import useTimer, { TimerInterface } from '@hooks/utils/useTimer';
 import clock from 'public/assets/icon/clock.svg';
 import colors from '@styles/colors';
-import GnbModal from './GnbModal';
+import GnbModal from './modals/GnbModal';
 import { UserInfoContext } from '@hooks/contexts/user/UserInfoContext';
 
 const fontStyle = {
