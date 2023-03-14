@@ -6,7 +6,6 @@ import Head from 'next/head';
 import { Global } from '@emotion/react';
 import { ThemeProvider } from '@mui/material';
 import { LicenseInfo } from '@mui/x-license-pro';
-import WProgressBar from '@components/common/modals/WProgressBar';
 import { ToastContextProvider } from '@hooks/utils/useToastContext';
 import { theme } from '@styles/theme';
 import globals from '@styles/globals';
@@ -15,6 +14,7 @@ import { UserInfoProvider } from '@hooks/contexts/user/UserInfoContext';
 import Script from 'next/script';
 import * as gtag from '@utils/gtag';
 import ReactQueryClientProvider from '@hooks/contexts/user/ReactQueryClientProvider';
+import { AxiosProvider } from '@hooks/contexts/user/AxiosContext';
 
 LicenseInfo.setLicenseKey(`${process.env.NEXT_PUBLIC_MUI_PRO_KEY}`);
 
@@ -70,14 +70,15 @@ export default function App({ Component, pageProps }: AppProps) {
           <Global styles={globals} />
           <ThemeProvider theme={theme}>
             <ToastContextProvider>
-              <Hydrate state={pageProps.dehydratedState}>
-                <ReactQueryDevtools initialIsOpen={true} />
-                <WProgressBar />
-                <Head>
-                  <title>어다아파 약국 앱</title>
-                </Head>
-                <Component {...pageProps} />
-              </Hydrate>
+              <AxiosProvider>
+                <Hydrate state={pageProps.dehydratedState}>
+                  <ReactQueryDevtools initialIsOpen={true} />
+                  <Head>
+                    <title>어다아파 약국 앱</title>
+                  </Head>
+                  <Component {...pageProps} />
+                </Hydrate>
+              </AxiosProvider>
             </ToastContextProvider>
           </ThemeProvider>
         </UserInfoProvider>
