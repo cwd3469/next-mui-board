@@ -7,6 +7,10 @@ import { useCallback, useState } from 'react';
 import { useToastContext } from '@hooks/utils/useToastContext';
 import { useRouter } from 'next/router';
 import { FlexSpaceBetween, GnbNavList } from '../styled';
+import usePrepareReceptionChange, {
+  usePrepareReceptionStatus,
+} from '@hooks/apis/preparation/request/hooks/usePrepareReceptionChange';
+import GnbTreatStateModal from './modals/GnbTreatStateModal';
 
 interface GnbBodyType {
   children: JSX.Element | JSX.Element[] | React.ReactNode;
@@ -15,31 +19,22 @@ interface GnbBodyType {
 
 const GnbBody = (props: GnbBodyType) => {
   const { children, disabled } = props;
+  const { data, isLoading, isError } = usePrepareReceptionStatus();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const onClickModalOpen = useCallback(() => {
+    setModalOpen(true);
+  }, []);
+  const onClickModalClose = useCallback(() => {
+    setModalOpen(false);
+  }, []);
 
-  const toast = useToastContext();
-  const [extension, setExtension] = useState<boolean>(false);
-  const router = useRouter();
+  if (isLoading) {
+    return <>isLoading...</>;
+  }
 
-  const onClickExtension = useCallback(() => {
-    let state = 200;
-    let setting = true;
-    if (state === 200) {
-      if (!setting) {
-        router.push('/doctor/setting');
-        return;
-      }
-      if (extension) {
-        setExtension(false);
-      } else {
-        setExtension(true);
-      }
-    } else {
-      toast?.on(
-        '접수 상태 변경에 실패하였습니다 \n 잠시 후, 다시 시도해 주세요',
-        'error',
-      );
-    }
-  }, [extension, router, toast]);
+  if (isError) {
+    return <>isError...</>;
+  }
 
   return (
     <WLayout sx={{ padding: '11px 0' }} bg="#fff" containerColor="#fff">
@@ -55,7 +50,26 @@ const GnbBody = (props: GnbBodyType) => {
           {children}
         </GnbNavList>
         <GnbNavList>
-          <GnbExtensionButton checked={extension} onClick={onClickExtension} />
+          {data ? (
+            data.data.code === '0000' ? (
+              <>
+                <GnbExtensionButton
+                  checked={data.data.data.status}
+                  onClick={onClickModalOpen}
+                />
+                <GnbTreatStateModal
+                  status={data.data.data.status}
+                  open={modalOpen}
+                  handleClose={onClickModalClose}
+                />
+              </>
+            ) : (
+              <>isError...</>
+            )
+          ) : (
+            <>isError...</>
+          )}
+
           <GnbTimer />
           <GnbMyInfo disabled={disabled} />
         </GnbNavList>
