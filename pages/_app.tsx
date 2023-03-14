@@ -65,8 +65,8 @@ export default function App({ Component, pageProps }: AppProps) {
 `,
         }}
       />
-      <ReactQueryClientProvider>
-        <UserInfoProvider>
+      <UserInfoProvider>
+        <ReactQueryClientProvider>
           <Global styles={globals} />
           <ThemeProvider theme={theme}>
             <ToastContextProvider>
@@ -81,8 +81,8 @@ export default function App({ Component, pageProps }: AppProps) {
               </AxiosProvider>
             </ToastContextProvider>
           </ThemeProvider>
-        </UserInfoProvider>
-      </ReactQueryClientProvider>
+        </ReactQueryClientProvider>
+      </UserInfoProvider>
     </>
   );
 }
