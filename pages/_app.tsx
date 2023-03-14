@@ -10,11 +10,11 @@ import WProgressBar from '@components/common/modals/WProgressBar';
 import { ToastContextProvider } from '@hooks/utils/useToastContext';
 import { theme } from '@styles/theme';
 import globals from '@styles/globals';
-import { Gnb } from '@components/common/layouts/gnb/Gnb';
 import { useRouter } from 'next/router';
 import { UserInfoProvider } from '@hooks/contexts/userInfoContext';
 import Script from 'next/script';
 import * as gtag from '@utils/gtag';
+import ReactQueryClientProvider from '@hooks/contexts/user/ReactQueryClientProvider';
 
 LicenseInfo.setLicenseKey(`${process.env.NEXT_PUBLIC_MUI_PRO_KEY}`);
 
@@ -65,11 +65,11 @@ export default function App({ Component, pageProps }: AppProps) {
 `,
         }}
       />
-      <UserInfoProvider>
-        <Global styles={globals} />
-        <ThemeProvider theme={theme}>
-          <ToastContextProvider>
-            <QueryClientProvider client={queryClient}>
+      <ReactQueryClientProvider>
+        <UserInfoProvider>
+          <Global styles={globals} />
+          <ThemeProvider theme={theme}>
+            <ToastContextProvider>
               <Hydrate state={pageProps.dehydratedState}>
                 <ReactQueryDevtools initialIsOpen={true} />
                 <WProgressBar />
@@ -78,10 +78,10 @@ export default function App({ Component, pageProps }: AppProps) {
                 </Head>
                 <Component {...pageProps} />
               </Hydrate>
-            </QueryClientProvider>
-          </ToastContextProvider>
-        </ThemeProvider>
-      </UserInfoProvider>
+            </ToastContextProvider>
+          </ThemeProvider>
+        </UserInfoProvider>
+      </ReactQueryClientProvider>
     </>
   );
 }
