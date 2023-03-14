@@ -10,10 +10,10 @@ import { forinArr } from '@utils/file';
 import { stringToDate } from '@utils/date';
 import WSubTitle from '@components/common/typography/WSubTitle';
 import useMutationPharmacyProflie from '@hooks/apis/setting/biseness/useMutationPharmacyProflie';
+import { useDebounceFn } from 'ahooks';
 
 const BusinessHourPage = () => {
   const { businessData, weeks } = useBusinesssSet();
-
   const [pharmacyUlid, setPharmacyUlid] = useState<string>('');
   const [weekList, setWeekList] = useState<WeekDataBundle | undefined>();
   const [startWeek, setStartWeek] = useState<WeekendDto[]>([]);
@@ -22,7 +22,12 @@ const BusinessHourPage = () => {
     weekList,
     pharmacyUlid,
   });
-
+  const onClickPharmacyProflieModifynDebounce = useDebounceFn(
+    onClickPharmacyProflieModify,
+    {
+      wait: 300,
+    },
+  );
   const onChangeWeekList = (value: WeekendDto, keyId: string) => {
     setWeekList((prec) => {
       if (prec) return { ...prec, [keyId]: value };
@@ -111,7 +116,7 @@ const BusinessHourPage = () => {
         )}
       </WBoxLayout>
       <WButton
-        onClick={onClickPharmacyProflieModify}
+        onClick={onClickPharmacyProflieModifynDebounce.run}
         variant="contained"
         sx={{
           width: '320px',
