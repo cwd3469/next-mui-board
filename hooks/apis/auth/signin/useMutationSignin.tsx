@@ -2,6 +2,7 @@ import { SigninDto, SigninState } from '@components/auth/signin/type';
 import { SigninInfoContext } from '@hooks/contexts/info/SigninInfoContext';
 import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
 import { useToastContext } from '@hooks/utils/useToastContext';
+import { setCookie } from 'cookies-next';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { apiSignin } from './index';
@@ -29,6 +30,7 @@ const useMutationSignin = (props: UseMutationSignin) => {
             toast?.on(msg.errMsg(code), 'info');
           } else {
             onOpenModal('success');
+            setCookie('accountId', siginInfo.accountId);
             setInInfo(data);
             return;
           }
