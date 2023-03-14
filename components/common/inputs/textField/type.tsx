@@ -7,4 +7,5 @@ export interface WTextFieldModulesType {
   setErr: (err: ErrorType, keyId: string) => void;
   keyId: string;
   disabled?: boolean;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
