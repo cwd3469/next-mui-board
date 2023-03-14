@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { userInfoContext } from '../userInfoContext';
+import { UserInfoContext } from './UserInfoContext';
 
 const ReactQueryClientProvider = (props: {
   children: JSX.Element | JSX.Element[];
 }) => {
   const router = useRouter();
-  const { handleTokenInfo } = useContext(userInfoContext);
+  const { handleTokenInfo } = useContext(UserInfoContext);
   const [queryClient] = useState(
     () =>
       new QueryClient({

@@ -11,7 +11,7 @@ import { ToastContextProvider } from '@hooks/utils/useToastContext';
 import { theme } from '@styles/theme';
 import globals from '@styles/globals';
 import { useRouter } from 'next/router';
-import { UserInfoProvider } from '@hooks/contexts/userInfoContext';
+import { UserInfoProvider } from '@hooks/contexts/user/UserInfoContext';
 import Script from 'next/script';
 import * as gtag from '@utils/gtag';
 import ReactQueryClientProvider from '@hooks/contexts/user/ReactQueryClientProvider';
