@@ -51,6 +51,7 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
       placeholder={'약국 팩스번호를 입력해 주세요.'}
       disabled={disabled}
       error={err}
+      onKeyDown={props.onKeyDown}
     />
   );
 };

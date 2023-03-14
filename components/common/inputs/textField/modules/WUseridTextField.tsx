@@ -69,6 +69,7 @@ const WUseridTextField = (props: WTextFieldModulesType) => {
       placeholder={'4자 이상의 영문 소문자 또는 숫자를 입력해 주세요.'}
       disabled={disabled ? disabled : false}
       error={err}
+      onKeyDown={props.onKeyDown}
     />
   );
 };

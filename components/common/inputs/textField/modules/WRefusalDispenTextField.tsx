@@ -45,6 +45,7 @@ const WRefusalDispenTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
+      onKeyDown={props.onKeyDown}
       error={err}
       focusInEvent={passMsg}
       disabled={disabled}
