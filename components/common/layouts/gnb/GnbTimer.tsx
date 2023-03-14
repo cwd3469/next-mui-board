@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { Box, Button, Grid, styled, Typography as Text } from '@mui/material';
@@ -7,6 +7,7 @@ import useTimer, { TimerInterface } from '@hooks/utils/useTimer';
 import clock from 'public/assets/icon/clock.svg';
 import colors from '@styles/colors';
 import GnbModal from './GnbModal';
+import { UserInfoContext } from '@hooks/contexts/user/UserInfoContext';
 
 const fontStyle = {
   fontSize: '12px',
@@ -23,6 +24,8 @@ export const Extension = styled(Button)(({ theme }) => ({
 }));
 
 export default function GnbTimer() {
+  const { userInfo, time } = useContext(UserInfoContext);
+  const [expTime, setExpTime] = useState<{ minute: number; seconds: number }>();
   const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -40,12 +43,20 @@ export default function GnbTimer() {
     // alert('시간 연장 합니다.');
   }, []);
 
-  const props: TimerInterface = {
-    time: 3,
+  const { timer, reStart, minutes, seconds } = useTimer({
+    time: expTime ? expTime.minute : 0,
     action: action,
-  };
+    seconds: expTime ? expTime.seconds : 0,
+  });
 
-  const { timer, reStart, minutes, seconds } = useTimer(props);
+  useEffect(() => {
+    if (userInfo) {
+      if (time) {
+        const t = time(userInfo.exp);
+        setExpTime(t);
+      }
+    }
+  }, [time, userInfo]);
 
   useEffect(() => {
     if (minutes === 0 && seconds === 59) {
@@ -65,7 +76,6 @@ export default function GnbTimer() {
       <Box sx={{ width: '15px', height: '15px', position: 'relative' }}>
         <Image src={clock} alt="시계아이콘" layout="fill" />
       </Box>
-
       <Text
         variant="caption"
         lineHeight="1"
