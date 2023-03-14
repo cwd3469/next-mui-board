@@ -21,7 +21,6 @@ interface UseMutationAuthentication {
   authenticationCode: string;
   hanbleClose: () => void;
   onOpenTextFiled: () => void;
-  onOpenModal?: () => void;
   onOpenProcess: (label: SigninState) => void;
 }
 
@@ -53,6 +52,7 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
           return;
         } else {
           props.onOpenTextFiled();
+
           return;
         }
       },
@@ -99,13 +99,10 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
           const { accountUlid, service, refreshToken, accessToken } = data;
           setCookie('accessToken', accessToken);
           setCookie('refreshToken', refreshToken);
+          setCookie('authorized', true);
           const userinfo: UserInfoInterface = jwtDecode(accessToken as string);
           if (setInUserInfo) {
             setInUserInfo(userinfo);
-          }
-
-          if (props.onOpenModal) {
-            props.onOpenModal();
           }
           router.replace('/preparation/request');
           return;
