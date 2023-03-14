@@ -38,12 +38,21 @@ const AuthMobileView = (props: AuthMobileViewType) => {
                 helper="숫자 11자리를 입력해 주세요."
                 error={props.mobileError}
                 disabled={props.mobileDisabled}
+                onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                  if (e.key === 'Enter') {
+                    if (props.mobileValue.length > 12) {
+                      if (!props.btnDisabled) {
+                        onClickAuthNumSend.run();
+                      }
+                    }
+                  }
+                }}
               />
             </Box>
             <Box sx={{ width: '120px', height: '48px' }}>
               <AuthButton
                 disabled={
-                  props.mobileValue.length >= 12 ? props.btnDisabled : true
+                  props.mobileValue.length > 12 ? props.btnDisabled : true
                 }
                 onClick={onClickAuthNumSend.run}
               >
@@ -60,6 +69,13 @@ const AuthMobileView = (props: AuthMobileViewType) => {
             placeholder={'인증번호'}
             helper="숫자만 입력해주세요"
             focusOutEvent={props.focusOutEvent}
+            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+              if (e.key === 'Enter') {
+                if (!props.numDisabled) {
+                  signupAuthOnClick.run();
+                }
+              }
+            }}
           />
           <Grid container justifyContent={'flex-end'}>
             <Box sx={{ height: '20px' }}>
