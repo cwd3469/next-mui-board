@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import { Box, IconButton, styled, SxProps, TextField } from '@mui/material';
 import sreach from 'public/assets/icon/search.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Theme } from '@mui/system';
+import { useDebounceFn } from 'ahooks';
 
 export const SearchTextField = styled(TextField)(({ theme }) => ({
   width: '300px',
@@ -22,21 +23,33 @@ export const SearchTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const WSearchInput = (props: {
+  queryValue?: string;
   search: (txt: string) => void;
   placeholder: string;
   sx?: SxProps<Theme>;
 }) => {
   const { search, placeholder, sx } = props;
   const [value, setValue] = useState<string>('');
-  const searchEvent = () => {
-    search(value);
-  };
+  const handleEvent = useDebounceFn(
+    () => {
+      search(value);
+    },
+    {
+      wait: 300,
+    },
+  );
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
-      searchEvent();
+      handleEvent.run();
     }
   };
+
+  useEffect(() => {
+    if (props.queryValue) {
+      setValue(props.queryValue);
+    }
+  }, [props.queryValue]);
 
   return (
     <Box position="relative">
@@ -54,7 +67,7 @@ const WSearchInput = (props: {
           top: '50%',
           transform: 'translateY(-50%)',
         }}
-        onClick={searchEvent}
+        onClick={handleEvent.run}
       >
         <Box
           sx={{
