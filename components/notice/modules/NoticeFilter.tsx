@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import WSearchInput from '@components/common/inputs/textField/modules/WSearchInput';
 import { NoticeFilterContext } from '@hooks/contexts/filters/NoticeFilterContext';
@@ -10,7 +10,7 @@ export interface OptionType {
 }
 
 const NoticeFilter = () => {
-  const { setInFilter } = React.useContext(NoticeFilterContext);
+  const { filter, setInFilter } = React.useContext(NoticeFilterContext);
 
   const searchEvent = (txt: string) => {
     setInFilter(txt, 'keyword');
@@ -20,9 +20,14 @@ const NoticeFilter = () => {
     <Grid container alignItems={'center'} justifyContent={'space-between'}>
       <Grid container width="auto" gap={'10px'}>
         <WSelectNotice
+          value={filter.status}
           callBack={(id: string, keyId: string) => setInFilter(id, keyId)}
         />
-        <WSearchInput search={searchEvent} placeholder="제목 검색" />
+        <WSearchInput
+          queryValue={filter.keyword}
+          search={searchEvent}
+          placeholder="제목 검색"
+        />
       </Grid>
     </Grid>
   );
