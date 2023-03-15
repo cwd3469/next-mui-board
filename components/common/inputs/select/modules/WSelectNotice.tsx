@@ -1,8 +1,9 @@
 import { SelectChangeEvent } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import WSelect, { OptionType } from '..';
 
 const WSelectNotice = (props: {
+  value?: string;
   callBack: (id: string, keyId: string) => void;
 }) => {
   const option: OptionType[] = [
@@ -16,6 +17,13 @@ const WSelectNotice = (props: {
     setState(value);
     props.callBack(value, 'status');
   };
+
+  useEffect(() => {
+    if (props.value) {
+      setState(props.value);
+    }
+  }, [props.value]);
+
   return (
     <WSelect
       name={'expenses'}
