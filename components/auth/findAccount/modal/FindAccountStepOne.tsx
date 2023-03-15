@@ -59,11 +59,15 @@ const FindAccountStepOne = (props: ModalType) => {
         timerActice={mobileAuthHook.onAuthTimeOut}
         timerResend={mobileAuthHook.onTimerDisabled}
       />
-      <FindAccountStepTwo
-        open={modalOn}
-        handleClose={resetModalClose}
-        info={accountInfo}
-      />
+      {modalOn ? (
+        <FindAccountStepTwo
+          open={modalOn}
+          handleClose={resetModalClose}
+          info={accountInfo}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 };

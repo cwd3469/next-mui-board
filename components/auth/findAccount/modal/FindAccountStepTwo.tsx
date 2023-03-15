@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import { ModalType } from '@components/common/layouts/gnb/types';
 import { VerifyDto } from '../type';
@@ -13,7 +13,7 @@ import WSubTitle from '@components/common/typography/WSubTitle';
 import { useMutation } from 'react-query';
 import { apiFindAccountPwReset } from '@hooks/apis/auth/findAccount';
 import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
-import { useDebounceFn } from 'ahooks';
+import { useDebounceFn, useKeyPress } from 'ahooks';
 
 interface FindAccountStepTwoType extends ModalType {
   info?: {
@@ -56,6 +56,13 @@ const FindAccountStepTwo = (props: FindAccountStepTwoType) => {
   const onReChangePassword = useDebounceFn(pwChangeEvent, {
     wait: 300,
   });
+
+  useKeyPress('enter', () => {
+    if (!disable) {
+      onReChangePassword.run();
+    }
+  });
+
   return (
     <WConfirm
       open={props.open}
