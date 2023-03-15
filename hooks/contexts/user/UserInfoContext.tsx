@@ -79,42 +79,42 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
   /**UserInfoContext 토큰 리프레쉬 */
   const handleTokenInfo = useCallback(async () => {
     const token = getCookie('refreshToken');
-    if (typeof document !== 'undefined') {
-      const refreshToken = typeof token === 'string' ? token : '';
-      if (refreshToken) {
-        await apiTokenValidation(refreshToken)
-          .then((data) => {
-            if (data.data.code) {
-              if (data.data.code !== '0000') {
-                if (data.data.code === '0049') {
-                  toast?.on(
-                    '다른 기기에서 로그인 하였습니다. \n 로그인 페이지로 이동합니다.',
-                    'info',
-                  );
-                  return;
-                } else {
-                  toast?.on(msg.errMsg(data.data.code), 'error');
-                }
-                deleteCookie('accessToken');
-                deleteCookie('refreshToken');
-                signOut();
-                return;
-              } else {
-                setCookie('accessToken', data.data.accessToken);
-                setCookie('refreshToken', data.data.refreshToken);
-              }
-            }
-          })
-          .catch(() => {
-            console.log('4');
-            toast?.on(
-              '토큰 유효기간이 만료 되었습니다. \n 로그인 페이지로 이동합니다.',
-              'error',
-            );
-            signOut();
-          });
-      }
-    }
+    // if (typeof document !== 'undefined') {
+    //   const refreshToken = typeof token === 'string' ? token : '';
+    //   if (refreshToken) {
+    //     await apiTokenValidation(refreshToken)
+    //       .then((data) => {
+    //         if (data.data.code) {
+    //           if (data.data.code !== '0000') {
+    //             if (data.data.code === '0049') {
+    //               toast?.on(
+    //                 '다른 기기에서 로그인 하였습니다. \n 로그인 페이지로 이동합니다.',
+    //                 'info',
+    //               );
+    //               return;
+    //             } else {
+    //               toast?.on(msg.errMsg(data.data.code), 'error');
+    //             }
+    //             deleteCookie('accessToken');
+    //             deleteCookie('refreshToken');
+    //             signOut();
+    //             return;
+    //           } else {
+    //             setCookie('accessToken', data.data.accessToken);
+    //             setCookie('refreshToken', data.data.refreshToken);
+    //           }
+    //         }
+    //       })
+    //       .catch(() => {
+    //         console.log('4');
+    //         toast?.on(
+    //           '토큰 유효기간이 만료 되었습니다. \n 로그인 페이지로 이동합니다.',
+    //           'error',
+    //         );
+    //         signOut();
+    //       });
+    //   }
+    // }
   }, [msg, signOut, toast]);
 
   useEffect(() => {
