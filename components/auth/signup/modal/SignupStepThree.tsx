@@ -20,7 +20,8 @@ import useMutationSignup from '@hooks/apis/auth/signup/useMutationSignup';
 import SigninNotApproved from '@components/auth/signin/modal/SigninNotApproved';
 import WEmailTextField from '@components/common/inputs/textField/modules/WEmailTextField';
 import { makeStyles } from '@mui/styles';
-import { useDebounceFn } from 'ahooks';
+import { useDebounceFn, useKeyPress } from 'ahooks';
+import { useRef } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   modalStyle: {
@@ -41,6 +42,13 @@ const SignupStepThree = (props: SignupStepThreeType) => {
   const onClickSignupHook = useDebounceFn(onClickSignup, {
     wait: 300,
   });
+
+  useKeyPress('enter', () => {
+    if (!signup.btnDisable) {
+      onClickSignupHook.run();
+    }
+  });
+
   return (
     <>
       <WAlert

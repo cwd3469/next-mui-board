@@ -60,11 +60,15 @@ const SignupStepTwo = (props: ModalType) => {
         timerActice={mobileAuthHook.onAuthTimeOut}
         timerResend={mobileAuthHook.onTimerDisabled}
       />
-      <SignupStepThree
-        mobileValue={mobileAuthHook.mobileValue}
-        open={modalOn}
-        handleClose={resetModalClose}
-      />
+      {modalOn ? (
+        <SignupStepThree
+          mobileValue={mobileAuthHook.mobileValue}
+          open={modalOn}
+          handleClose={resetModalClose}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 };
