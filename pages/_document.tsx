@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ServerStyleSheets } from '@mui/styles';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
