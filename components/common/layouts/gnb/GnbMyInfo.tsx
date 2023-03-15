@@ -5,11 +5,11 @@ import colors from '@styles/colors';
 import { useRouter } from 'next/router';
 import { removeCookies } from 'cookies-next';
 import { GnbPopover } from '../styled';
-import { userInfoContext } from '@hooks/contexts/userInfoContext';
+import { UserInfoContext } from '@hooks/contexts/user/UserInfoContext';
 
 export default function GnbMyInfo(props: { disabled?: boolean }) {
   const { disabled } = props;
-  const { userInfo } = React.useContext(userInfoContext);
+  const { userInfo } = React.useContext(UserInfoContext);
   const router = useRouter();
 
   const gnbInfo = React.useCallback(() => {

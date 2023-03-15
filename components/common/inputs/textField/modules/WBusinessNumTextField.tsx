@@ -73,6 +73,7 @@ const WBusinessNumTextField = (props: WTextFieldModulesType) => {
       placeholder={'사업자 등록번호를 입력해 주세요.'}
       disabled={disabled}
       error={err}
+      onKeyDown={props.onKeyDown}
     />
   );
 };

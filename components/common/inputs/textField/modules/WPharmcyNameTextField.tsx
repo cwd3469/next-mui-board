@@ -50,6 +50,7 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
       disabled={disabled}
       placeholder="약국명를 입력해 주세요."
       helper={'최대 15자리까지 입력 가능합니다.'}
+      onKeyDown={props.onKeyDown}
     />
   );
 };

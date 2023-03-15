@@ -48,6 +48,7 @@ const WEmailTextField = (props: WTextFieldModulesType) => {
       onChange={onChangeInfo}
       value={props.state}
       error={props.err}
+      onKeyDown={props.onKeyDown}
     />
   );
 };

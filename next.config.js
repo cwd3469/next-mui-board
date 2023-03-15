@@ -37,7 +37,26 @@ const nextConfig = {
     return [
       {
         source: '/',
+        has: [
+          {
+            type: 'cookie',
+            key: 'authorized',
+            value: 'false',
+          },
+        ],
         destination: '/signin',
+        permanent: false,
+      },
+      {
+        source: '/',
+        has: [
+          {
+            type: 'cookie',
+            key: 'authorized',
+            value: 'true',
+          },
+        ],
+        destination: '/preparation/request',
         permanent: false,
       },
     ];

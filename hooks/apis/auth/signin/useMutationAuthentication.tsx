@@ -12,7 +12,7 @@ import { useMutation } from 'react-query';
 import { apiSigninAuth, apiSigninAuthVerify } from '.';
 import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
-import { userInfoContext } from '@hooks/contexts/userInfoContext';
+import { UserInfoContext } from '@hooks/contexts/user/UserInfoContext';
 import { UserInfoInterface } from '@components/auth/types';
 import jwtDecode from 'jwt-decode';
 
@@ -21,7 +21,6 @@ interface UseMutationAuthentication {
   authenticationCode: string;
   hanbleClose: () => void;
   onOpenTextFiled: () => void;
-  onOpenModal?: () => void;
   onOpenProcess: (label: SigninState) => void;
 }
 
@@ -32,7 +31,7 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
   const router = useRouter();
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
-  const { setInUserInfo } = useContext(userInfoContext);
+  const { setInUserInfo } = useContext(UserInfoContext);
   const { mutate: mutateSigninAuth } = useMutation(apiSigninAuth);
   const { mutate: mutateSigninAuthVerify } = useMutation(apiSigninAuthVerify);
   //휴대폰 인증 요청
@@ -53,6 +52,7 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
           return;
         } else {
           props.onOpenTextFiled();
+
           return;
         }
       },
@@ -99,10 +99,10 @@ const useMutationAuthentication = (props: UseMutationAuthentication) => {
           const { accountUlid, service, refreshToken, accessToken } = data;
           setCookie('accessToken', accessToken);
           setCookie('refreshToken', refreshToken);
+          setCookie('authorized', true);
           const userinfo: UserInfoInterface = jwtDecode(accessToken as string);
-          setInUserInfo(userinfo);
-          if (props.onOpenModal) {
-            props.onOpenModal();
+          if (setInUserInfo) {
+            setInUserInfo(userinfo);
           }
           router.replace('/preparation/request');
           return;

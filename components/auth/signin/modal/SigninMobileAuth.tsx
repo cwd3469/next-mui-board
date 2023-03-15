@@ -23,17 +23,15 @@ const SigninMobileAuth = (props: ModalType) => {
     setModalOn(false);
   }, [mobileAuthHook, props]);
 
-  // 계정 상태 알림 모달 off 기능
-  const onOpenModal = useCallback(() => {
-    setModalOn(true);
-    mobileAuthHook.onSetAuthDisabled();
-    resetModalClose();
-  }, [mobileAuthHook, resetModalClose]);
-
-  // 계정 상태 알림 모달 off 기능
-  const onOpenProcess = useCallback((label: SigninState) => {
-    setModalLabel(label);
-  }, []);
+  // 계정 상태 알림 모달 on 기능
+  const onOpenProcess = useCallback(
+    (label: SigninState) => {
+      setModalLabel(label);
+      setModalOn(true);
+      mobileAuthHook.onSetAuthDisabled();
+    },
+    [mobileAuthHook],
+  );
 
   // useMutationAuthentication props data
   const customProp = {

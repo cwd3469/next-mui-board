@@ -13,6 +13,7 @@ import { ErrorType } from '../type';
 interface WTextFieldProps {
   name?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void | null;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   type?: 'text' | 'password' | 'number';
   error: ErrorType;
   disabled: boolean;
@@ -71,6 +72,7 @@ const WTextField = (props: WTextFieldProps) => {
     focusInEvent,
     maxRows,
     sx,
+    onKeyDown,
   } = props;
   const helperTxt = helper ? helper : '';
   const [helperOn, setHelper] = useState<boolean>(false);
@@ -104,6 +106,7 @@ const WTextField = (props: WTextFieldProps) => {
         className="wau"
         onFocus={focusIn}
         onBlur={focusOut}
+        onKeyDown={onKeyDown}
         maxRows={maxRows ? maxRows : 100}
         inputProps={{
           readOnly: readOnly ? readOnly : false,

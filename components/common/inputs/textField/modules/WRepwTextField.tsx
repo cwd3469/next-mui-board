@@ -63,6 +63,7 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
       type="password"
       value={stateTxt}
       onChange={onChangeInfo}
+      onKeyDown={props.onKeyDown}
       focusOutEvent={() => onFocusOut(stateTxt)}
       disabled={disabled}
       error={err}

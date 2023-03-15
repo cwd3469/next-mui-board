@@ -56,6 +56,7 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
       placeholder={'약국전화번호를 입력해 주세요.'}
       disabled={props.disabled}
       error={props.err}
+      onKeyDown={props.onKeyDown}
     />
   );
 };

@@ -1,7 +1,5 @@
-import { FileUid } from '@hooks/utils/fileUpload/types';
-import useDropDrag from '@hooks/utils/fileUpload/useDropDrag';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import useFileUpload from '@hooks/utils/fileUpload/useFileUpload';
-import useValidation from '@hooks/utils/useValidation';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { blobToFile, forinArr, resizeFileCompression } from '@utils/file';
 import { ChangeEvent, useCallback, useEffect } from 'react';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Stack, Grid, Box } from '@mui/material';
 import { Logo } from '@components/common/layouts/WLayout';
 import {
@@ -9,7 +9,7 @@ import { WButton } from '@components/common/button/WButton';
 import useSignin from '../hooks/useSignin';
 import useMutationSignin from '@hooks/apis/auth/signin/useMutationSignin';
 import SigninMobileAuth from './modal/SigninMobileAuth';
-import { useDebounceFn } from 'ahooks';
+import { useDebounceFn, useKeyPress } from 'ahooks';
 import WSubTitle from '@components/common/typography/WSubTitle';
 import { makeStyles } from '@mui/styles';
 
@@ -36,6 +36,8 @@ const SigninPage = () => {
     setState,
     setStateErr,
   } = useSignin();
+  const signinRef = useRef(null);
+
   const { onClickSignin } = useMutationSignin({
     info: siginInfo,
     onOpenModal,
@@ -43,6 +45,19 @@ const SigninPage = () => {
   const onClickSigninHook = useDebounceFn(onClickSignin, {
     wait: 300,
   });
+
+  useKeyPress(
+    'enter',
+    () => {
+      if (!disabled) {
+        onClickSigninHook.run();
+      }
+    },
+    {
+      target: signinRef,
+    },
+  );
+
   return (
     <Stack>
       <Grid container justifyContent={'center'} sx={{ paddingBottom: '108px' }}>
@@ -53,7 +68,7 @@ const SigninPage = () => {
           }}
         />
       </Grid>
-      <Stack>
+      <Stack ref={signinRef}>
         <Stack gap="16px">
           <WSubTitle className={classes.wTitle} title="아이디" />
           <WUseridTextField
