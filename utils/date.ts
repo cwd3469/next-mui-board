@@ -21,3 +21,8 @@ export const dateFormat = (date: string) => {
   let time = dayjs(date).format('HH:mm');
   return { dayTime, day, time };
 };
+
+export const stringToDey = (txt: string) => {
+  const day = dayjs(txt);
+  return day;
+};
