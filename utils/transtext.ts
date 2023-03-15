@@ -33,8 +33,9 @@ export const transTextStateReception = (state: string) => {
 };
 
 export const transQueryUrl = (filter: FilterAllOtions) => {
-  const page = filter.page ? `&page=${filter.page - 1}` : '';
+  const page = filter.page ? `&page=${filter.page}` : '';
   const code = filter.code === '0' ? '' : `&code=${filter.code}`;
+  const keyword = filter.keyword ? `&keyword=${filter.keyword}` : '';
   const nameKo = filter.nameKo ? `&nameKo=${filter.nameKo}` : '';
   const location = filter.location
     ? filter.location !== 'DEFULT'
@@ -56,8 +57,9 @@ export const transQueryUrl = (filter: FilterAllOtions) => {
       ? `&isDone=${filter.isDone}`
       : ''
     : '';
-
-  return `${page}${code}${nameKo}${location}${status}${enterType}${isDone}`;
+  const url =
+    page + code + nameKo + keyword + location + status + enterType + isDone;
+  return url;
 };
 
 export const transQueryDate = (filter: FilterDateType) => {
