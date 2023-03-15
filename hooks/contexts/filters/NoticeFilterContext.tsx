@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createContext, useCallback, useState } from 'react';
+import useFilter from '@hooks/utils/filter/useFilter';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import { FilterNoticeType, FilterValue } from './type';
 
 const NoticeFilterContext = createContext<{
@@ -28,12 +29,11 @@ const NoticeFilterProvider = ({ children }: Props): JSX.Element => {
     keyword: '',
     status: '',
   });
-
-  const setInFilter = useCallback((value: FilterValue, keyId: string) => {
-    setFilter((prec) => {
-      return { ...prec, [keyId]: value };
-    });
-  }, []);
+  const { setInFilter } = useFilter({
+    url: '/notice',
+    filter: filter,
+    setFilter: setFilter,
+  });
 
   return (
     <NoticeFilterContext.Provider
