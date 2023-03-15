@@ -28,6 +28,7 @@ export default function useMobileAuth() {
   const reset = useCallback(() => {
     setAuthDisabled(true);
     setNumDisabled(true);
+    setAuthRequestDisabled(false);
     setMobileError(errMsg);
     setAuthError(errMsg);
     setMobile('');
