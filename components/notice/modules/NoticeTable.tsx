@@ -4,12 +4,13 @@ import { NoticeInterface } from '../type';
 import WDataTable, { baseOption } from '@components/common/dataGrid/WDataTable';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
+import { transTextNotice } from '@utils/transtext';
+import dayjs from 'dayjs';
+import { dateFormat } from '@utils/date';
 
 const NoticeTable = (props: { data: NoticeInterface[] }): JSX.Element => {
   const { data } = props;
-  const rows = data.map((item, index) => {
-    return { ...item, ['id']: index };
-  });
+  const rows = data;
   const router = useRouter();
   const onNoticeDetail = useCallback(
     (id: string) => {
@@ -22,15 +23,18 @@ const NoticeTable = (props: { data: NoticeInterface[] }): JSX.Element => {
   const columns: GridColDef[] = [
     {
       ...baseOption,
-      field: 'number',
+      field: 'id',
       headerName: '번호',
       width: 200,
     },
     {
       ...baseOption,
-      field: 'status',
+      field: 'type',
       headerName: '구분',
       width: 200,
+      renderCell(params) {
+        return <>{transTextNotice(params.row.type)}</>;
+      },
     },
     {
       ...baseOption,
@@ -47,7 +51,7 @@ const NoticeTable = (props: { data: NoticeInterface[] }): JSX.Element => {
               fontWeight: '400',
             }}
             variant="text"
-            onClick={() => onNoticeDetail(params.row.ulid)}
+            onClick={() => onNoticeDetail(params.row.id)}
           >
             {params.row.title}
           </Button>
@@ -56,9 +60,12 @@ const NoticeTable = (props: { data: NoticeInterface[] }): JSX.Element => {
     },
     {
       ...baseOption,
-      field: 'createAt',
+      field: 'createdAt',
       headerName: '작성일',
       width: 190,
+      renderCell(params) {
+        return <>{dateFormat(params.row.createdAt).day}</>;
+      },
     },
   ];
 
