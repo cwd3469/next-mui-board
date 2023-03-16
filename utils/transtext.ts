@@ -6,21 +6,6 @@ export const sideDot = (txt: string, spe: string) => {
   return dot;
 };
 
-export const transTextStateTreat = (state: string) => {
-  switch (state) {
-    case 'HOLD':
-      return '진료 보류';
-    case 'WAIT':
-      return '진료 대기';
-    case 'CLOSE':
-      return '진료 종료';
-    case 'CANCEL':
-      return '진료 취소';
-    default:
-      return '진료 중';
-  }
-};
-
 export const transTextNotice = (state: string) => {
   switch (state) {
     case 'NOTICE':
