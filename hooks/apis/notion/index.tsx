@@ -28,7 +28,7 @@ export const apiNoticeDetail = (prams: string) => {
 
   return instance({
     method: 'get',
-    url: `url/detail/${prams}`,
+    url: `backoffice/api/v2/notice/${prams}`,
     headers: {
       Authorization: accessToken,
     },
