@@ -13,18 +13,18 @@ const NoticeFilter = () => {
   const { filter, setInFilter } = React.useContext(NoticeFilterContext);
 
   const searchEvent = (txt: string) => {
-    setInFilter(txt, 'keyword');
+    setInFilter(txt, 'title');
   };
 
   return (
     <Grid container alignItems={'center'} justifyContent={'space-between'}>
       <Grid container width="auto" gap={'10px'}>
         <WSelectNotice
-          value={filter.status}
-          callBack={(id: string, keyId: string) => setInFilter(id, keyId)}
+          value={filter.type}
+          callBack={(id: string) => setInFilter(id, 'type')}
         />
         <WSearchInput
-          queryValue={filter.keyword}
+          queryValue={filter.title}
           search={searchEvent}
           placeholder="제목 검색"
         />
