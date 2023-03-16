@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import WSearchInput from '@components/common/inputs/textField/modules/WSearchInput';
-import WSelectNotice from '@components/common/inputs/select/modules/WSelectNotice';
 import { HistoryFilterContext } from '@hooks/contexts/filters/HistoryFilterContext';
 import WSelectPreparation from '@components/common/inputs/select/modules/WSelectPreparation';
 import WDatePicker from '@components/common/inputs/datepicker';
