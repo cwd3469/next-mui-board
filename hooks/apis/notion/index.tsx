@@ -13,7 +13,7 @@ export const apiNoticeList = (prams: { filter: FilterNoticeType }) => {
 
   return instance({
     method: 'get',
-    url: `url?size=10${queryUrl}`,
+    url: `backoffice/api/v2/notice?size=10&channel=PHARMACY${queryUrl}`,
     headers: {
       Authorization: accessToken,
     },
