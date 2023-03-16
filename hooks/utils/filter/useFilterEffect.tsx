@@ -17,64 +17,35 @@ const useFilterEffect = (props: UseFilterEffectType) => {
 
   useEffect(() => {
     const query = router.query;
-    const {
-      code,
-      keyword,
-      page,
-      status,
-      preparationStatus,
-      deliveryStatus,
-      paymentStatus,
-      startDate,
-      endDate,
-    } = query;
+    const { keyword, page, type, title, startDate, endDate } = query;
 
     if (props.filter) {
-      let reFilter: FilterAllOtions = props.filter;
-
-      if (code) {
-        reFilter = {
-          ...reFilter,
-          ['code']: code as string,
-        };
-      }
-      if (page) {
-        reFilter = {
-          ...reFilter,
-          ['page']: Number(page as string),
-        };
-      }
-      if (keyword) {
-        reFilter = {
-          ...reFilter,
-          ['keyword']: keyword as string,
-        };
-      }
-      if (status) {
-        reFilter = {
-          ...reFilter,
-          ['status']: status as string,
-        };
-      }
-      if (preparationStatus) {
-        reFilter = {
-          ...reFilter,
-          ['preparationStatus']: preparationStatus as string,
-        };
-      }
-      if (deliveryStatus) {
-        reFilter = {
-          ...reFilter,
-          ['deliveryStatus']: deliveryStatus as string,
-        };
-      }
-      if (paymentStatus) {
-        reFilter = {
-          ...reFilter,
-          ['paymentStatus']: paymentStatus as string,
-        };
-      }
       if (props.setFilter) {
+        let reFilter: FilterAllOtions = props.filter;
+        if (page) {
+          reFilter = {
+            ...reFilter,
+            ['page']: Number(page as string),
+          };
+        }
+        if (type) {
+          reFilter = {
+            ...reFilter,
+            ['type']: type as string,
+          };
+        }
+        if (title) {
+          reFilter = {
+            ...reFilter,
+            ['title']: title as string,
+          };
+        }
+        if (keyword) {
+          reFilter = {
+            ...reFilter,
+            ['keyword']: keyword as string,
+          };
+        }
         props.setFilter(reFilter);
       }
     }
