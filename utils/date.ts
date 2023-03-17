@@ -16,8 +16,13 @@ export const getFormatTime = (date: Date) => {
 };
 
 export const dateFormat = (date: string) => {
-  let dayTime = dayjs(date).format('YYYY.MM.DD HH:mm');
-  let day = dayjs(date).format('YYYY.MM.DD');
+  let dayTime = dayjs(date).format('YYYY. MM. DD HH:mm');
+  let day = dayjs(date).format('YYYY. MM. DD');
   let time = dayjs(date).format('HH:mm');
   return { dayTime, day, time };
+};
+
+export const stringToDey = (txt: string) => {
+  const day = dayjs(txt);
+  return day;
 };

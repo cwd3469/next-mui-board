@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { useEffect } from 'react';
+import { Hydrate } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -20,20 +20,6 @@ LicenseInfo.setLicenseKey(`${process.env.NEXT_PUBLIC_MUI_PRO_KEY}`);
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            cacheTime: 600000,
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
-            refetchInterval: 600000,
-            retry: false,
-          },
-        },
-      }),
-  );
   useEffect(() => {
     const handleRouteChange = (url: URL) => {
       gtag.pageview(url);

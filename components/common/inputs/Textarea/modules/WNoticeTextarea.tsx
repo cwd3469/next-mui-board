@@ -1,6 +1,5 @@
 import { WNotionBoardBody } from '@components/notice/styled';
-import { Box } from '@mui/material';
-import { WTaxtarea } from '..';
+import 'react-quill/dist/quill.snow.css';
 
 interface WNoticeTextareaType {
   value: string;
@@ -11,7 +10,11 @@ const WNoticeTextarea = (props: WNoticeTextareaType) => {
 
   return (
     <WNotionBoardBody>
-      <WTaxtarea value={value} sx={{ color: '#555', lineHeight: '20px' }} />
+      <div
+        className="ql-editor"
+        style={{ position: 'relative' }}
+        dangerouslySetInnerHTML={{ __html: value }}
+      ></div>
     </WNotionBoardBody>
   );
 };

@@ -14,6 +14,7 @@ import { useDebounceFn } from 'ahooks';
 
 const BusinessHourPage = () => {
   const { businessData, weeks } = useBusinesssSet();
+  const [disabled, setDisabled] = useState<boolean>(true);
   const [pharmacyUlid, setPharmacyUlid] = useState<string>('');
   const [weekList, setWeekList] = useState<WeekDataBundle | undefined>();
   const [startWeek, setStartWeek] = useState<WeekendDto[]>([]);
@@ -59,6 +60,70 @@ const BusinessHourPage = () => {
       setWeekList(data);
     }
   }, [businessData]);
+
+  useEffect(() => {
+    if (businessData && weekList) {
+      if (
+        JSON.stringify(businessData.mondayOperation) !==
+        JSON.stringify(weekList.mondayOperation)
+      ) {
+        setDisabled(false);
+        return;
+      }
+      if (
+        JSON.stringify(businessData.tuesdayOperation) !==
+        JSON.stringify(weekList.tuesdayOperation)
+      ) {
+        setDisabled(false);
+        return;
+      }
+      if (
+        JSON.stringify(businessData.wednesdayOperation) !==
+        JSON.stringify(weekList.wednesdayOperation)
+      ) {
+        setDisabled(false);
+        return;
+      }
+      if (
+        JSON.stringify(businessData.thursdayOperation) !==
+        JSON.stringify(weekList.thursdayOperation)
+      ) {
+        setDisabled(false);
+        return;
+      }
+      if (
+        JSON.stringify(businessData.fridayOperation) !==
+        JSON.stringify(weekList.fridayOperation)
+      ) {
+        setDisabled(false);
+        return;
+      }
+      if (
+        JSON.stringify(businessData.saturdayOperation) !==
+        JSON.stringify(weekList.saturdayOperation)
+      ) {
+        setDisabled(false);
+        return;
+      }
+      if (
+        JSON.stringify(businessData.sundayOperation) !==
+        JSON.stringify(weekList.sundayOperation)
+      ) {
+        setDisabled(false);
+        return;
+      }
+      if (
+        JSON.stringify(businessData.holidayOperation) !==
+        JSON.stringify(weekList.holidayOperation)
+      ) {
+        setDisabled(false);
+        return;
+      }
+      setDisabled(true);
+    } else {
+      setDisabled(true);
+    }
+  }, [businessData, weekList]);
 
   return (
     <FlexCenterC gap="26px">
@@ -116,6 +181,7 @@ const BusinessHourPage = () => {
         )}
       </WBoxLayout>
       <WButton
+        disabled={disabled}
         onClick={onClickPharmacyProflieModifynDebounce.run}
         variant="contained"
         sx={{

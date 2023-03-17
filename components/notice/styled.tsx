@@ -20,8 +20,6 @@ export const WNotionBoardHead = styled(Box)(({ theme }) => ({
   },
 }));
 export const WNotionBoardBody = styled(Box)(({ theme }) => ({
-  padding: '30px 35px',
-  overflowY: 'scroll',
   overflowX: 'hidden',
   height: '572px',
 }));
