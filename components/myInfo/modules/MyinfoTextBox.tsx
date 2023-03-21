@@ -19,7 +19,7 @@ const MyInfoTextBox = (props: {
           },
         }}
       />
-      <BoxDisabledText>{children}</BoxDisabledText>
+      <BoxDisabledText className="disabled-text">{children}</BoxDisabledText>
     </FlexStartC>
   );
 };
