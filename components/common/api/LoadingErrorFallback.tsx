@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import { useEffect } from 'react';
 
 interface LoadingErrorFallbackProps {
@@ -5,10 +6,13 @@ interface LoadingErrorFallbackProps {
   isError: boolean;
   isWarning: boolean;
   skeleton?: JSX.Element | JSX.Element | string;
-  contexts: JSX.Element | JSX.Element | string;
+  contexts: (
+    info: AxiosResponse<any, any>,
+  ) => JSX.Element | JSX.Element | string;
+  data: AxiosResponse<any, any> | undefined;
 }
 const LoadingErrorFallback = (props: LoadingErrorFallbackProps) => {
-  const { isError, isLoading, isWarning, skeleton, contexts } = props;
+  const { data, isError, isLoading, isWarning, skeleton, contexts } = props;
 
   if (isLoading) {
     return <>{skeleton ? skeleton : <></>}</>;
@@ -19,7 +23,13 @@ const LoadingErrorFallback = (props: LoadingErrorFallbackProps) => {
   if (isWarning) {
     return <>{skeleton ? skeleton : <></>}</>;
   }
-  return <>{contexts}</>;
+  if (data) {
+    if (data.data.code === '0000') {
+      return <>{contexts(data)}</>;
+    }
+    return <>{skeleton ? skeleton : <></>}</>;
+  }
+  return <>{skeleton ? skeleton : <></>}</>;
 };
 
 export default LoadingErrorFallback;
