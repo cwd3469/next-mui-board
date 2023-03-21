@@ -15,13 +15,13 @@ const LoadingErrorFallback = (props: LoadingErrorFallbackProps) => {
   const { data, isError, isLoading, isWarning, skeleton, contexts } = props;
 
   if (isLoading) {
-    return <>{skeleton ? skeleton : <></>}</>;
+    return <>{skeleton ? skeleton : <>isLoading...</>}</>;
   }
   if (isError) {
-    return <>{skeleton ? skeleton : <></>}</>;
+    return <>{skeleton ? skeleton : <>isError...</>}</>;
   }
   if (isWarning) {
-    return <>{skeleton ? skeleton : <></>}</>;
+    return <>{skeleton ? skeleton : <>isLoading...</>}</>;
   }
   if (data) {
     if (data.data.code === '0000') {
