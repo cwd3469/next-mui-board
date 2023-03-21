@@ -6,6 +6,7 @@ import MyinfoTextBox from '../modules/MyinfoTextBox';
 import useMyinfo from '@hooks/apis/myinfo/hooks/useMyinfo';
 import LoadingErrorFallback from '@components/common/api/LoadingErrorFallback';
 import Footer from '@components/common/layouts/Footer';
+import { mobileFormat, phoneFormat } from '@utils/formatNumber';
 
 const DomesticMyPage = () => {
   const { data, isError, isLoading, isWarning } = useMyinfo();
@@ -32,27 +33,27 @@ const DomesticMyPage = () => {
                       {info.data.data.pharmacyNameKo}
                     </MyinfoTextBox>
                     <MyinfoTextBox title="약국 전화번호">
-                      {info.data.data.pharmacyNameKo}
+                      {phoneFormat(info.data.data.pharmacyPhoneNum)}
                     </MyinfoTextBox>
                     <MyinfoTextBox
                       title="약국 주소"
                       sx={{ '& .disabled-text': { minHeight: '62px' } }}
                     >
                       <>
-                        {info.data.data.pharmacyAddrKo}
+                        {info.data.data.pharmacyAddrKo}{' '}
                         {info.data.data.pharmacyAddrDetailKo}
                       </>
                     </MyinfoTextBox>
                   </FlexStartC>
                   <FlexStartC gap="24px">
-                    <MyinfoTextBox title="약국 명">
-                      {info.data.data.pharmacyNameKo}
+                    <MyinfoTextBox title="약사 명">
+                      {info.data.data.pharmacistNameKo}
                     </MyinfoTextBox>
                     <MyinfoTextBox title="휴대폰 번호">
-                      {info.data.data.pharmacyNameKo}
+                      {mobileFormat(info.data.data.pharmacistPhoneNum)}
                     </MyinfoTextBox>
                     <MyinfoTextBox title="약국 팩스번호">
-                      {info.data.data.pharmacyNameKo}
+                      {info.data.data.pharmacyFaxNum}
                     </MyinfoTextBox>
                   </FlexStartC>
                 </Grid>
