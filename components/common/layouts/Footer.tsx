@@ -38,12 +38,25 @@ export const FooterButton = styled(Button)(({ theme }) => ({
 }));
 
 const Footer = (props: { sx?: SxProps<Theme> }) => {
+  const onPressPartner = () => {
+    window.open('/terms/partner-agree');
+  };
+  const onPressPrivacy = () => {
+    window.open('/terms/privacy-agree');
+  };
+  const onPressPrivacyPolicy = () => {
+    window.open('/terms/privacy-policy');
+  };
   return (
     <Stack gap={'24px'} sx={props.sx} width="900px">
       <Grid container gap="32px" className="footerNav">
-        <FooterButton>개인정보 보호 의무 동의</FooterButton>
-        <FooterButton>개인정보 처리 동의서</FooterButton>
-        <FooterButton>파트너사 이용약관</FooterButton>
+        <FooterButton onClick={onPressPrivacyPolicy}>
+          개인정보 보호 의무 동의
+        </FooterButton>
+        <FooterButton onClick={onPressPrivacy}>
+          개인정보 처리 동의서
+        </FooterButton>
+        <FooterButton onClick={onPressPartner}>파트너사 이용약관</FooterButton>
       </Grid>
       <FlexBtwR>
         <Box width="248px" className="footerIconBox">
