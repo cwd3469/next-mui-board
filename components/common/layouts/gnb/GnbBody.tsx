@@ -28,14 +28,6 @@ const GnbBody = (props: GnbBodyType) => {
     setModalOpen(false);
   }, []);
 
-  if (isLoading) {
-    return <>isLoading...</>;
-  }
-
-  if (isError) {
-    return <>isError...</>;
-  }
-
   return (
     <WLayout sx={{ padding: '11px 0' }} bg="#fff" containerColor="#fff">
       <FlexSpaceBetween>
@@ -50,6 +42,8 @@ const GnbBody = (props: GnbBodyType) => {
           {children}
         </GnbNavList>
         <GnbNavList>
+          {isLoading ? <>isLoading...</> : ''}
+          {isError ? <>isError...</> : ''}
           {data ? (
             data.data.code === '0000' ? (
               <>
