@@ -5,11 +5,6 @@ import WDatePickerFilter from '@components/common/inputs/datepicker/modules/WDat
 import { ProceedFilterContext } from '@hooks/contexts/filters/ProceedFilterContext';
 import WSelectPayment from '@components/common/inputs/select/modules/WSelectPayment';
 
-export interface OptionType {
-  id: string;
-  name: string;
-}
-
 const ProceedFilter = () => {
   const { setInFilter, setInDate } = React.useContext(ProceedFilterContext);
 

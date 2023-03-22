@@ -4,11 +4,6 @@ import WSearchInput from '@components/common/inputs/textField/modules/WSearchInp
 import { NoticeFilterContext } from '@hooks/contexts/filters/NoticeFilterContext';
 import WSelectNotice from '@components/common/inputs/select/modules/WSelectNotice';
 
-export interface OptionType {
-  id: string;
-  name: string;
-}
-
 const NoticeFilter = () => {
   const { filter, setInFilter } = React.useContext(NoticeFilterContext);
 

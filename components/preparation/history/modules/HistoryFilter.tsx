@@ -7,11 +7,6 @@ import WDatePicker from '@components/common/inputs/datepicker';
 import WDatePickerFilter from '@components/common/inputs/datepicker/modules/WDatePickerFilter';
 import WSelectDelivery from '@components/common/inputs/select/modules/WSelectDelivery';
 
-export interface OptionType {
-  id: string;
-  name: string;
-}
-
 const HistoryFilter = () => {
   const { setInFilter, setInDate } = React.useContext(HistoryFilterContext);
 
