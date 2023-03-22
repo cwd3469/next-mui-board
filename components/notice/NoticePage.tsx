@@ -8,11 +8,11 @@ import NoticeTable from './modules/NoticeTable';
 
 const NoticePage = () => {
   const { filter, setInFilter } = useContext(NoticeFilterContext);
-  const { noticeData, totalPages } = useNoticeList(filter);
-
+  const { noticeData, totalPages } = useNoticeList();
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setInFilter(value, 'page');
   };
+
   return (
     <Stack gap="20px">
       <NoticeFilter />
