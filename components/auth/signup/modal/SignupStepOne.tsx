@@ -3,7 +3,7 @@ import { ModalType } from '@components/common/layouts/gnb/types';
 import WAlert from '@components/common/modals/WAlert';
 import WSubTitle from '@components/common/typography/WSubTitle';
 import { Box, Stack, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import useTerms from '../../hooks/useTerms';
 import SignupTerms from './SignupTerms';
 import SignupStepTwo from './SignupStepTwo';
@@ -29,6 +29,7 @@ const SignupStepOne = (props: ModalType) => {
   const termHook = useTerms();
   const classes = useStyles();
   const [modalOn, setModalOn] = useState<boolean>(false);
+  const [termsOn, setTermsOn] = useState<boolean>(false);
   const [partnerAgreeOn, setPartnerAgreeOn] = useState<boolean>(false);
   const [privacyAgreeOn, setPrivacyAgreeOn] = useState<boolean>(false);
   const [privacyPolicyOn, setPrivacyPolicyOn] = useState<boolean>(false);
@@ -39,32 +40,44 @@ const SignupStepOne = (props: ModalType) => {
     termHook.onClickReset();
     props.handleClose();
     setBgDisable(false);
+    setTermsOn(false);
     setPrivacyAgreeOn(false);
     setPrivacyPolicyOn(false);
     setPartnerAgreeOn(false);
     setModalOn(false);
   };
+
+  const onPressModal = useCallback(() => {
+    setTimeout(() => {
+      setTermsOn(true);
+      setBgDisable(true);
+    }, 300);
+  }, []);
+
   /**SignupStepOne 약관 모달 on 기능 */
   const onTermsPartnerAgree = () => {
+    onPressModal();
     setPartnerAgreeOn(true);
-    setBgDisable(true);
   };
   /**SignupStepOne 약관 모달 on 기능 */
   const onTermsPrivacyAgree = () => {
+    onPressModal();
     setPrivacyAgreeOn(true);
-    setBgDisable(true);
   };
   /**SignupStepOne 약관 모달 on 기능 */
   const onTermsPrivacyPolicy = () => {
+    onPressModal();
     setPrivacyPolicyOn(true);
-    setBgDisable(true);
   };
   /** SignupStepOne 약관 모달 off 기능*/
   const onCloseTerms = () => {
-    setPrivacyAgreeOn(false);
-    setPrivacyPolicyOn(false);
-    setPartnerAgreeOn(false);
+    setTermsOn(false);
     setBgDisable(false);
+    setTimeout(() => {
+      setPrivacyAgreeOn(false);
+      setPrivacyPolicyOn(false);
+      setPartnerAgreeOn(false);
+    }, 300);
   };
   const handleEvent = useDebounceFn(
     () => {
@@ -120,7 +133,7 @@ const SignupStepOne = (props: ModalType) => {
                 onChange={() => termHook.onCheckBoxA(termHook.agreeTermA)}
               />
               <WSubTitle
-                title="개인정보 보호 의무 동의"
+                title="서비스 이용약관 동의"
                 className={classes.subTitle}
                 onClick={() => termHook.onCheckBoxA(termHook.agreeTermA)}
                 require
@@ -135,7 +148,7 @@ const SignupStepOne = (props: ModalType) => {
                 onChange={() => termHook.onCheckBoxB(termHook.agreeTermB)}
               />
               <WSubTitle
-                title="개인정보 처리 동의서"
+                title="개인정보 보호 의무 동의"
                 className={classes.subTitle}
                 onClick={() => termHook.onCheckBoxB(termHook.agreeTermB)}
                 require
@@ -150,7 +163,7 @@ const SignupStepOne = (props: ModalType) => {
                 onChange={() => termHook.onCheckBoxC(termHook.agreeTermC)}
               />
               <WSubTitle
-                title="파트너사 이용약관"
+                title="개인정보 처리 방침 동의"
                 className={classes.subTitle}
                 require
                 onClick={() => termHook.onCheckBoxC(termHook.agreeTermC)}
@@ -163,9 +176,8 @@ const SignupStepOne = (props: ModalType) => {
         {/* 파트너사 이용약관을 조회 */}
         {partnerAgreeOn ? (
           <SignupTerms
-            open={partnerAgreeOn}
+            open={partnerAgreeOn && termsOn}
             handleClose={onCloseTerms}
-            html={<PartnerAgree />}
           />
         ) : (
           ''
@@ -173,9 +185,8 @@ const SignupStepOne = (props: ModalType) => {
         {/* 개인정보 처리에 관한 동의서를 조회 */}
         {privacyAgreeOn ? (
           <SignupTerms
-            open={privacyAgreeOn}
+            open={privacyAgreeOn && termsOn}
             handleClose={onCloseTerms}
-            html={<PrivacyAgree />}
           />
         ) : (
           ''
@@ -183,9 +194,8 @@ const SignupStepOne = (props: ModalType) => {
         {/* 파트너 개인정보 보호 의무 동의를 조회 */}
         {privacyPolicyOn ? (
           <SignupTerms
-            open={privacyPolicyOn}
+            open={privacyPolicyOn && termsOn}
             handleClose={onCloseTerms}
-            html={<PrivacyPolicy />}
           />
         ) : (
           ''
