@@ -1,18 +1,7 @@
-import { apiPartnerAgreement } from '@hooks/apis/myinfo';
-import { useEffect, useState } from 'react';
+import PartnerAgree from '@components/auth/terms/PartnerAgree';
 
-const PartnerAgree = () => {
-  const [html, setHtml] = useState<string>('');
-  useEffect(() => {
-    apiPartnerAgreement()
-      .then((data) => {
-        setHtml(data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-  return <div dangerouslySetInnerHTML={{ __html: html }}></div>;
+const PartnerAgreePage = () => {
+  return <PartnerAgree />;
 };
 
-export default PartnerAgree;
+export default PartnerAgreePage;
