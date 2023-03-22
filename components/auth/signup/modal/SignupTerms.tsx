@@ -2,8 +2,12 @@ import { Box, Stack, Typography } from '@mui/material';
 import WAlert from '@components/common/modals/WAlert';
 import { ModalType } from '@components/common/layouts/gnb/types';
 
-const SignupTerms = (props: ModalType) => {
-  const { open, handleClose } = props;
+interface SignupTermsProps extends ModalType {
+  html?: JSX.Element;
+}
+
+const SignupTerms = (props: SignupTermsProps) => {
+  const { open, handleClose, html } = props;
 
   return (
     <WAlert
@@ -21,7 +25,7 @@ const SignupTerms = (props: ModalType) => {
           sx={{ overflowY: 'scroll' }}
           padding={'10px'}
         >
-          <Box>서비스 이용약관 동의 전체 내용입니다.</Box>
+          {html}
         </Box>
         <Box height="41px" />
       </Stack>
