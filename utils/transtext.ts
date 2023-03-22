@@ -1,4 +1,5 @@
 import { FilterAllOtions, FilterDateType } from '@hooks/contexts/filters/type';
+import { ParsedUrlQuery } from 'querystring';
 
 export const sideDot = (txt: string, spe: string) => {
   const center = txt.substring(4);
@@ -17,8 +18,9 @@ export const transTextNotice = (state: string) => {
   }
 };
 
-export const transQueryUrl = (filter: FilterAllOtions) => {
-  const page = filter.page ? `&page=${filter.page - 1}` : '';
+export const transQueryUrl = (filter: FilterAllOtions | ParsedUrlQuery) => {
+  const pageNum = Number(filter.page);
+  const page = filter.page ? `&page=${pageNum - 1}` : '';
   const type = filter.type ? `&type=${filter.type}` : '';
   const title = filter.title ? `&title=${filter.title}` : '';
   const keyword = filter.keyword ? `&keyword=${filter.keyword}` : '';
