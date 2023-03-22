@@ -2,14 +2,15 @@ import { FilterNoticeType } from '@hooks/contexts/filters/type';
 import { transQueryDate, transQueryUrl } from '@utils/transtext';
 import { getCookie } from 'cookies-next';
 import instance from '../instance';
+import { ParsedUrlQuery } from 'querystring';
 
 /** 공지사항 목록
  * GET API
  */
-export const apiNoticeList = (prams: { filter: FilterNoticeType }) => {
+export const apiNoticeList = (query: ParsedUrlQuery) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
-  const queryUrl = transQueryUrl(prams.filter);
+  const queryUrl = transQueryUrl(query);
 
   return instance({
     method: 'get',
