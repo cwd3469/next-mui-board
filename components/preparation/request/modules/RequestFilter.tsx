@@ -10,7 +10,8 @@ export interface OptionType {
 }
 
 const RequestFilter = () => {
-  const { setInFilter, setInDate } = React.useContext(RequestFilterContext);
+  const { filter, date, setInFilter, setInDate } =
+    React.useContext(RequestFilterContext);
 
   const searchEvent = (txt: string) => {
     setInFilter(txt, 'keyword');
@@ -19,8 +20,12 @@ const RequestFilter = () => {
   return (
     <Grid container alignItems={'center'} justifyContent={'space-between'}>
       <Grid container width="auto" gap={'10px'}>
-        <WDatePickerFilter setInDate={setInDate} />
-        <WSearchInput search={searchEvent} placeholder="제목 검색" />
+        <WDatePickerFilter date={date} setInDate={setInDate} />
+        <WSearchInput
+          queryValue={filter.keyword}
+          search={searchEvent}
+          placeholder="제목 검색"
+        />
       </Grid>
     </Grid>
   );
