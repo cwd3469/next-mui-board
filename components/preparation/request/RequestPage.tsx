@@ -7,13 +7,13 @@ import RequestFilter from './modules/RequestFilter';
 import RequestStatusNoti from './modules/RequestStatusNoti';
 import RequestTable from './modules/RequestTable';
 import LoadingErrorFallback from '@components/common/api/LoadingErrorFallback';
+import { useRouter } from 'next/router';
 
 const RequestPage = () => {
-  const { filter, date, setInFilter } = useContext(RequestFilterContext);
-  const { data, isError, isLoading, isWarning } = useListRequest({
-    filter,
-    date,
-  });
+  const { filter, setInFilter } = useContext(RequestFilterContext);
+  const router = useRouter();
+
+  const { data, isError, isLoading, isWarning } = useListRequest(router.query);
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setInFilter(value, 'page');
