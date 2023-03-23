@@ -1,9 +1,6 @@
 import { FilterAllOtions, FilterDateType } from '@hooks/contexts/filters/type';
-<<<<<<< HEAD
 import { DateRange } from '@mui/x-date-pickers-pro';
 import dayjs from 'dayjs';
-=======
->>>>>>> feature/PTSD-41
 import { ParsedUrlQuery } from 'querystring';
 
 export const sideDot = (txt: string, spe: string) => {
