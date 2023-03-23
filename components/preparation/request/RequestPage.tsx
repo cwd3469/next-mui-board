@@ -6,10 +6,14 @@ import { useContext } from 'react';
 import RequestFilter from './modules/RequestFilter';
 import RequestStatusNoti from './modules/RequestStatusNoti';
 import RequestTable from './modules/RequestTable';
+import LoadingErrorFallback from '@components/common/api/LoadingErrorFallback';
 
 const RequestPage = () => {
   const { filter, date, setInFilter } = useContext(RequestFilterContext);
-  const { listData, totalPages } = useListRequest({ filter, date });
+  const { data, isError, isLoading, isWarning } = useListRequest({
+    filter,
+    date,
+  });
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setInFilter(value, 'page');
@@ -17,16 +21,28 @@ const RequestPage = () => {
 
   return (
     <Stack gap="20px">
-      <Stack gap="10px">
-        <RequestStatusNoti />
-        <RequestFilter />
-      </Stack>
-      <RequestTable data={listData} />
-      <WPagination
-        paddingTop="4px"
-        page={filter.page}
-        pagination={pagination}
-        count={totalPages}
+      <LoadingErrorFallback
+        data={data}
+        isError={isError}
+        isLoading={isLoading}
+        isWarning={isWarning}
+        contexts={(info) => {
+          return (
+            <>
+              <Stack gap="10px">
+                <RequestStatusNoti />
+                <RequestFilter />
+              </Stack>
+              <RequestTable data={info.data.data.page.content} />
+              <WPagination
+                paddingTop="4px"
+                page={filter.page}
+                pagination={pagination}
+                count={info.data.data.page.totalPages}
+              />
+            </>
+          );
+        }}
       />
     </Stack>
   );
