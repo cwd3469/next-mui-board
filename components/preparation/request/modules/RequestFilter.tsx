@@ -4,11 +4,6 @@ import WSearchInput from '@components/common/inputs/textField/modules/WSearchInp
 import WDatePickerFilter from '@components/common/inputs/datepicker/modules/WDatePickerFilter';
 import { RequestFilterContext } from '@hooks/contexts/filters/RequestFilterContext';
 
-export interface OptionType {
-  id: string;
-  name: string;
-}
-
 const RequestFilter = () => {
   const { filter, date, setInFilter, setInDate } =
     React.useContext(RequestFilterContext);

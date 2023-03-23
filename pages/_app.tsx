@@ -20,6 +20,20 @@ LicenseInfo.setLicenseKey(`${process.env.NEXT_PUBLIC_MUI_PRO_KEY}`);
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
+
+  useEffect(() => storePathValues, [router.asPath]);
+
+  function storePathValues() {
+    const storage = globalThis?.sessionStorage;
+
+    if (!storage) return;
+    const prevPath = storage.getItem('currentPath');
+    if (prevPath) {
+      storage.setItem('prevPath', prevPath);
+    }
+    storage.setItem('currentPath', globalThis.location.pathname);
+  }
+
   useEffect(() => {
     const handleRouteChange = (url: URL) => {
       gtag.pageview(url);
@@ -31,6 +45,7 @@ export default function App({ Component, pageProps }: AppProps) {
       router.events.off('hashChangeComplete', handleRouteChange);
     };
   }, [router.events]);
+
   return (
     <>
       <Script

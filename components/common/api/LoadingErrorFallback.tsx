@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios';
+import React from 'react';
 import { useEffect } from 'react';
 
 interface LoadingErrorFallbackProps {
@@ -22,7 +23,7 @@ const LoadingErrorFallback = (props: LoadingErrorFallbackProps) => {
     return <>{skeleton ? skeleton : <>isError...</>}</>;
   }
   if (isWarning) {
-    return <>{skeleton ? skeleton : <>isLoading...</>}</>;
+    return <>{skeleton ? skeleton : <>isWarning...</>}</>;
   }
   if (data) {
     if (data.data.code === '0000') {
@@ -33,4 +34,4 @@ const LoadingErrorFallback = (props: LoadingErrorFallbackProps) => {
   return <>{skeleton ? skeleton : <></>}</>;
 };
 
-export default LoadingErrorFallback;
+export default React.memo(LoadingErrorFallback);

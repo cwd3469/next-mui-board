@@ -1,6 +1,9 @@
 import { FilterAllOtions, FilterDateType } from '@hooks/contexts/filters/type';
+<<<<<<< HEAD
 import { DateRange } from '@mui/x-date-pickers-pro';
 import dayjs from 'dayjs';
+=======
+>>>>>>> feature/PTSD-41
 import { ParsedUrlQuery } from 'querystring';
 
 export const sideDot = (txt: string, spe: string) => {
@@ -21,7 +24,8 @@ export const transTextNotice = (state: string) => {
 };
 
 export const transQueryUrl = (filter: FilterAllOtions | ParsedUrlQuery) => {
-  const page = filter.page ? `&page=${Number(filter.page) - 1}` : '';
+  const pageNum = Number(filter.page);
+  const page = filter.page ? `&page=${pageNum - 1}` : '';
   const type = filter.type ? `&type=${filter.type}` : '';
   const title = filter.title ? `&title=${filter.title}` : '';
   const keyword = filter.keyword ? `&keyword=${filter.keyword}` : '';
