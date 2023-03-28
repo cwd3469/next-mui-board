@@ -49,7 +49,7 @@ const useListRequest = (query: ParsedUrlQuery) => {
               treatHospitalPhone: '023004200',
             },
           ],
-          totalPages: 1,
+          totalPages: 0,
         },
       },
     },

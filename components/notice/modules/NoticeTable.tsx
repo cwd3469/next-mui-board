@@ -5,7 +5,6 @@ import WDataTable, { baseOption } from '@components/common/dataGrid/WDataTable';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import { transTextNotice } from '@utils/transtext';
-import dayjs from 'dayjs';
 import { dateFormat } from '@utils/date';
 
 const NoticeTable = (props: { data: NoticeInterface[] }): JSX.Element => {
