@@ -62,7 +62,7 @@ const WDataTable = (props: {
     <Box height="706px" sx={props.sx}>
       <DataTable
         headerHeight={headerHeight ? headerHeight : 64}
-        rowHeight={rowHeight ? rowHeight : 64}
+        rowHeight={rowHeight ? rowHeight : 60}
         rows={rows}
         columns={columns}
         pageSize={pageSize ? pageSize : 10}
