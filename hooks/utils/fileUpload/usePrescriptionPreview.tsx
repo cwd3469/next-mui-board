@@ -15,7 +15,10 @@ const usePrescriptionPreview = (props: {
   const [imageUrl, setImageUrl] = useState<UidList[]>([]);
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
-
+  const reset = useCallback(() => {
+    setFileArr([]);
+    setImageUrl([]);
+  }, []);
   const onImagePreview = useCallback(
     async (medicineOrderUlid: string, prescriptionUlid: string) => {
       let arr: File[] = [];
@@ -26,6 +29,7 @@ const usePrescriptionPreview = (props: {
           if (code !== '0000') {
             toast?.on(msg.errMsg(code), 'error');
             props.handleClose();
+            reset();
             return;
           } else {
             const res = data.data.data;
@@ -62,6 +66,8 @@ const usePrescriptionPreview = (props: {
             `처방전 조회에 실패 하셨습니다. \n 잠시후 다시 시도하세요.`,
             'error',
           );
+          props.handleClose();
+          reset();
         });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,7 +80,7 @@ const usePrescriptionPreview = (props: {
     }
   }, [onImagePreview, props.medicineOrderUlid, props.prescriptionUlid]);
 
-  return { fileArr, imageUrl };
+  return { fileArr, imageUrl ,reset};
 };
 
 export default usePrescriptionPreview;
