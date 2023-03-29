@@ -2,17 +2,16 @@ import { BoxDisabledText } from '@components/common/box/modules/TextBox';
 import { ModalType } from '@components/common/layouts/gnb/types';
 import WAlert from '@components/common/modals/WAlert';
 import WSubTitle from '@components/common/typography/WSubTitle';
-import usePreparationRequest from '@hooks/apis/preparation/history/hooks/usePreparationRequest';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { mobileFormat } from '@utils/formatNumber';
+import { ReceiveData } from '../request/modules/RequestTable';
 
 interface RequesterModalType extends ModalType {
-  id: string;
+  receiveData?: ReceiveData;
 }
 
 const RequesterModal = (props: RequesterModalType) => {
-  const { open, handleClose, id } = props;
-  const { data } = usePreparationRequest({ id });
+  const { open, handleClose, receiveData } = props;
   return (
     <WAlert
       open={open}
@@ -20,15 +19,16 @@ const RequesterModal = (props: RequesterModalType) => {
       title="요청자 정보"
       maxWidth="sm"
       activeOn
+      titleSx={{ padding: '50px 48px 40px' }}
     >
-      {data ? (
+      {receiveData ? (
         <Stack gap="16px" paddingBottom="40px">
           <Stack>
             <WSubTitle title="이름" />
             <BoxDisabledText
               sx={{ padding: '14px 0px', backgroundColor: '#fff' }}
             >
-              {data.name}
+              {receiveData.receiveNameKo}
             </BoxDisabledText>
           </Stack>
           <Stack>
@@ -36,7 +36,7 @@ const RequesterModal = (props: RequesterModalType) => {
             <BoxDisabledText
               sx={{ padding: '14px 0px', backgroundColor: '#fff' }}
             >
-              {mobileFormat(data.mobileNumber)}
+              {mobileFormat(receiveData.receivePhoneNum)}
             </BoxDisabledText>
           </Stack>
           <Stack>
@@ -44,7 +44,8 @@ const RequesterModal = (props: RequesterModalType) => {
             <BoxDisabledText
               sx={{ padding: '14px 0px', backgroundColor: '#fff' }}
             >
-              {data.address}
+              {receiveData.receiveAddrKo} {receiveData.receiveAddrDetailKo}{' '}
+              {receiveData.receiveZipCode}
             </BoxDisabledText>
           </Stack>
         </Stack>
