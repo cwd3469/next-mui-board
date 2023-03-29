@@ -11,6 +11,8 @@ import DispensingAccepModal from '@components/preparation/modals/DispensingAccep
 import { mobileFormat, phoneFormat } from '@utils/formatNumber';
 import { transDeliveryMethod, transMedicineStatus } from '@utils/transtext';
 import WDayTimeTypography from '@components/common/typography/WDayTimeTypography';
+import pencilAlt from 'public/assets/icon/pencil-alt.svg';
+import Image from 'next/image';
 
 export interface ReceiveData {
   receiveAddrDetailKo: string;
@@ -53,7 +55,7 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
     {
       ...baseOption,
       field: 'requestDateTime',
-      headerName: '조제 완료 시간',
+      headerName: '조제 요청 시간',
       width: 180,
       renderCell: (params) => {
         return <WDayTimeTypography date={params.row.requestDateTime} />;
@@ -106,7 +108,7 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
       ...baseOption,
       field: 'doctorNameKo',
       headerName: '진료 병원 의사 명',
-      width: 100,
+      width: 120,
     },
     {
       ...baseOption,
@@ -121,14 +123,14 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
     {
       ...baseOption,
       field: 'prescriptionPreview',
-      headerName: '처방전 보기',
-      width: 180,
+      headerName: '조제 수락 / 거절',
+      width: 160,
       renderCell: (prams) => {
         const { medicineOrderUlid } = prams.row;
         return (
           <GridButton
             onClick={() => prescriptionIdOnOff(medicineOrderUlid, true)}
-            startIcon={<CheckIcon />}
+            startIcon={<Image src={pencilAlt} alt="작성" />}
           >
             조제 수락 / 거절
           </GridButton>
