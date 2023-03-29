@@ -29,7 +29,10 @@ interface Props {
 }
 
 const RequestFilterProvider = ({ children }: Props): JSX.Element => {
-  const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([dayjs(), dayjs()]);
+  const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([
+    dayjs().subtract(7, 'day'),
+    dayjs(),
+  ]);
   const [filter, setFilter] = useState<DataPagition>({
     page: 1,
     keyword: '',
