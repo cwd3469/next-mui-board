@@ -20,6 +20,32 @@ export const transTextNotice = (state: string) => {
   }
 };
 
+export const transMedicineStatus = (state: string) => {
+  switch (state) {
+    case 'REGIST':
+      return '대기';
+    case 'CANCEL':
+      return '취소';
+    case 'REFUSE':
+      return '거절';
+    case 'ACCEPT':
+      return '수락';
+    default:
+      return '-';
+  }
+};
+
+export const transDeliveryMethod = (state: string) => {
+  switch (state) {
+    case 'PARCEL':
+      return '택배배송';
+    case 'QUICK':
+      return '당일배송';
+    default:
+      return '-';
+  }
+};
+
 export const transQueryUrl = (filter: FilterAllOtions | ParsedUrlQuery) => {
   const pageNum = Number(filter.page);
   const page = pageNum ? `&page=${pageNum - 1}` : '&page=0';
