@@ -20,7 +20,7 @@ const RequestPage = () => {
   };
 
   return (
-    <Stack gap="20px">
+    <Stack gap="10px">
       <LoadingErrorFallback
         data={data}
         isError={isError}
@@ -35,10 +35,9 @@ const RequestPage = () => {
               </Stack>
               <RequestTable data={info.data.data.page.content} />
               <WPagination
-                paddingTop="4px"
                 page={filter.page}
                 pagination={pagination}
-                count={info.data.data.page.totalPages}
+                count={info.data.data.page.totalPages + 1}
               />
             </>
           );
