@@ -2,16 +2,27 @@ import React, { useCallback, useState } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { RequestInterface } from '../type';
 import WDataTable, { baseOption } from '@components/common/dataGrid/WDataTable';
-import { Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 import { dateFormat } from '@utils/date';
 import GridButton from '@components/common/button/modules/GridButton';
 import { CheckIcon, UserIcon } from '@components/common/dataDisplay/WIcons';
 import RequesterModal from '@components/preparation/modals/RequesterModal';
 import DispensingAccepModal from '@components/preparation/modals/DispensingAccepModal';
+import { mobileFormat, phoneFormat } from '@utils/formatNumber';
+import { transDeliveryMethod, transMedicineStatus } from '@utils/transtext';
+import WDayTimeTypography from '@components/common/typography/WDayTimeTypography';
+
+export interface ReceiveData {
+  receiveAddrDetailKo: string;
+  receiveAddrKo: string;
+  receiveNameKo: string;
+  receivePhoneNum: string;
+  receiveZipCode: string;
+}
 
 const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
   const { data } = props;
-  const [requesterId, setRequesterId] = useState<string>('');
+  const [receiveData, setReceiveData] = useState<ReceiveData>();
   const [requesterOpen, setRequesterOpen] = useState<boolean>(false);
   const [prescriptionId, setPrescriptionId] = useState<string>('');
   const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
@@ -19,8 +30,8 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
     return { ...item, ['id']: index };
   });
 
-  const requesterOnOff = useCallback((id: string, open: boolean) => {
-    setRequesterId(id);
+  const requesterOnOff = useCallback((open: boolean, data?: ReceiveData) => {
+    setReceiveData(data);
     setRequesterOpen(open);
   }, []);
   const prescriptionIdOnOff = useCallback((id: string, open: boolean) => {
@@ -31,25 +42,32 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
   const columns: GridColDef[] = [
     {
       ...baseOption,
-      field: 'statusNameKo',
+      field: 'medicineStatus',
       headerName: '상태',
-      width: 120,
-    },
-    {
-      ...baseOption,
-      field: 'completionAt',
-      headerName: '조제 완료 시간',
-      width: 180,
+      width: 92,
       renderCell: (params) => {
-        const { dayTime } = dateFormat(params.row.completionAt);
-        return <>{dayTime}</>;
+        const state = transMedicineStatus(params.row.medicineStatus);
+        return <>{state}</>;
       },
     },
     {
       ...baseOption,
-      field: 'deliveryFormKo',
+      field: 'requestDateTime',
+      headerName: '조제 완료 시간',
+      width: 180,
+      renderCell: (params) => {
+        return <WDayTimeTypography date={params.row.requestDateTime} />;
+      },
+    },
+    {
+      ...baseOption,
+      field: 'deliveryMethod',
       headerName: '수령 방법',
-      width: 110,
+      width: 100,
+      renderCell: (params) => {
+        const state = transDeliveryMethod(params.row.deliveryMethod as string);
+        return <>{state}</>;
+      },
     },
 
     {
@@ -58,15 +76,17 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
       headerName: '요청자 정보',
       width: 150,
       renderCell: (prams) => {
-        const { deliveryStatus, status, ulid } = prams.row;
+        const { deliveryMethod, medicineStatus, receiveData } = prams.row;
         return (
           <GridButton
-            onClick={() => requesterOnOff(ulid, true)}
+            onClick={() => {
+              requesterOnOff(true, receiveData);
+            }}
             startIcon={<UserIcon />}
             disabled={
-              status === 'CANCEL'
+              medicineStatus === 'CANCEL'
                 ? true
-                : deliveryStatus === 'COMPLETION'
+                : deliveryMethod === 'COMPLETION'
                 ? true
                 : false
             }
@@ -78,30 +98,25 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
     },
     {
       ...baseOption,
-      field: 'treatHospitalName',
+      field: 'hospitalNameKo',
       headerName: '진료 병원 명',
       width: 240,
-      renderCell: (prams) => {
-        return (
-          <Stack justifyContent={'center'} width="100%">
-            <Typography textAlign={'center'}>
-              {prams.row.treatHospitalName}
-            </Typography>
-          </Stack>
-        );
-      },
     },
     {
       ...baseOption,
-      field: 'treatDoctorName',
+      field: 'doctorNameKo',
       headerName: '진료 병원 의사 명',
       width: 100,
     },
     {
       ...baseOption,
-      field: 'treatHospitalPhone',
+      field: 'hospitalPhoneNum',
       headerName: '병원 연락처',
-      width: 105,
+      width: 150,
+      renderCell: (prams) => {
+        const num = prams.row.hospitalPhoneNum as string;
+        return <>{phoneFormat(num)}</>;
+      },
     },
     {
       ...baseOption,
@@ -109,10 +124,10 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
       headerName: '처방전 보기',
       width: 180,
       renderCell: (prams) => {
-        const { status, deliveryStatus, ulid } = prams.row;
+        const { medicineOrderUlid } = prams.row;
         return (
           <GridButton
-            onClick={() => prescriptionIdOnOff(ulid, true)}
+            onClick={() => prescriptionIdOnOff(medicineOrderUlid, true)}
             startIcon={<CheckIcon />}
           >
             조제 수락 / 거절
@@ -126,11 +141,11 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
     <>
       <WDataTable rows={rows} columns={columns} />
       {/* 요청자 정보 */}
-      {requesterId ? (
+      {receiveData ? (
         <RequesterModal
-          id={requesterId}
+          receiveData={receiveData}
           open={requesterOpen}
-          handleClose={() => requesterOnOff('', false)}
+          handleClose={() => requesterOnOff(false, undefined)}
         />
       ) : (
         ''
