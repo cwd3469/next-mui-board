@@ -30,7 +30,9 @@ const RequestPage = () => {
           return (
             <>
               <Stack gap="10px">
-                <RequestStatusNoti />
+                <RequestStatusNoti
+                  totalElements={info.data.data.page.totalElements}
+                />
                 <RequestFilter />
               </Stack>
               <RequestTable data={info.data.data.page.content} />
