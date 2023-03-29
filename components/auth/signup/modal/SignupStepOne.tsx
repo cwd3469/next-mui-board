@@ -139,7 +139,7 @@ const SignupStepOne = (props: ModalType) => {
                 require
               />
             </TermsGrid>
-            <TermsButton onClick={onTermsPrivacyAgree}>전문보기</TermsButton>
+            <TermsButton onClick={onTermsPartnerAgree}>전문보기</TermsButton>
           </TermsGrid>
           <TermsGrid padding={'24px 24px'}>
             <TermsGrid gap="16px">
@@ -169,7 +169,7 @@ const SignupStepOne = (props: ModalType) => {
                 onClick={() => termHook.onCheckBoxC(termHook.agreeTermC)}
               />
             </TermsGrid>
-            <TermsButton onClick={onTermsPartnerAgree}>전문보기</TermsButton>
+            <TermsButton onClick={onTermsPrivacyAgree}>전문보기</TermsButton>
           </TermsGrid>
         </Stack>
         <Box height="100px" />
@@ -178,6 +178,7 @@ const SignupStepOne = (props: ModalType) => {
           <SignupTerms
             open={partnerAgreeOn && termsOn}
             handleClose={onCloseTerms}
+            html={<PartnerAgree />}
           />
         ) : (
           ''
@@ -187,6 +188,7 @@ const SignupStepOne = (props: ModalType) => {
           <SignupTerms
             open={privacyAgreeOn && termsOn}
             handleClose={onCloseTerms}
+            html={<PrivacyPolicy />}
           />
         ) : (
           ''
@@ -196,6 +198,7 @@ const SignupStepOne = (props: ModalType) => {
           <SignupTerms
             open={privacyPolicyOn && termsOn}
             handleClose={onCloseTerms}
+            html={<PrivacyAgree />}
           />
         ) : (
           ''
