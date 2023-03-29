@@ -19,7 +19,7 @@ const RequestFilter = () => {
         <WSearchInput
           queryValue={filter.keyword}
           search={searchEvent}
-          placeholder="제목 검색"
+          placeholder="요청자 이름 , 휴대폰 번호 검색"
         />
       </Grid>
     </Grid>
