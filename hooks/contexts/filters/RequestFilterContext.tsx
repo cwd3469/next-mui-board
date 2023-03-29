@@ -12,7 +12,7 @@ const RequestFilterContext = createContext<{
   setInDate: (date: DateRange<dayjs.Dayjs>) => void;
 }>({
   filter: {
-    page: 1,
+    page: 0,
     keyword: '',
   },
   setInFilter: (value: FilterValue, keyId: string) => {
@@ -29,12 +29,9 @@ interface Props {
 }
 
 const RequestFilterProvider = ({ children }: Props): JSX.Element => {
-  const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([
-    dayjs().subtract(7, 'day'),
-    dayjs(),
-  ]);
+  const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([dayjs(), dayjs()]);
   const [filter, setFilter] = useState<DataPagition>({
-    page: 1,
+    page: 0,
     keyword: '',
   });
 

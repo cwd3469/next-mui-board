@@ -7,7 +7,7 @@ import { transQueryDateToString, transQueryUrl } from '@utils/transtext';
 
 const useListRequest = (query: ParsedUrlQuery) => {
   const queryUrl = transQueryUrl(query);
-  const queryDate = transQueryDateToString(query, true);
+  const queryDate = transQueryDateToString(query);
   const queryString = `${queryUrl}${queryDate}`;
 
   const { data, isError, isLoading } = useQuery(
