@@ -35,9 +35,9 @@ const RequestPage = () => {
               </Stack>
               <RequestTable data={info.data.data.page.content} />
               <WPagination
-                page={filter.page}
+                page={filter.page + 1}
                 pagination={pagination}
-                count={info.data.data.page.totalPages + 1}
+                count={info.data.data.page.totalPages}
               />
             </>
           );
