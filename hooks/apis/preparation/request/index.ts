@@ -35,36 +35,44 @@ export const apiProceedPreparationRequest = (prams: string) => {
 /** 조제 진행 처방전 정보
  * GET API
  */
-export const apiProceedPrescription = (prams: string) => {
+export const apiPrescriptionFileBase = (
+  medicineOrderUlid: string,
+  prescriptionUlid: string,
+) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
 
   return instance({
     method: 'get',
-    url: `apiProceedPrescription/${prams}`,
+    url: `pharmacy/api/v2/medicines/orders/requests/${medicineOrderUlid}/prescription/${prescriptionUlid}`,
     headers: {
       Authorization: accessToken,
     },
   });
 };
 
-/** 조제 진행 상태 알림
- * GET API
+/** 조제 거절
+ * PUT API
  */
-export const apiProceedNoti = () => {
+export const apiDispensingRefuse = (props:{msg: string, medicineOrderUlid: string}) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
+  const dto = {
+    refuseReason: props.msg,
+  };
 
   return instance({
-    method: 'get',
-    url: `apiProceed/noti`,
+    method: 'put',
+    url: `pharmacy/api/v2/medicines/orders/requests/${props.medicineOrderUlid}/refuse`,
+    data: dto,
     headers: {
       Authorization: accessToken,
     },
   });
 };
-/** 조제 진행 상태 알림
- * GET API
+
+/** 조제 수락
+ * PUT API
  */
 export const apiDispensingAccept = (text: string) => {
   const token = getCookie('accessToken');
