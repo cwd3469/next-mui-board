@@ -15,6 +15,9 @@ const useListRequest = (query: ParsedUrlQuery) => {
     async () => {
       return await apiProceedList(queryString);
     },
+    {
+      refetchInterval: 3000,
+    },
   );
   const code = data?.data.code;
 
