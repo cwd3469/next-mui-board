@@ -22,7 +22,7 @@ export const transTextNotice = (state: string) => {
 
 export const transQueryUrl = (filter: FilterAllOtions | ParsedUrlQuery) => {
   const pageNum = Number(filter.page);
-  const page = filter.page ? `&page=${pageNum - 1}` : '';
+  const page = pageNum ? `&page=${pageNum - 1}` : '&page=0';
   const type = filter.type ? `&type=${filter.type}` : '';
   const title = filter.title ? `&title=${filter.title}` : '';
   const keyword = filter.keyword ? `&keyword=${filter.keyword}` : '';
@@ -35,6 +35,22 @@ export const transQueryDate = (date: DateRange<dayjs.Dayjs>) => {
   const end = date[1] ? date[1].format('YYYY-MM-DD') : '';
   const startDate = start ? `&startDate=${start}` : '';
   const endDate = end ? `&endDate=${end}` : '';
+  const day = startDate + endDate;
+  return day;
+};
+
+export const transQueryDateToString = (
+  filter: ParsedUrlQuery,
+  week?: boolean,
+) => {
+  const weekBefore = dayjs().subtract(7, 'day').format('YYYY-MM-DD');
+  const now = dayjs().format('YYYY-MM-DD');
+  const startDate = filter.startDate
+    ? `&startDate=${filter.startDate}`
+    : `&startDate=${week ? weekBefore : now}`;
+  const endDate = filter.endDate
+    ? `&endDate=${filter.endDate}`
+    : `&endDate=${now}`;
   const day = startDate + endDate;
   return day;
 };
