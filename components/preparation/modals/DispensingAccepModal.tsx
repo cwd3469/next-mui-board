@@ -1,20 +1,20 @@
-import WDownloadBtn from '@components/common/button/modules/WDownloadBtn';
 import WTwoTab from '@components/common/button/radio/modules/WTwoTab';
+import WPdfView from '@components/common/editor/WPdfView';
 import WPaymentsTextField from '@components/common/inputs/textField/modules/WPaymentsTextField';
 import WRefusalDispenTextField from '@components/common/inputs/textField/modules/WRefusalDispenTextField';
 import { ErrorType } from '@components/common/inputs/type';
 import { ModalType } from '@components/common/layouts/gnb/types';
-import WAlert from '@components/common/modals/WAlert';
 import WConfirm from '@components/common/modals/WConfirm';
 import WSubTitle from '@components/common/typography/WSubTitle';
-import usePrescriptionImage from '@hooks/apis/preparation/history/hooks/usePrescriptionImage';
 import useMutateDispensingAccept from '@hooks/apis/preparation/request/hooks/useMutateDispensingAccept';
+import usePrescriptionPreview from '@hooks/utils/fileUpload/usePrescriptionPreview';
 import { Box, Grid, Stack } from '@mui/material';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 
 interface DispensingAccepModalType extends ModalType {
-  id: string;
+  medicineOrderUlid: string;
+  prescriptionUlid: string;
 }
 
 interface Paymentsinfo {
@@ -27,8 +27,16 @@ interface PaymentsinfoErr {
 }
 
 const DispensingAccepModal = (props: DispensingAccepModalType) => {
-  const { open, handleClose, id } = props;
-  const { file } = usePrescriptionImage({ id });
+  const { open, handleClose, medicineOrderUlid, prescriptionUlid } = props;
+  const { fileArr, imageUrl, reset } = usePrescriptionPreview({
+    medicineOrderUlid: medicineOrderUlid,
+    prescriptionUlid: prescriptionUlid,
+    handleClose: handleClose,
+  });
+  const onClickReset = useCallback(() => {
+    handleClose();
+    reset();
+  }, [handleClose, reset]);
   const [disabled, setDisabled] = useState<boolean>(true);
   const [tab, setTab] = useState<boolean>(true);
   const [info, setInfo] = useState<Paymentsinfo>({
@@ -39,9 +47,14 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
     payment: { msg: '', boo: false },
     refusal: { msg: '', boo: false },
   });
-  const { onClickDispensingExpenses } = useMutateDispensingAccept({
-    dispensingExpenses: info.payment,
-  });
+  const { onClickDispensingAccept, onClickMutateDispensingRefuse } =
+    useMutateDispensingAccept({
+      dispensingExpenses: info.payment,
+      refuseReason: info.refusal,
+      medicineOrderUlid: medicineOrderUlid,
+      onSuccess: onClickReset,
+      onError: onClickReset,
+    });
 
   const onChangeState = useCallback((text: string, keyId: string) => {
     setInfo((prev) => {
@@ -94,14 +107,22 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
       refusalInvigorator();
     }
   }, [acceptInvigorator, refusalInvigorator, tab]);
+
   return (
     <WConfirm
       open={open}
-      handleClose={handleClose}
+      handleClose={onClickReset}
+      handleEvent={
+        tab
+          ? () => {
+              return;
+            }
+          : onClickMutateDispensingRefuse
+      }
       title="조제 수락 / 거절"
       maxWidth={tab ? 'xl' : 'sm'}
       titleSx={{ padding: '50px 0px 16px' }}
-      btnTitle="조제 수락"
+      btnTitle={tab ? '조제 수락' : '조제 거절'}
       disabled={disabled}
       activeOn
     >
@@ -109,10 +130,50 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
         <WTwoTab tab={tab} setTab={onTab} />
         {tab ? (
           <>
-            {file ? (
+            {fileArr.length ? (
               <Stack gap="32px" padding="0px 40px">
                 <Box sx={{ height: '900px', position: 'relative' }}>
-                  <Image src={file} alt="처방전" layout="fill" />
+                  <Stack justifyContent={'center'} alignItems="center">
+                    {fileArr[0].type === 'application/pdf' ? (
+                      <Box
+                        width="595px"
+                        height="842px"
+                        sx={{
+                          overflowY: 'scroll',
+                        }}
+                      >
+                        <WPdfView pdf={fileArr[0]} />
+                      </Box>
+                    ) : (
+                      <Box
+                        width="595px"
+                        height="842px"
+                        position="relative"
+                        sx={{
+                          overflowY: 'scroll',
+                        }}
+                      >
+                        <Box
+                          width="580px"
+                          height="auto"
+                          minHeight={'800px'}
+                          position="relative"
+                        >
+                          <Image
+                            src={imageUrl[0]?.url}
+                            alt="처방전"
+                            layout="fill"
+                            objectFit="contain"
+                          />
+                        </Box>
+                      </Box>
+                    )}
+                    <Box
+                      width="420px"
+                      borderBottom="2px solid #ebeced"
+                      margin="32px 0px 48px"
+                    />
+                  </Stack>
                 </Box>
                 <Grid container justifyContent="center">
                   <Stack gap="14px" width="420px">
