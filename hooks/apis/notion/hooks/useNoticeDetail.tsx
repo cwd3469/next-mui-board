@@ -1,13 +1,20 @@
 import { useQuery } from 'react-query';
 import { apiNoticeDetail } from '..';
 import { NOTICEDETAIL } from '../queryKey';
+import useCodeWarningEffect from '@hooks/utils/useCodeWarningEffect';
 
 const useNoticeDetail = (parms: string) => {
-  const info = useQuery(NOTICEDETAIL(parms), async () => {
-    return await apiNoticeDetail(parms);
-  });
+  const { data, isError, isLoading } = useQuery(
+    NOTICEDETAIL(parms),
+    async () => {
+      return await apiNoticeDetail(parms);
+    },
+  );
+  const code = data?.data.code;
 
-  return info;
+  const { isWarning } = useCodeWarningEffect({ code: code });
+
+  return { data, isError, isLoading, isWarning };
 };
 
 export default useNoticeDetail;

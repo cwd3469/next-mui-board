@@ -1,8 +1,9 @@
 import { FilterNoticeType } from '@hooks/contexts/filters/type';
+import { ParsedUrlQuery } from 'querystring';
 
-export const NOTICELIST = (filter: FilterNoticeType) => [
+export const NOTICELIST = (query: ParsedUrlQuery) => [
   'NOTICE',
   'LIST',
-  { ...filter },
+  { ...query },
 ];
 export const NOTICEDETAIL = (ulid: string) => ['NOTICE', 'DETAIL', ulid];

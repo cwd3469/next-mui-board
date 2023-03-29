@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import colors from '@styles/colors';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { CSSProperties, useContext } from 'react';
 
 export const FlexCenter = styled(Grid)(({ theme }) => ({
@@ -99,6 +100,7 @@ export const GnbLink = (props: {
   style: CSSProperties | undefined;
   disabled?: boolean;
 }) => {
+  const router = useRouter();
   const { handleTokenInfo } = useContext(UserInfoContext);
   return (
     <Box
@@ -108,15 +110,21 @@ export const GnbLink = (props: {
         },
       }}
     >
-      <Link
-        href={props.disabled ? '/' : props.href}
-        passHref
-        className={props.disabled ? 'disabled-link' : ''}
-      >
+      {router.pathname === props.href ? (
         <GnbATag style={props.style} onClick={handleTokenInfo}>
           {props.children}
         </GnbATag>
-      </Link>
+      ) : (
+        <Link
+          href={props.disabled ? '/' : props.href}
+          passHref
+          className={props.disabled ? 'disabled-link' : ''}
+        >
+          <GnbATag style={props.style} onClick={handleTokenInfo}>
+            {props.children}
+          </GnbATag>
+        </Link>
+      )}
     </Box>
   );
 };
