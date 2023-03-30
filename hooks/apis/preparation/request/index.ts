@@ -1,5 +1,6 @@
 import { getCookie } from 'cookies-next';
 import instance from '../../instance';
+import { commaRemove } from '@utils/formatNumber';
 
 /** 조제 진행 목록
  * GET API
@@ -54,7 +55,10 @@ export const apiPrescriptionFileBase = (
 /** 조제 거절
  * PUT API
  */
-export const apiDispensingRefuse = (props:{msg: string, medicineOrderUlid: string}) => {
+export const apiDispensingRefuse = (props: {
+  msg: string;
+  medicineOrderUlid: string;
+}) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
   const dto = {
@@ -74,16 +78,19 @@ export const apiDispensingRefuse = (props:{msg: string, medicineOrderUlid: strin
 /** 조제 수락
  * PUT API
  */
-export const apiDispensingAccept = (text: string) => {
+export const apiDispensingAccept = (props: {
+  msg: string;
+  medicineOrderUlid: string;
+}) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
   const dto = {
-    dispensingExpenses: text,
+    medicineCost: Number(commaRemove(props.msg)),
   };
 
   return instance({
-    method: 'get',
-    url: `apiDispensingExpenses/noti`,
+    method: 'put',
+    url: `pharmacy/api/v2/medicines/orders/requests/${props.medicineOrderUlid}/accept`,
     data: dto,
     headers: {
       Authorization: accessToken,
