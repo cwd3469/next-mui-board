@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 export class CodeMsgBundle {
   msg: string;
   constructor() {
@@ -136,12 +134,33 @@ export class CodeMsgBundle {
         return '처방전이 등록되지 않은 진료건입니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       case '2022':
         return '이미 조제 진행중인 처방전 입니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+      case '2029':
+        return '유효하지 않은 비대면진료 입니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+      /* send prescription by fax */
       case '2030':
         return '처방전을 조회하지 못했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+      /* user order to medicine */
+      case '2040':
+        return '등록된 기본 주소지가 없습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+      /* medicine order request */
+
+      case '2050':
+        return '주문건을 찾지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+      /* medicine payment */
+
+      case '2061':
+        return '조제비 결제에 실패했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+      case '2062':
+        return '배송비 결제에 실패했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+
       case '3000':
         return '기본건강정보를 조회하지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       case '3010':
         return '주소 정보를 조회하지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+
+      /** backoffice-service code [4000~4099] **/
+      case '4000':
+        return '공지사항을 찾지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
 
       /** proxy-service code [7000~7099] **/
       case '7000':
@@ -152,6 +171,19 @@ export class CodeMsgBundle {
         return '파일 정보를 찾을 수 없습니다.';
       case '7003':
         return '패스 인증 정보를 찾을 수 없습니다.';
+      /* nine module [10~19] */
+      case '7010':
+        return '실명인증 모듈에서 오류가 발생했습니다.';
+      case '7011':
+        return 'PASS 모듈에서 오류가 발생했습니다.';
+      /* firebase cloud message [20~29] */
+      case '7020':
+        return '잘못된 요청 코드 입니다.';
+      /* kakao-mobility [30~39] */
+      case '7030':
+        return '주문을 찾을 수 없습니다.';
+
+      /* nine module [10~19] */
       case '7100':
         return '비대면 진료실 정보를 조회하지 못 했습니다.';
       case '7101':
@@ -198,7 +230,27 @@ export class CodeMsgBundle {
         return '진료비 수정 가능 시간을 초과했습니다.';
       case '7122':
         return '진료중인 비대면 진료가 있습니다.';
-
+      /** payment-service code [7200~7299] **/
+      /* payment card into [00~09]*/
+      case '7200':
+        return '이미 등록된 카드 번호입니다.';
+      case '7201':
+        return '유효하지 않은 카드 정보입니다.';
+      case '7202':
+        return '카드정보를 찾을 수 없습니다.';
+      case '7203':
+        return '주 결제카드를 찾을 수 없습니다.';
+      /* payment info [10~19]*/
+      case '7210':
+        return '결제정보를 찾을 수 없습니다.';
+      case '7220':
+        return '주문정보를 찾을 수 없습니다.';
+      case '7230':
+        return '최소 결제 금액은 100원 이상입니다.';
+      case '7231':
+        return '결제 정보가 일치하지 않습니다.';
+      case '7239':
+        return '결제도중 오류가 발생했습니다.';
       default:
         return '잘못된 요청입니다. \n 잠시후 다시 시도해주시길 바랍니다.';
     }
