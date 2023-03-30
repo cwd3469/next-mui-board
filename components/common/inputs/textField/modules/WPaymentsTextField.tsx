@@ -2,31 +2,14 @@ import React, { useCallback, useState } from 'react';
 import { WTextFieldModulesType } from '../type';
 import useValidation from '@hooks/utils/useValidation';
 import WTextField from '../index';
-import { commaAdd } from '@utils/formatNumber';
+import { commaAdd, commaRemove } from '@utils/formatNumber';
 
 const WPaymentsTextField = (props: WTextFieldModulesType) => {
   const { state, setState, keyId, err, setErr, disabled } = props;
   const stateTxt = state as string;
   const prefix = '원';
   const valid = useValidation();
-  const errMsg = useCallback(() => {
-    setErr(
-      {
-        msg: '금액을 입력해 주세요.',
-        boo: true,
-      },
-      keyId,
-    );
-  }, [keyId, setErr]);
-  const passMsg = useCallback(() => {
-    setErr(
-      {
-        msg: '',
-        boo: false,
-      },
-      keyId,
-    );
-  }, [keyId, setErr]);
+
   const onFocusIn = useCallback(() => {
     const last = state.slice(0, -1);
     setState(last, keyId);
@@ -39,21 +22,36 @@ const WPaymentsTextField = (props: WTextFieldModulesType) => {
 
   const onValid = useCallback(
     (txt: string) => {
-      const last = txt.slice(0, -1);
-      if (last !== prefix) {
-        if (valid.regExpExpenses.test(txt)) {
-          passMsg();
-          if (txt.length < 3) {
-            errMsg();
+      if (!txt) {
+        setErr(
+          { msg: '0원 또는 100원 이상 입력이 가능합니다.', boo: true },
+          keyId,
+        );
+        return;
+      } else {
+        const number = Number(commaRemove(txt));
+        if (number <= 1990000) {
+          if (number < 100) {
+            if (number === 0) {
+              setErr({ msg: '', boo: false }, keyId);
+            } else {
+              setErr(
+                {
+                  msg: '0원 또는 100원 이상 입력이 가능합니다.',
+                  boo: true,
+                },
+                keyId,
+              );
+            }
+          } else {
+            setErr({ msg: '', boo: false }, keyId);
           }
         } else {
-          errMsg();
+          setErr({ msg: '199만원까지 입력이 가능합니다.', boo: true }, keyId);
         }
-      } else {
-        passMsg();
       }
     },
-    [errMsg, passMsg, valid.regExpExpenses],
+    [keyId, setErr],
   );
 
   const onChangeInfo = useCallback(
@@ -65,11 +63,11 @@ const WPaymentsTextField = (props: WTextFieldModulesType) => {
           setState(comma, keyId);
           onValid(comma);
         } else {
-          errMsg();
+          setErr({ msg: '금액이 부족합니다.', boo: true }, keyId);
         }
       }
     },
-    [errMsg, keyId, onValid, setState, valid.regExpExpenses],
+    [keyId, onValid, setErr, setState, valid.regExpExpenses],
   );
 
   return (

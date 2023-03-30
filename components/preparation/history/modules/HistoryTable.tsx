@@ -224,15 +224,7 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
   return (
     <>
       <WDataTable rows={rows} columns={columns} />
-      {requesterId ? (
-        <RequesterModal
-          id={requesterId}
-          open={requesterOpen}
-          handleClose={() => requesterOnOff('', false)}
-        />
-      ) : (
-        ''
-      )}
+
       {prescriptionId ? (
         <PrescriptionModal
           id={prescriptionId}

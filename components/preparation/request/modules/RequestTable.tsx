@@ -2,54 +2,78 @@ import React, { useCallback, useState } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { RequestInterface } from '../type';
 import WDataTable, { baseOption } from '@components/common/dataGrid/WDataTable';
-import { Stack, Typography } from '@mui/material';
-import { dateFormat } from '@utils/date';
 import GridButton from '@components/common/button/modules/GridButton';
 import { CheckIcon, UserIcon } from '@components/common/dataDisplay/WIcons';
 import RequesterModal from '@components/preparation/modals/RequesterModal';
 import DispensingAccepModal from '@components/preparation/modals/DispensingAccepModal';
+import { mobileFormat, phoneFormat } from '@utils/formatNumber';
+import { transDeliveryMethod, transMedicineStatus } from '@utils/transtext';
+import WDayTimeTypography from '@components/common/typography/WDayTimeTypography';
+import pencilAlt from 'public/assets/icon/pencil-alt.svg';
+import Image from 'next/image';
+
+export interface ReceiveData {
+  receiveAddrDetailKo: string;
+  receiveAddrKo: string;
+  receiveNameKo: string;
+  receivePhoneNum: string;
+  receiveZipCode: string;
+}
 
 const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
   const { data } = props;
-  const [requesterId, setRequesterId] = useState<string>('');
+  const [receiveData, setReceiveData] = useState<ReceiveData>();
   const [requesterOpen, setRequesterOpen] = useState<boolean>(false);
   const [prescriptionId, setPrescriptionId] = useState<string>('');
+  const [medicineOrderUlid, setMedicineOrderUlid] = useState<string>('');
   const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
   const rows = data.map((item, index) => {
     return { ...item, ['id']: index };
   });
 
-  const requesterOnOff = useCallback((id: string, open: boolean) => {
-    setRequesterId(id);
+  const requesterOnOff = useCallback((open: boolean, data?: ReceiveData) => {
+    setReceiveData(data);
     setRequesterOpen(open);
   }, []);
-  const prescriptionIdOnOff = useCallback((id: string, open: boolean) => {
-    setPrescriptionId(id);
-    setPrescriptionOpen(open);
-  }, []);
+
+  const prescriptionIdOnOff = useCallback(
+    (prescriptionId: string, medicineOrderUlid: string, open: boolean) => {
+      setPrescriptionId(prescriptionId);
+      setMedicineOrderUlid(medicineOrderUlid);
+      setPrescriptionOpen(open);
+    },
+    [],
+  );
 
   const columns: GridColDef[] = [
     {
       ...baseOption,
-      field: 'statusNameKo',
+      field: 'medicineStatus',
       headerName: '상태',
-      width: 120,
-    },
-    {
-      ...baseOption,
-      field: 'completionAt',
-      headerName: '조제 완료 시간',
-      width: 180,
+      width: 92,
       renderCell: (params) => {
-        const { dayTime } = dateFormat(params.row.completionAt);
-        return <>{dayTime}</>;
+        const state = transMedicineStatus(params.row.medicineStatus);
+        return <>{state}</>;
       },
     },
     {
       ...baseOption,
-      field: 'deliveryFormKo',
+      field: 'requestDateTime',
+      headerName: '조제 요청 시간',
+      width: 180,
+      renderCell: (params) => {
+        return <WDayTimeTypography date={params.row.requestDateTime} />;
+      },
+    },
+    {
+      ...baseOption,
+      field: 'deliveryMethod',
       headerName: '수령 방법',
-      width: 110,
+      width: 100,
+      renderCell: (params) => {
+        const state = transDeliveryMethod(params.row.deliveryMethod as string);
+        return <>{state}</>;
+      },
     },
 
     {
@@ -58,15 +82,17 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
       headerName: '요청자 정보',
       width: 150,
       renderCell: (prams) => {
-        const { deliveryStatus, status, ulid } = prams.row;
+        const { deliveryMethod, medicineStatus, receiveData } = prams.row;
         return (
           <GridButton
-            onClick={() => requesterOnOff(ulid, true)}
+            onClick={() => {
+              requesterOnOff(true, receiveData);
+            }}
             startIcon={<UserIcon />}
             disabled={
-              status === 'CANCEL'
+              medicineStatus === 'CANCEL'
                 ? true
-                : deliveryStatus === 'COMPLETION'
+                : deliveryMethod === 'COMPLETION'
                 ? true
                 : false
             }
@@ -78,42 +104,39 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
     },
     {
       ...baseOption,
-      field: 'treatHospitalName',
+      field: 'hospitalNameKo',
       headerName: '진료 병원 명',
       width: 240,
+    },
+    {
+      ...baseOption,
+      field: 'doctorNameKo',
+      headerName: '진료 병원 의사 명',
+      width: 120,
+    },
+    {
+      ...baseOption,
+      field: 'hospitalPhoneNum',
+      headerName: '병원 연락처',
+      width: 150,
       renderCell: (prams) => {
-        return (
-          <Stack justifyContent={'center'} width="100%">
-            <Typography textAlign={'center'}>
-              {prams.row.treatHospitalName}
-            </Typography>
-          </Stack>
-        );
+        const num = prams.row.hospitalPhoneNum as string;
+        return <>{phoneFormat(num)}</>;
       },
     },
     {
       ...baseOption,
-      field: 'treatDoctorName',
-      headerName: '진료 병원 의사 명',
-      width: 100,
-    },
-    {
-      ...baseOption,
-      field: 'treatHospitalPhone',
-      headerName: '병원 연락처',
-      width: 105,
-    },
-    {
-      ...baseOption,
       field: 'prescriptionPreview',
-      headerName: '처방전 보기',
-      width: 180,
+      headerName: '조제 수락 / 거절',
+      width: 160,
       renderCell: (prams) => {
-        const { status, deliveryStatus, ulid } = prams.row;
+        const { prescriptionUlid, medicineOrderUlid } = prams.row;
         return (
           <GridButton
-            onClick={() => prescriptionIdOnOff(ulid, true)}
-            startIcon={<CheckIcon />}
+            onClick={() =>
+              prescriptionIdOnOff(prescriptionUlid, medicineOrderUlid, true)
+            }
+            startIcon={<Image src={pencilAlt} alt="작성" />}
           >
             조제 수락 / 거절
           </GridButton>
@@ -126,25 +149,22 @@ const RequestTable = (props: { data: RequestInterface[] }): JSX.Element => {
     <>
       <WDataTable rows={rows} columns={columns} />
       {/* 요청자 정보 */}
-      {requesterId ? (
+      {receiveData ? (
         <RequesterModal
-          id={requesterId}
+          receiveData={receiveData}
           open={requesterOpen}
-          handleClose={() => requesterOnOff('', false)}
+          handleClose={() => requesterOnOff(false, undefined)}
         />
       ) : (
         ''
       )}
       {/* 조제 수락 보기 */}
-      {prescriptionId ? (
-        <DispensingAccepModal
-          id={prescriptionId}
-          open={prescriptionOpen}
-          handleClose={() => prescriptionIdOnOff('', false)}
-        />
-      ) : (
-        ''
-      )}
+      <DispensingAccepModal
+        medicineOrderUlid={medicineOrderUlid}
+        prescriptionUlid={prescriptionId}
+        open={prescriptionOpen}
+        handleClose={() => prescriptionIdOnOff('', '', false)}
+      />
     </>
   );
 };

@@ -60,7 +60,7 @@ const useFilterEffect = (props: UseFilterEffectType) => {
 
       const dayString: FilterDateType = {
         startDate: startDate as string,
-        endDate: startDate as string,
+        endDate: endDate as string,
       };
       if (props.setDateString) {
         props.setDateString(dayString);

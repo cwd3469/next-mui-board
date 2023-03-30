@@ -1,43 +1,89 @@
-import { PreparationRequestDto } from '@components/preparation/history/type';
 import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
 import { useToastContext } from '@hooks/utils/useToastContext';
-import { useCallback, useEffect } from 'react';
-import { useMutation, useQuery } from 'react-query';
-import { apiDispensingAccept } from '..';
-import { PREPARATIONREQUEST } from '../queryKey';
+import { useCallback } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { apiDispensingAccept, apiDispensingRefuse } from '..';
+import { REQUEST_LIST } from '../queryKey';
+import { useRouter } from 'next/router';
+import { commaRemove } from '@utils/formatNumber';
 
+/** useMutateDispensingAccept props type */
 interface UseDispensingExpensesType {
   dispensingExpenses: string;
+  refuseReason: string;
+  medicineOrderUlid: string;
+  onSuccess: () => void;
+  onError: () => void;
 }
 const useMutateDispensingAccept = (props: UseDispensingExpensesType) => {
-  const { dispensingExpenses } = props;
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
-  const { mutate: mutateDispensingExpenses } = useMutation(apiDispensingAccept);
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { mutate: mutateDispensingAccept } = useMutation(apiDispensingAccept);
+  const { mutate: mutateDispensingRefuse } = useMutation(apiDispensingRefuse);
 
-  const onClickDispensingExpenses = useCallback(() => {
-    if (dispensingExpenses) {
-      mutateDispensingExpenses(dispensingExpenses, {
-        onSuccess: (res) => {
-          const code = res.data.code;
-          const data = res.data.data;
-          if (code !== '0000') {
-            toast?.on(msg.errMsg(code), 'warning');
-          } else {
-            return;
-          }
+  /** useMutateDispensingAccept 조제 수락 API hook*/
+  const onClickDispensingAccept = useCallback(() => {
+    if (props.dispensingExpenses) {
+      mutateDispensingAccept(
+        {
+          msg: props.dispensingExpenses,
+          medicineOrderUlid: props.medicineOrderUlid,
         },
-        onError: (errMsg) => {
-          toast?.on(
-            `조제비 수정이 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
-            'error',
-          );
+        {
+          onSuccess: (res) => {
+            const code = res.data.code;
+            if (code !== '0000') {
+              toast?.on(msg.errMsg(code), 'warning');
+            } else {
+              props.onSuccess();
+              queryClient.invalidateQueries(REQUEST_LIST(router.query));
+              return;
+            }
+          },
+          onError: (errMsg) => {
+            toast?.on(
+              `조제비 수정이 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
+              'error',
+            );
+            props.onError();
+          },
         },
-      });
+      );
     }
-  }, [dispensingExpenses, msg, mutateDispensingExpenses, toast]);
+  }, [msg, mutateDispensingAccept, props, queryClient, router.query, toast]);
 
-  return { onClickDispensingExpenses };
+  /** useMutateDispensingAccept 조제 거절 API hook*/
+  const onClickMutateDispensingRefuse = useCallback(() => {
+    if (props.refuseReason && props.medicineOrderUlid) {
+      mutateDispensingRefuse(
+        { msg: props.refuseReason, medicineOrderUlid: props.medicineOrderUlid },
+        {
+          onSuccess: (res) => {
+            const code = res.data.code;
+            const data = res.data.data;
+            if (code !== '0000') {
+              toast?.on(msg.errMsg(code), 'warning');
+            } else {
+              props.onSuccess();
+              queryClient.invalidateQueries(REQUEST_LIST(router.query));
+              return;
+            }
+          },
+          onError: (errMsg) => {
+            toast?.on(
+              `조제비 수정이 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
+              'error',
+            );
+            props.onError();
+          },
+        },
+      );
+    }
+  }, [msg, mutateDispensingRefuse, props, queryClient, router.query, toast]);
+
+  return { onClickDispensingAccept, onClickMutateDispensingRefuse };
 };
 
 export default useMutateDispensingAccept;

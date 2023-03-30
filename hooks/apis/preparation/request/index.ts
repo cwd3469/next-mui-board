@@ -1,19 +1,17 @@
-import { FilterListData } from '@hooks/contexts/filters/type';
-import { transQueryDate, transQueryUrl } from '@utils/transtext';
 import { getCookie } from 'cookies-next';
 import instance from '../../instance';
+import { commaRemove } from '@utils/formatNumber';
 
 /** 조제 진행 목록
  * GET API
  */
-export const apiProceedList = (prams: FilterListData) => {
+export const apiProceedList = (queryUrl: string) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
-  const queryUrl = transQueryUrl(prams.filter);
 
   return instance({
     method: 'get',
-    url: `apiPreparationProceedList/url?size=10${queryUrl}`,
+    url: `pharmacy/api/v2/medicines/orders/requests?size=10${queryUrl}`,
     headers: {
       Authorization: accessToken,
     },
@@ -38,47 +36,61 @@ export const apiProceedPreparationRequest = (prams: string) => {
 /** 조제 진행 처방전 정보
  * GET API
  */
-export const apiProceedPrescription = (prams: string) => {
+export const apiPrescriptionFileBase = (
+  medicineOrderUlid: string,
+  prescriptionUlid: string,
+) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
 
   return instance({
     method: 'get',
-    url: `apiProceedPrescription/${prams}`,
+    url: `pharmacy/api/v2/medicines/orders/requests/${medicineOrderUlid}/prescription/${prescriptionUlid}`,
     headers: {
       Authorization: accessToken,
     },
   });
 };
 
-/** 조제 진행 상태 알림
- * GET API
+/** 조제 거절
+ * PUT API
  */
-export const apiProceedNoti = () => {
-  const token = getCookie('accessToken');
-  const accessToken = typeof token === 'string' ? token : '';
-
-  return instance({
-    method: 'get',
-    url: `apiProceed/noti`,
-    headers: {
-      Authorization: accessToken,
-    },
-  });
-};
-/** 조제 진행 상태 알림
- * GET API
- */
-export const apiDispensingAccept = (text: string) => {
+export const apiDispensingRefuse = (props: {
+  msg: string;
+  medicineOrderUlid: string;
+}) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
   const dto = {
-    dispensingExpenses: text,
+    refuseReason: props.msg,
   };
 
   return instance({
-    method: 'get',
-    url: `apiDispensingExpenses/noti`,
+    method: 'put',
+    url: `pharmacy/api/v2/medicines/orders/requests/${props.medicineOrderUlid}/refuse`,
+    data: dto,
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
+
+/** 조제 수락
+ * PUT API
+ */
+export const apiDispensingAccept = (props: {
+  msg: string;
+  medicineOrderUlid: string;
+}) => {
+  const token = getCookie('accessToken');
+  const accessToken = typeof token === 'string' ? token : '';
+  const dto = {
+    medicineCost: Number(commaRemove(props.msg)),
+  };
+
+  return instance({
+    method: 'put',
+    url: `pharmacy/api/v2/medicines/orders/requests/${props.medicineOrderUlid}/accept`,
     data: dto,
     headers: {
       Authorization: accessToken,

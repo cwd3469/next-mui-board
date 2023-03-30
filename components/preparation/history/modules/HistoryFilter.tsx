@@ -17,7 +17,7 @@ const HistoryFilter = () => {
   return (
     <Grid container alignItems={'center'} justifyContent={'space-between'}>
       <Grid container width="auto" gap={'10px'}>
-        <WDatePickerFilter setInDate={setInDate} />
+        {/* <WDatePickerFilter setInDate={setInDate} /> */}
         <WSelectPreparation
           callBack={(id: string, keyId: string) => setInFilter(id, keyId)}
         />

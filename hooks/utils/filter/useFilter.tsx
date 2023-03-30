@@ -7,11 +7,13 @@ import { transQueryDate, transQueryUrl } from '@utils/transtext';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import useFilterEffect from './useFilterEffect';
+import { DateRange } from '@mui/x-date-pickers-pro';
+import dayjs from 'dayjs';
 
 interface UseFilterType {
   url: string;
-  date?: FilterDateType;
-  setDate?: Dispatch<SetStateAction<FilterDateType>>;
+  date?: DateRange<dayjs.Dayjs>;
+  setDate?: Dispatch<SetStateAction<DateRange<dayjs.Dayjs>>>;
   filter?: FilterAllOtions;
   setFilter?: Dispatch<SetStateAction<FilterAllOtions>>;
 }
@@ -29,12 +31,12 @@ const useFilter = (props: UseFilterType) => {
 
   /**useFilter date 업로드 기능*/
   const setInDate = useCallback(
-    (date: FilterDateType) => {
+    (date: DateRange<dayjs.Dayjs>) => {
       if (props.date && props.setDate) {
         const reDate = date;
         props.setDate(reDate);
         const key = props.filter ? transQueryUrl(props.filter) : '';
-        const day = transQueryDate(reDate);
+        const day = transQueryDate(date);
         routeUrl(key, day);
       }
     },
@@ -62,9 +64,9 @@ const useFilter = (props: UseFilterType) => {
         props.setFilter(filterState);
       }
     },
-    setDateString(date) {
+    setDate(rang) {
       if (props.setDate) {
-        props.setDate(date);
+        props.setDate(rang);
       }
     },
   });

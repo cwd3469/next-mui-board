@@ -1,27 +1,25 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import dayjs from 'dayjs';
-import { createContext, useCallback, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import { DataPagition, FilterDateType, FilterValue } from './type';
+import useFilter from '@hooks/utils/filter/useFilter';
+import { DateRange } from '@mui/x-date-pickers-pro';
 
 const RequestFilterContext = createContext<{
   filter: DataPagition;
   setInFilter: (value: FilterValue, keyId: string) => void;
-  date: FilterDateType;
-  setInDate: (date: FilterDateType) => void;
+  date: DateRange<dayjs.Dayjs>;
+  setInDate: (date: DateRange<dayjs.Dayjs>) => void;
 }>({
   filter: {
-    code: '0',
-    page: 1,
+    page: 0,
     keyword: '',
   },
   setInFilter: (value: FilterValue, keyId: string) => {
     return;
   },
-  date: {
-    startDate: dayjs().format('YYYY-MM-DD'),
-    endDate: dayjs().format('YYYY-MM-DD'),
-  },
-  setInDate: (date: FilterDateType) => {
+  date: [dayjs(), dayjs()],
+  setInDate: (date: DateRange<dayjs.Dayjs>) => {
     return;
   },
 });
@@ -31,25 +29,19 @@ interface Props {
 }
 
 const RequestFilterProvider = ({ children }: Props): JSX.Element => {
+  const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([dayjs(), dayjs()]);
   const [filter, setFilter] = useState<DataPagition>({
-    code: '0',
-    page: 1,
+    page: 0,
     keyword: '',
   });
-  const [date, setDate] = useState<FilterDateType>({
-    startDate: dayjs().format('YYYY-MM-DD'),
-    endDate: dayjs().format('YYYY-MM-DD'),
+
+  const { setInFilter, setInDate } = useFilter({
+    url: '/preparation/request',
+    filter: filter,
+    setFilter: setFilter,
+    date: date,
+    setDate: setDate,
   });
-
-  const setInFilter = useCallback((value: FilterValue, keyId: string) => {
-    setFilter((prec) => {
-      return { ...prec, [keyId]: value };
-    });
-  }, []);
-
-  const setInDate = useCallback((date: FilterDateType) => {
-    setDate(date);
-  }, []);
 
   return (
     <RequestFilterContext.Provider

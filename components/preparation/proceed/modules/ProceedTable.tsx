@@ -60,7 +60,7 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
     {
       ...baseOption,
       field: 'completionAt',
-      headerName: '조제 완료 시간',
+      headerName: '조제 수락 시간',
       width: 120,
       renderCell: (params) => {
         const { dayTime } = dateFormat(params.row.completionAt);
@@ -183,7 +183,7 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
     <>
       <WDataTable rows={rows} columns={columns} />
       {/* 요청자 정보 */}
-      {requesterId ? (
+      {/* {requesterId ? (
         <RequesterModal
           id={requesterId}
           open={requesterOpen}
@@ -191,7 +191,7 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
         />
       ) : (
         ''
-      )}
+      )} */}
       {/* 처방전 보기 */}
       {prescriptionId ? (
         <PrescriptionModal

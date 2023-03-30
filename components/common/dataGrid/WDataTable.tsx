@@ -62,7 +62,7 @@ const WDataTable = (props: {
     <Box height="706px" sx={props.sx}>
       <DataTable
         headerHeight={headerHeight ? headerHeight : 64}
-        rowHeight={rowHeight ? rowHeight : 64}
+        rowHeight={rowHeight ? rowHeight : 60}
         rows={rows}
         columns={columns}
         pageSize={pageSize ? pageSize : 10}
@@ -82,9 +82,19 @@ const DataTable = styled(DataGrid)(({ theme }) => ({
     borderRadius: '12px',
     overflow: 'hidden',
   },
+  '& .MuiDataGrid-columnHeader': {
+    '& .MuiDataGrid-columnHeaderTitle': {
+      fontWeight: '600',
+      letterSpacing: '0px',
+    },
+    '&:focus': {
+      outline: 'solid #fff 1px',
+    },
+  },
   '& .MuiDataGrid-columnHeader ,& .MuiDataGrid-cell': {
-    padding: '0px',
+    padding: '3px',
     whiteSpace: 'break-spaces !important',
+    boxSizing: 'border-box',
   },
   '& .MuiDataGrid-columnHeadersInner': {
     backgroundColor: '#FDFDFD',
@@ -92,16 +102,18 @@ const DataTable = styled(DataGrid)(({ theme }) => ({
   '& .MuiDataGrid-columnHeaderTitleContainer': {
     ...theme.typography.body1,
     justifyContent: 'center',
+    letterSpacing: '0px',
   },
 
   '& .MuiDataGrid-cell': {
     ...theme.typography.body1,
     justifyContent: 'center',
     color: '#555555',
+    overflow: 'auto',
   },
   '& .MuiDataGrid-row ': {
     '& .MuiTypography-root': {
-      letterSpacing: '-0.14px',
+      letterSpacing: '-1px',
     },
   },
   '& .MuiDataGrid-columnSeparator': {

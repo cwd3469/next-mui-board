@@ -46,6 +46,20 @@ export default function App({ Component, pageProps }: AppProps) {
     };
   }, [router.events]);
 
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      // Disable keyboard shortcut for opening developer tools
+      window.addEventListener('keydown', function (e) {
+        if (e.keyCode === 123) {
+          e.preventDefault();
+        }
+      });
+      window.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+      });
+    }
+  }, []);
+
   return (
     <>
       <Script

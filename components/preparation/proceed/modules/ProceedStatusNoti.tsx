@@ -11,7 +11,7 @@ const ProceedStatusNoti = () => {
     <Grid container gap="16px" alignItems="center">
       <WStatusNoti
         counting={String(data.currentRequestsNumber)}
-        title="현제 조제 요청 건수"
+        title="현제 조제 중 건수"
         units="건"
       />
       <WNotiBox />

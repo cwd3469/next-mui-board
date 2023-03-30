@@ -1,30 +1,22 @@
 import { FilterDateType } from '@hooks/contexts/filters/type';
 import { DateRange } from '@mui/x-date-pickers-pro';
 import dayjs, { Dayjs } from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import WDatePicker from '..';
+import { stringToDate, stringToDey } from '@utils/date';
 
 const WDatePickerFilter = (props: {
-  setInDate: (date: FilterDateType) => void;
+  setInDate: (date: DateRange<Dayjs>) => void;
+  date: DateRange<Dayjs>;
 }) => {
-  const [date, setDate] = useState<DateRange<Dayjs>>([dayjs(), dayjs()]);
-
   const handleDate = (
     date: DateRange<Dayjs>,
     keyboardInputValue?: string | undefined,
   ) => {
-    setDate(date);
-    const start = date[0] ? date[0] : dayjs();
-    const end = date[1] ? date[1] : dayjs();
-    const startFormat = dayjs(start).format('YYYY-MM-DD');
-    const endFormat = dayjs(end).format('YYYY-MM-DD');
-    const filterDate: FilterDateType = {
-      startDate: startFormat,
-      endDate: endFormat,
-    };
-    props.setInDate(filterDate);
+    props.setInDate(date);
   };
-  return <WDatePicker date={date} selectDate={handleDate} />;
+
+  return <WDatePicker date={props.date} selectDate={handleDate} />;
 };
 
 export default WDatePickerFilter;
