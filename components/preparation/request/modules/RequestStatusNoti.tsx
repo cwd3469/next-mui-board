@@ -1,7 +1,6 @@
 import WStatusNoti, {
   WNotiBox,
 } from '@components/common/typography/WStatusNoti';
-import useQueryRequestNoti from '@hooks/apis/preparation/request/hooks/useQueryRequestNoti';
 import { Box, Grid } from '@mui/material';
 
 const RequestStatusNoti = (props: { totalElements: number }) => {
