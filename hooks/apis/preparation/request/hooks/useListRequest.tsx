@@ -5,6 +5,7 @@ import useCodeWarningEffect from '@hooks/utils/useCodeWarningEffect';
 import { ParsedUrlQuery } from 'querystring';
 import { transQueryDateToString, transQueryUrl } from '@utils/transtext';
 
+/** 조제 요청 목록 API hook */
 const useListRequest = (query: ParsedUrlQuery) => {
   const queryUrl = transQueryUrl(query);
   const queryDate = transQueryDateToString(query);
