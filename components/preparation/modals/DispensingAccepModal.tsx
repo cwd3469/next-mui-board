@@ -12,11 +12,6 @@ import { Box, Grid, Stack } from '@mui/material';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 
-interface DispensingAccepModalType extends ModalType {
-  medicineOrderUlid: string;
-  prescriptionUlid: string;
-}
-
 interface Paymentsinfo {
   payment: string;
   refusal: string;
@@ -26,27 +21,47 @@ interface PaymentsinfoErr {
   refusal: ErrorType;
 }
 
+/**DispensingAccepModal props type */
+interface DispensingAccepModalType extends ModalType {
+  medicineOrderUlid: string;
+  prescriptionUlid: string;
+}
+
 const DispensingAccepModal = (props: DispensingAccepModalType) => {
   const { open, handleClose, medicineOrderUlid, prescriptionUlid } = props;
+
+  /**DispensingAccepModal 처방전 미리보기 기능 */
   const { fileArr, imageUrl, reset } = usePrescriptionPreview({
     medicineOrderUlid: medicineOrderUlid,
     prescriptionUlid: prescriptionUlid,
     handleClose: handleClose,
   });
-  const onClickReset = useCallback(() => {
-    handleClose();
-    reset();
-  }, [handleClose, reset]);
-  const [disabled, setDisabled] = useState<boolean>(true);
+
+  /**DispensingAccepModal 버튼 활성화 상태 */
+  const [disabledAccept, setDisabledAccept] = useState<boolean>(true);
+
+  /**DispensingAccepModal 버튼 활성화 상태 */
+  const [disabledRefuse, setDisabledRefuse] = useState<boolean>(true);
+  /**DispensingAccepModal 탭 상태 */
   const [tab, setTab] = useState<boolean>(true);
+  /**DispensingAccepModal 입력값 상태 */
   const [info, setInfo] = useState<Paymentsinfo>({
     payment: '',
     refusal: '',
   });
+  /**DispensingAccepModal 입력값 err 상태 */
   const [infoErr, setInfoErr] = useState<PaymentsinfoErr>({
     payment: { msg: '', boo: false },
     refusal: { msg: '', boo: false },
   });
+
+  /**DispensingAccepModal 모달 닫기 기능 */
+  const onClickReset = useCallback(() => {
+    handleClose();
+    reset();
+  }, [handleClose, reset]);
+
+  /**DispensingAccepModal 수락 거절 api 요청 기능 */
   const { onClickDispensingAccept, onClickMutateDispensingRefuse } =
     useMutateDispensingAccept({
       dispensingExpenses: info.payment,
@@ -56,48 +71,47 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
       onError: onClickReset,
     });
 
+  /**DispensingAccepModal 입력 상태 변경 기능 */
   const onChangeState = useCallback((text: string, keyId: string) => {
     setInfo((prev) => {
       return { ...prev, [keyId]: text };
     });
   }, []);
+  /**DispensingAccepModal 입력 Err 상태 변경 기능 */
   const onChangeStateErr = useCallback((err: ErrorType, keyId: string) => {
     setInfoErr((prev) => {
       return { ...prev, [keyId]: err };
     });
   }, []);
-
+  /**DispensingAccepModal 조제 수락 비활성화 변경 기능 */
   const acceptInvigorator = useCallback(() => {
     if (info.payment) {
       if (!infoErr.payment.boo) {
-        setDisabled(false);
+        setDisabledAccept(false);
       } else {
-        setDisabled(true);
+        setDisabledAccept(true);
       }
     } else {
-      setDisabled(true);
+      setDisabledAccept(true);
     }
   }, [info.payment, infoErr.payment.boo]);
 
+  /**DispensingAccepModal 조제 거절 비활성화 변경 기능 */
   const refusalInvigorator = useCallback(() => {
     if (info.refusal) {
       if (!infoErr.refusal.boo) {
-        setDisabled(false);
+        setDisabledRefuse(false);
       } else {
-        setDisabled(true);
+        setDisabledRefuse(true);
       }
     } else {
-      setDisabled(true);
+      setDisabledRefuse(true);
     }
   }, [info.refusal, infoErr.refusal.boo]);
 
+  /**DispensingAccepModal 조제 수락 비활성화 변경 기능 */
   const onTab = useCallback(() => {
     setTab(!tab);
-    setInfo({ payment: '', refusal: '' });
-    setInfoErr({
-      payment: { msg: '', boo: false },
-      refusal: { msg: '', boo: false },
-    });
   }, [tab]);
 
   useEffect(() => {
@@ -108,22 +122,19 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
     }
   }, [acceptInvigorator, refusalInvigorator, tab]);
 
+  /**DispensingAccepModal render */
   return (
     <WConfirm
       open={open}
       handleClose={onClickReset}
       handleEvent={
-        tab
-          ? () => {
-              return;
-            }
-          : onClickMutateDispensingRefuse
+        tab ? onClickDispensingAccept : onClickMutateDispensingRefuse
       }
       title="조제 수락 / 거절"
       maxWidth={tab ? 'xl' : 'sm'}
       titleSx={{ padding: '50px 0px 16px' }}
       btnTitle={tab ? '조제 수락' : '조제 거절'}
-      disabled={disabled}
+      disabled={tab ? disabledAccept : disabledRefuse}
       activeOn
     >
       <Stack gap="16px">
