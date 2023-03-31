@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import { useContext } from 'react';
 import NoticeFilter from './modules/NoticeFilter';
 import NoticeTable from './modules/NoticeTable';
-import LoadingErrorFallback from '@components/common/api/LoadingErrorFallback';
+import { loadingErrorFallbackList } from '@components/common/api/LoadingErrorFallback';
 
 const NoticePage = () => {
   const { filter, setInFilter } = useContext(NoticeFilterContext);
@@ -14,27 +14,22 @@ const NoticePage = () => {
     setInFilter(value, 'page');
   };
 
+  const info = loadingErrorFallbackList({
+    data: data,
+    isError: isError,
+    isLoading: isLoading,
+    isWarning: isWarning,
+  });
+
   return (
     <Stack gap="20px">
-      <LoadingErrorFallback
-        data={data}
-        isError={isError}
-        isLoading={isLoading}
-        isWarning={isWarning}
-        contexts={(info) => {
-          return (
-            <>
-              <NoticeFilter />
-              <NoticeTable data={info.data.data.page.content} />
-              <WPagination
-                paddingTop="4px"
-                page={filter.page}
-                pagination={pagination}
-                count={info.data.data.page.totalPages}
-              />
-            </>
-          );
-        }}
+      <NoticeFilter />
+      <NoticeTable data={info.contents} />
+      <WPagination
+        paddingTop="4px"
+        page={filter.page + 1}
+        pagination={pagination}
+        count={info.totalPages}
       />
     </Stack>
   );
