@@ -2,10 +2,10 @@ import { getCookie } from 'cookies-next';
 import instance from '../../instance';
 import { commaRemove } from '@utils/formatNumber';
 
-/** 조제 진행 목록
+/** 조제 요청 목록
  * GET API
  */
-export const apiProceedList = (queryUrl: string) => {
+export const apiRequestList = (queryUrl: string) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
 
@@ -17,23 +17,8 @@ export const apiProceedList = (queryUrl: string) => {
     },
   });
 };
-/** 조제 진행 요청자 정보
- * GET API
- */
-export const apiProceedPreparationRequest = (prams: string) => {
-  const token = getCookie('accessToken');
-  const accessToken = typeof token === 'string' ? token : '';
 
-  return instance({
-    method: 'get',
-    url: `apiProceedPreparationRequest/${prams}`,
-    headers: {
-      Authorization: accessToken,
-    },
-  });
-};
-
-/** 조제 진행 처방전 정보
+/** 조제 요청 처방전 정보
  * GET API
  */
 export const apiPrescriptionFileBase = (
