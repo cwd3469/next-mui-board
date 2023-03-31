@@ -6,18 +6,11 @@ import { useContext } from 'react';
 import ProceedFilter from './modules/ProceedFilter';
 import ProceedStatusNoti from './modules/ProceedStatusNoti';
 import ProceedTable from './modules/ProceedTable';
-import { useRouter } from 'next/router';
-import LoadingErrorFallback, {
-  loadingErrorFallbackList,
-} from '@components/common/api/LoadingErrorFallback';
+import { loadingErrorFallbackList } from '@components/common/api/LoadingErrorFallback';
 
 const ProceedPage = () => {
   const { filter, setInFilter, date } = useContext(ProceedFilterContext);
-  const router = useRouter();
-  const { data, isError, isLoading, isWarning } = useListProceed({
-    query: router.query,
-    date: date,
-  });
+  const { data, isError, isLoading, isWarning } = useListProceed();
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setInFilter(value, 'page');

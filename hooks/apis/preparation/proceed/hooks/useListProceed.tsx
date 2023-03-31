@@ -2,21 +2,20 @@ import { useQuery } from 'react-query';
 import { apiProceedList } from '..';
 import { PROCEED_LIST } from '../queryKey';
 import useCodeWarningEffect from '@hooks/utils/useCodeWarningEffect';
-import { ParsedUrlQuery } from 'querystring';
 import { transQueryDateToString, transQueryUrl } from '@utils/transtext';
-import { DateRange } from '@mui/x-date-pickers-pro';
-import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { ProceedFilterContext } from '@hooks/contexts/filters/ProceedFilterContext';
 
-const useListProceed = (prams: {
-  query: ParsedUrlQuery;
-  date: DateRange<dayjs.Dayjs>;
-}) => {
-  const queryUrl = transQueryUrl(prams.query);
-  const queryDate = transQueryDateToString(prams.query, prams.date);
+const useListProceed = () => {
+  const { filter, date } = useContext(ProceedFilterContext);
+  const router = useRouter();
+  const queryUrl = transQueryUrl(router.query, filter);
+  const queryDate = transQueryDateToString(router.query, date);
   const queryString = `${queryUrl}${queryDate}`;
 
   const { data, isError, isLoading } = useQuery(
-    PROCEED_LIST(prams.query),
+    PROCEED_LIST(router.query),
     async () => {
       return await apiProceedList(queryString);
     },
@@ -24,9 +23,13 @@ const useListProceed = (prams: {
       refetchInterval: 3000,
     },
   );
-  const code = data?.data.code;
 
-  const { isWarning } = useCodeWarningEffect({ code: code });
+  const { isWarning } = useCodeWarningEffect({
+    code: data ? data.data.code : '',
+    codeCallBack: () => {
+      window.location.replace('/preparation/proceed');
+    },
+  });
 
   return { data, isError, isLoading, isWarning };
 };
