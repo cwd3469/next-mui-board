@@ -1,11 +1,13 @@
 import { blobToFile, dataURItoFile, resizeFileCompression } from '@utils/file';
-
+import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { useToastContext } from '../useToastContext';
 import useCodeMsgBundle from '../useCodeMsgBundle';
 import { apiPrescriptionFileBase } from '@hooks/apis/preparation/request';
 import { UidList } from './types';
 import { AxiosPromise, AxiosResponse } from 'axios';
+import { Stack } from '@mui/material';
+import WPdfView from '@components/common/editor/WPdfView';
 
 const usePrescriptionPreview = (props: {
   medicineOrderUlid?: string;
@@ -87,6 +89,32 @@ const usePrescriptionPreview = (props: {
   }, [onImagePreview, props.medicineOrderUlid, props.prescriptionUlid]);
 
   return { fileArr, imageUrl, reset };
+};
+
+export const OneImagePreviewComponent = (props: {
+  fileArr: File[];
+  imageUrl: UidList[];
+}) => {
+  return (
+    <Stack alignItems="center">
+      <Stack sx={{ width: '600px' }}>
+        {props.fileArr.length ? (
+          props.fileArr[0].type === 'application/pdf' ? (
+            <WPdfView pdf={props.fileArr[0]} />
+          ) : (
+            <Image
+              src={props.imageUrl[0]?.url}
+              alt="처방전"
+              layout="fill"
+              objectFit="contain"
+            />
+          )
+        ) : (
+          ''
+        )}
+      </Stack>
+    </Stack>
+  );
 };
 
 export default usePrescriptionPreview;
