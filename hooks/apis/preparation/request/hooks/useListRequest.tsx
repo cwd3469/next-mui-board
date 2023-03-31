@@ -1,20 +1,25 @@
 import { useQuery } from 'react-query';
-import { apiProceedList } from '..';
+import { apiRequestList } from '..';
 import { REQUEST_LIST } from '../queryKey';
 import useCodeWarningEffect from '@hooks/utils/useCodeWarningEffect';
 import { ParsedUrlQuery } from 'querystring';
 import { transQueryDateToString, transQueryUrl } from '@utils/transtext';
+import { DateRange } from '@mui/x-date-pickers-pro';
+import dayjs from 'dayjs';
 
 /** 조제 요청 목록 API hook */
-const useListRequest = (query: ParsedUrlQuery) => {
-  const queryUrl = transQueryUrl(query);
-  const queryDate = transQueryDateToString(query);
+const useListRequest = (prams: {
+  query: ParsedUrlQuery;
+  date: DateRange<dayjs.Dayjs>;
+}) => {
+  const queryUrl = transQueryUrl(prams.query);
+  const queryDate = transQueryDateToString(prams.query, prams.date);
   const queryString = `${queryUrl}${queryDate}`;
 
   const { data, isError, isLoading } = useQuery(
-    REQUEST_LIST(query),
+    REQUEST_LIST(prams.query),
     async () => {
-      return await apiProceedList(queryString);
+      return await apiRequestList(queryString);
     },
     {
       refetchInterval: 3000,
