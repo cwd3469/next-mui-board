@@ -51,11 +51,13 @@ export const loadingErrorFallbackList = (props: LoadingErrorProps) => {
     : isWarning
     ? def
     : data
-    ? {
-        contents: data.data.data.page.content,
-        totalPages: data.data.data.page.totalPages,
-        totalElements: data.data.data.page.totalElements,
-      }
+    ? data.data.code === '0000'
+      ? {
+          contents: data.data.data.page.content,
+          totalPages: data.data.data.page.totalPages,
+          totalElements: data.data.data.page.totalElements,
+        }
+      : def
     : def;
   return info;
 };
