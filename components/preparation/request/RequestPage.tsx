@@ -6,7 +6,9 @@ import { useContext } from 'react';
 import RequestFilter from './modules/RequestFilter';
 import RequestStatusNoti from './modules/RequestStatusNoti';
 import RequestTable from './modules/RequestTable';
-import LoadingErrorFallback from '@components/common/api/LoadingErrorFallback';
+import LoadingErrorFallback, {
+  loadingErrorFallbackList,
+} from '@components/common/api/LoadingErrorFallback';
 import { useRouter } from 'next/router';
 
 const RequestPage = () => {
@@ -20,32 +22,24 @@ const RequestPage = () => {
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setInFilter(value, 'page');
   };
+  const info = loadingErrorFallbackList({
+    data: data,
+    isError: isError,
+    isLoading: isLoading,
+    isWarning: isWarning,
+  });
 
   return (
     <Stack gap="10px">
-      <LoadingErrorFallback
-        data={data}
-        isError={isError}
-        isLoading={isLoading}
-        isWarning={isWarning}
-        contexts={(info) => {
-          return (
-            <>
-              <Stack gap="10px">
-                <RequestStatusNoti
-                  totalElements={info.data.data.page.totalElements}
-                />
-                <RequestFilter />
-              </Stack>
-              <RequestTable data={info.data.data.page.content} />
-              <WPagination
-                page={filter.page + 1}
-                pagination={pagination}
-                count={info.data.data.page.totalPages}
-              />
-            </>
-          );
-        }}
+      <Stack gap="10px">
+        <RequestStatusNoti totalElements={info.totalElements} />
+        <RequestFilter />
+      </Stack>
+      <RequestTable data={info.contents} />
+      <WPagination
+        page={filter.page + 1}
+        pagination={pagination}
+        count={info.totalPages}
       />
     </Stack>
   );
