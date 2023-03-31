@@ -18,6 +18,7 @@ const ProceedFilter = () => {
       <Grid container width="auto" gap={'10px'}>
         <WDatePickerFilter date={date} setInDate={setInDate} />
         <WSelectPayment
+          value={filter.medicineStatus}
           callBack={(id: string, keyId: string) => setInFilter(id, keyId)}
         />
         <WSearchInput

@@ -49,7 +49,13 @@ const queryToFilter = (
   q: FilterAllOtions | ParsedUrlQuery,
   f?: FilterAllOtions,
 ) => {
-  const queryKey = q[key] ? `&${key}=${q[key]}` : f ? `&${key}=${f[key]}` : '';
+  const queryKey = q[key]
+    ? `&${key}=${q[key]}`
+    : f
+    ? f[key]
+      ? `&${key}=${f[key]}`
+      : ''
+    : '';
 
   return queryKey;
 };
@@ -61,13 +67,13 @@ export const transQueryUrl = (
   const page = Number(query.page)
     ? `&page=${Number(query.page) - 1}`
     : filter
-    ? `&page=${filter.page}`
+    ? filter.page
+      ? `&page=${filter.page}`
+      : ''
     : '';
-  const type = queryToFilter('type', query, filter);
-  const title = queryToFilter('title', query, filter);
   const keyword = queryToFilter('keyword', query, filter);
   const medicineStatus = queryToFilter('medicineStatus', query, filter);
-  const url = page + type + keyword + title + medicineStatus;
+  const url = page + keyword + medicineStatus;
   return url;
 };
 
