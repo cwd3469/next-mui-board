@@ -2,17 +2,20 @@
 import { AxiosResponse } from 'axios';
 import React from 'react';
 import { useEffect } from 'react';
-
-interface LoadingErrorFallbackProps {
+interface LoadingErrorProps {
   isLoading: boolean;
   isError: boolean;
   isWarning: boolean;
+  data?: AxiosResponse<any, any>;
+}
+
+interface LoadingErrorFallbackProps extends LoadingErrorProps {
   skeleton?: JSX.Element | JSX.Element | string;
   contexts: (
     info: AxiosResponse<any, any>,
   ) => JSX.Element | JSX.Element | string;
-  data: AxiosResponse<any, any> | undefined;
 }
+
 const LoadingErrorFallback = (props: LoadingErrorFallbackProps) => {
   const { data, isError, isLoading, isWarning, skeleton, contexts } = props;
 
@@ -32,6 +35,29 @@ const LoadingErrorFallback = (props: LoadingErrorFallbackProps) => {
     return <>{skeleton ? skeleton : <></>}</>;
   }
   return <>{skeleton ? skeleton : <></>}</>;
+};
+
+export const loadingErrorFallbackList = (props: LoadingErrorProps) => {
+  const { data, isError, isLoading, isWarning } = props;
+  const def = {
+    contents: [],
+    totalPages: 0,
+    totalElements: 0,
+  };
+  const info = isLoading
+    ? def
+    : isError
+    ? def
+    : isWarning
+    ? def
+    : data
+    ? {
+        contents: data.data.data.page.content,
+        totalPages: data.data.data.page.totalPages,
+        totalElements: data.data.data.page.totalElements,
+      }
+    : def;
+  return info;
 };
 
 export default React.memo(LoadingErrorFallback);
