@@ -6,10 +6,16 @@ import { useContext } from 'react';
 import ProceedFilter from './modules/ProceedFilter';
 import ProceedStatusNoti from './modules/ProceedStatusNoti';
 import ProceedTable from './modules/ProceedTable';
+import { useRouter } from 'next/router';
+import LoadingErrorFallback from '@components/common/api/LoadingErrorFallback';
 
 const ProceedPage = () => {
-  const { filter, date, setInFilter } = useContext(ProceedFilterContext);
-  const { listData, totalPages } = useListProceed({ filter, date });
+  const { filter, setInFilter, date } = useContext(ProceedFilterContext);
+  const router = useRouter();
+  const { data, isError, isLoading, isWarning } = useListProceed({
+    query: router.query,
+    date: date,
+  });
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setInFilter(value, 'page');
@@ -17,16 +23,27 @@ const ProceedPage = () => {
 
   return (
     <Stack gap="20px">
-      <Stack gap="10px">
-        <ProceedStatusNoti />
-        <ProceedFilter />
-      </Stack>
-      <ProceedTable data={listData} />
-      <WPagination
-        paddingTop="4px"
-        page={filter.page}
-        pagination={pagination}
-        count={totalPages}
+      <LoadingErrorFallback
+        data={data}
+        isError={isError}
+        isLoading={isLoading}
+        isWarning={isWarning}
+        contexts={(info) => {
+          return (
+            <>
+              <Stack gap="10px">
+                <ProceedStatusNoti />
+                <ProceedFilter />
+              </Stack>
+              <ProceedTable data={info.data.data.page.content} />
+              <WPagination
+                page={filter.page + 1}
+                pagination={pagination}
+                count={info.data.data.page.totalPages}
+              />
+            </>
+          );
+        }}
       />
     </Stack>
   );
