@@ -37,13 +37,16 @@ export const apiProceedPreparationRequest = (prams: string) => {
 /** 조제 진행 처방전 정보
  * GET API
  */
-export const apiProceedPrescription = (prams: string) => {
+export const apiProceedPrescription = (
+  medicineOrderUlid: string,
+  prescriptionUlid: string,
+) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
 
   return instance({
     method: 'get',
-    url: `apiProceedPrescription/${prams}`,
+    url: `pharmacy/api/v2/medicines/orders/ongoing/${medicineOrderUlid}/prescription/${prescriptionUlid}/`,
     headers: {
       Authorization: accessToken,
     },
