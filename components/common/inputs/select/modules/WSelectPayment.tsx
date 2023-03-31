@@ -6,8 +6,8 @@ const WSelectPayment = (props: {
   callBack: (id: string, keyId: string) => void;
 }) => {
   const option: OptionType[] = [
-    { id: 'DEFULT', name: '조제 중' },
-    { id: 'WAIT', name: '결제 대기' },
+    { id: 'IN_PREPARE', name: '조제 중' },
+    { id: 'OUTSTANDING', name: '결제 대기' },
   ];
   const [state, setState] = useState<string>(option[0].id);
   const onSelectOption = (event: SelectChangeEvent) => {
