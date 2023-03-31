@@ -46,13 +46,30 @@ export const transDeliveryMethod = (state: string) => {
   }
 };
 
-export const transQueryUrl = (filter: FilterAllOtions | ParsedUrlQuery) => {
-  const pageNum = Number(filter.page);
-  const page = pageNum ? `&page=${pageNum - 1}` : '&page=0';
-  const type = filter.type ? `&type=${filter.type}` : '';
-  const title = filter.title ? `&title=${filter.title}` : '';
-  const keyword = filter.keyword ? `&keyword=${filter.keyword}` : '';
-  const url = page + type + keyword + title;
+const queryToFilter = (
+  key: string,
+  q: FilterAllOtions | ParsedUrlQuery,
+  f?: FilterAllOtions,
+) => {
+  const queryKey = q[key] ? `&${key}=${q[key]}` : f ? `&${key}=${f[key]}` : '';
+
+  return queryKey;
+};
+
+export const transQueryUrl = (
+  query: FilterAllOtions | ParsedUrlQuery,
+  filter?: FilterAllOtions,
+) => {
+  const page = Number(query.page)
+    ? `&page=${Number(query.page) - 1}`
+    : filter
+    ? `&page=${filter.page}`
+    : '';
+  const type = queryToFilter('type', query, filter);
+  const title = queryToFilter('title', query, filter);
+  const keyword = queryToFilter('keyword', query, filter);
+  const medicineStatus = queryToFilter('medicineStatus', query, filter);
+  const url = page + type + keyword + title + medicineStatus;
   return url;
 };
 
