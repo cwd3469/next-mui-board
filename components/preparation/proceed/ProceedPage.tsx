@@ -24,7 +24,7 @@ const ProceedPage = () => {
   });
 
   return (
-    <Stack gap="20px">
+    <Stack gap="10px">
       <Stack gap="10px">
         <ProceedStatusNoti />
         <ProceedFilter />

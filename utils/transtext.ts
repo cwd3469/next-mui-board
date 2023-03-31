@@ -71,9 +71,11 @@ export const transQueryUrl = (
       ? `&page=${filter.page}`
       : ''
     : '';
+  const title = queryToFilter('title', query, filter);
+  const type = queryToFilter('type', query, filter);
   const keyword = queryToFilter('keyword', query, filter);
   const medicineStatus = queryToFilter('medicineStatus', query, filter);
-  const url = page + keyword + medicineStatus;
+  const url = page + keyword + medicineStatus + type + title;
   return url;
 };
 
