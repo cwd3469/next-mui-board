@@ -67,16 +67,14 @@ export const transQueryDate = (date: DateRange<dayjs.Dayjs>) => {
 
 export const transQueryDateToString = (
   filter: ParsedUrlQuery,
-  week?: boolean,
+  date: DateRange<dayjs.Dayjs>,
 ) => {
-  const weekBefore = dayjs().subtract(7, 'day').format('YYYY-MM-DD');
-  const now = dayjs().format('YYYY-MM-DD');
   const startDate = filter.startDate
     ? `&startDate=${filter.startDate}`
-    : `&startDate=${week ? weekBefore : now}`;
+    : `&startDate=${date[0] ? date[0].format('YYYY-MM-DD') : ''}`;
   const endDate = filter.endDate
     ? `&endDate=${filter.endDate}`
-    : `&endDate=${now}`;
+    : `&endDate=${date[1] ? date[1].format('YYYY-MM-DD') : ''}`;
   const day = startDate + endDate;
   return day;
 };
