@@ -10,10 +10,12 @@ import LoadingErrorFallback from '@components/common/api/LoadingErrorFallback';
 import { useRouter } from 'next/router';
 
 const RequestPage = () => {
-  const { filter, setInFilter } = useContext(RequestFilterContext);
+  const { filter, setInFilter, date } = useContext(RequestFilterContext);
   const router = useRouter();
-
-  const { data, isError, isLoading, isWarning } = useListRequest(router.query);
+  const { data, isError, isLoading, isWarning } = useListRequest({
+    query: router.query,
+    date: date,
+  });
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setInFilter(value, 'page');
