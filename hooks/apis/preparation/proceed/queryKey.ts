@@ -1,13 +1,9 @@
-import {
-  FilterHistoryType,
-  FilterDateType,
-  FilterListData,
-} from '@hooks/contexts/filters/type';
+import { ParsedUrlQuery } from 'querystring';
 
-export const HISTORYLIST = (props: FilterListData) => [
+export const PROCEED_LIST = (props: ParsedUrlQuery) => [
   'HISTORY',
   'LIST',
-  { ...props.filter, ...props.date },
+  props,
 ];
 
 export const PREPARATIONREQUEST = (id: string) => [
