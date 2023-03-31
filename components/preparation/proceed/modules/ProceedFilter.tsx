@@ -6,7 +6,8 @@ import { ProceedFilterContext } from '@hooks/contexts/filters/ProceedFilterConte
 import WSelectPayment from '@components/common/inputs/select/modules/WSelectPayment';
 
 const ProceedFilter = () => {
-  const { setInFilter, setInDate } = React.useContext(ProceedFilterContext);
+  const { filter, date, setInFilter, setInDate } =
+    React.useContext(ProceedFilterContext);
 
   const searchEvent = (txt: string) => {
     setInFilter(txt, 'keyword');
@@ -15,11 +16,15 @@ const ProceedFilter = () => {
   return (
     <Grid container alignItems={'center'} justifyContent={'space-between'}>
       <Grid container width="auto" gap={'10px'}>
-        {/* <WDatePickerFilter setInDate={setInDate} /> */}
+        <WDatePickerFilter date={date} setInDate={setInDate} />
         <WSelectPayment
           callBack={(id: string, keyId: string) => setInFilter(id, keyId)}
         />
-        <WSearchInput search={searchEvent} placeholder="제목 검색" />
+        <WSearchInput
+          queryValue={filter.keyword}
+          search={searchEvent}
+          placeholder="요청자 이름, 휴대폰번호, 병원 이름 검색"
+        />
       </Grid>
     </Grid>
   );
