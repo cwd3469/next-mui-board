@@ -24,12 +24,10 @@ export const transMedicineStatus = (state: string) => {
   switch (state) {
     case 'REGIST':
       return '대기';
-    case 'CANCEL':
-      return '취소';
-    case 'REFUSE':
-      return '거절';
-    case 'ACCEPT':
-      return '수락';
+    case 'IN_PREPARE':
+      return '조제 중';
+    case 'OUTSTANDING':
+      return '결제 대기';
     default:
       return '-';
   }
