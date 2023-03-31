@@ -13,7 +13,7 @@ const WSelectPayment = (props: {
   const onSelectOption = (event: SelectChangeEvent) => {
     const value = event.target.value;
     setState(value);
-    props.callBack(value, 'deliveryStatus');
+    props.callBack(value, 'medicineStatus');
   };
   return (
     <WSelect
