@@ -5,11 +5,16 @@ import { useToastContext } from '../useToastContext';
 import useCodeMsgBundle from '../useCodeMsgBundle';
 import { apiPrescriptionFileBase } from '@hooks/apis/preparation/request';
 import { UidList } from './types';
+import { AxiosPromise, AxiosResponse } from 'axios';
 
 const usePrescriptionPreview = (props: {
   medicineOrderUlid?: string;
   prescriptionUlid?: string;
   handleClose: () => void;
+  apiFileBase: (
+    medicineOrderUlid: string,
+    prescriptionUlid: string,
+  ) => AxiosPromise<any>;
 }) => {
   const [fileArr, setFileArr] = useState<File[]>([]);
   const [imageUrl, setImageUrl] = useState<UidList[]>([]);
@@ -23,7 +28,8 @@ const usePrescriptionPreview = (props: {
     async (medicineOrderUlid: string, prescriptionUlid: string) => {
       let arr: File[] = [];
       let temp: UidList[] = [];
-      await apiPrescriptionFileBase(medicineOrderUlid, prescriptionUlid)
+      await props
+        .apiFileBase(medicineOrderUlid, prescriptionUlid)
         .then(async (data) => {
           const code = data.data.code;
           if (code !== '0000') {
@@ -80,7 +86,7 @@ const usePrescriptionPreview = (props: {
     }
   }, [onImagePreview, props.medicineOrderUlid, props.prescriptionUlid]);
 
-  return { fileArr, imageUrl ,reset};
+  return { fileArr, imageUrl, reset };
 };
 
 export default usePrescriptionPreview;
