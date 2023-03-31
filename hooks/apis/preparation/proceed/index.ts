@@ -6,14 +6,13 @@ import instance from '../../instance';
 /** 조제 진행 목록
  * GET API
  */
-export const apiProceedList = (prams: FilterListData) => {
+export const apiProceedList = (queryUrl: string) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
-  const queryUrl = transQueryUrl(prams.filter);
 
   return instance({
     method: 'get',
-    url: `apiPreparationProceedList/url?size=10${queryUrl}`,
+    url: `pharmacy/api/v2/medicines/orders/ongoing?size=10${queryUrl}`,
     headers: {
       Authorization: accessToken,
     },
