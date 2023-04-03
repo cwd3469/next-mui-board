@@ -14,6 +14,7 @@ import { transDeliveryMethod, transMedicineStatus } from '@utils/transtext';
 import WDayTimeTypography from '@components/common/typography/WDayTimeTypography';
 import { ReceiveData } from '@components/preparation/request/modules/RequestTable';
 import PrescriptionPreviewModal from '@components/preparation/modals/PrescriptionPreviewModal';
+import DispensingExpensesModal from '@components/preparation/modals/DispensingExpensesModal';
 
 export interface PrescriptionId {
   prescriptionUlid: string;
@@ -250,15 +251,11 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
         }
       />
       {/* 조제비 수정 */}
-      {/* {dispensingExpensesId ? (
-        <DispensingExpensesModal
-          id={dispensingExpensesId}
-          open={dispensingExpensesOpen}
-          handleClose={() => coastModifiOnOff('', false)}
-        />
-      ) : (
-        ''
-      )} */}
+      <DispensingExpensesModal
+        id={userUlid.medicineOrderUlid}
+        open={dispensingExpensesOpen}
+        handleClose={() => coastModifiOnOff('', false)}
+      />
       {/* 조제비 수정 */}
       {/* {completedId ? (
         <DispensingModal
