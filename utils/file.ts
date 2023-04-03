@@ -8,6 +8,13 @@ export function blobToFile(theBlob: Blob, fileName: string) {
   });
 }
 
+export function printShow(url: string) {
+  console.log(url);
+  const printWin = window.open(url, 'print', 'width=1100,height=800');
+  printWin?.print();
+  printWin?.blur();
+}
+
 // Encoding UTF8 ⇢ base64
 export function b64EncodeUnicode(str: string) {
   return btoa(

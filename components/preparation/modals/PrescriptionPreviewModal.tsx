@@ -13,6 +13,7 @@ import resetIcon from 'public/assets/icon/zoom/reset-icon.svg';
 import zoomInIcon from 'public/assets/icon/zoom/zoom-in.svg';
 import zoomOutIcon from 'public/assets/icon/zoom/zoom-out.svg';
 import WDownloadBtn from '@components/common/button/modules/WDownloadBtn';
+import { printShow } from '@utils/file';
 
 interface PrescriptionModalType extends ModalType {
   medicineOrderUlid: string;
@@ -47,6 +48,9 @@ const PrescriptionPreviewModal = (props: PrescriptionModalType) => {
     <WConfirm
       open={open}
       handleClose={onReset}
+      handleEvent={() => {
+        printShow(`${imageUrl[0].src}`);
+      }}
       title="처방전 보기"
       maxWidth="xl"
       titleSx={{ padding: '50px 0px 16px' }}
@@ -62,9 +66,7 @@ const PrescriptionPreviewModal = (props: PrescriptionModalType) => {
                   <WDownloadBtn
                     failed={false}
                     download={`${patientInfo}_${imageUrl[0].name}`}
-                    url={`data:application/octet-stream;base64,${
-                      imageUrl[0].utf8 ? imageUrl[0].utf8 : ''
-                    }`}
+                    url={`${imageUrl[0].src}`}
                   />
                 ) : (
                   ''
