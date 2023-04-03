@@ -19,7 +19,7 @@ const ProceedFilterContext = createContext<{
   setInFilter: (value: FilterValue, keyId: string) => {
     return;
   },
-  date: [dayjs(), dayjs().add(7, 'day')],
+  date: [dayjs(), dayjs().add(1, 'day')],
   setInDate: (date: DateRange<dayjs.Dayjs>) => {
     return;
   },
@@ -32,7 +32,7 @@ interface Props {
 const ProceedFilterProvider = ({ children }: Props): JSX.Element => {
   const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([
     dayjs(),
-    dayjs().add(7, 'day'),
+    dayjs().add(1, 'day'),
   ]);
   const [filter, setFilter] = useState<FilterProceedType>({
     page: 0,
