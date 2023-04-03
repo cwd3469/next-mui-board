@@ -15,6 +15,7 @@ import WDayTimeTypography from '@components/common/typography/WDayTimeTypography
 import { ReceiveData } from '@components/preparation/request/modules/RequestTable';
 import PrescriptionPreviewModal from '@components/preparation/modals/PrescriptionPreviewModal';
 import DispensingExpensesModal from '@components/preparation/modals/DispensingExpensesModal';
+import DispensingModal from '@components/preparation/modals/DispensingModal';
 
 export interface PrescriptionId {
   prescriptionUlid: string;
@@ -226,7 +227,6 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
     <>
       <WDataTable rows={rows} columns={columns} />
       {/* 요청자 정보 */}
-      {/* 요청자 정보 */}
       {receiveData ? (
         <RequesterModal
           receiveData={receiveData}
@@ -256,16 +256,12 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
         open={dispensingExpensesOpen}
         handleClose={() => coastModifiOnOff('', false)}
       />
-      {/* 조제비 수정 */}
-      {/* {completedId ? (
-        <DispensingModal
-          id={completedId}
-          open={completedOpen}
-          handleClose={() => coastCompletedOnOff('', false)}
-        />
-      ) : (
-        ''
-      )} */}
+      {/* 조제 완료 */}
+      <DispensingModal
+        id={userUlid.medicineOrderUlid}
+        open={completedOpen}
+        handleClose={() => coastCompletedOnOff('', false)}
+      />
     </>
   );
 };
