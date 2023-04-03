@@ -31,7 +31,10 @@ const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
     payment: { msg: '', boo: false },
   });
   const { onClickDispensingExpenses } = useMutateDispensingExpenses({
-    dispensingExpenses: info.payment,
+    medicineCost: info.payment,
+    medicineOrderUlid: id,
+    onError: handleClose,
+    onSuccess: handleClose,
   });
 
   useEffect(() => {
@@ -56,7 +59,7 @@ const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
       btnTitle={'수정'}
       handleClose={handleClose}
       disabled={disabled}
-      // handleEvent={onClickDispensingExpenses}
+      handleEvent={onClickDispensingExpenses}
     >
       <Stack gap="40px" padding="0px 0 85px" width="430px">
         <Typography variant="body2" color="#666" fontWeight="400">
