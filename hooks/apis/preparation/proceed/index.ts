@@ -90,3 +90,18 @@ export const apiDispensingExpenses = (props: {
     },
   });
 };
+/** 조제 진행 조제 완료
+ * PUT API
+ */
+export const apiPrepared = (props: { medicineOrderUlid: string }) => {
+  const token = getCookie('accessToken');
+  const accessToken = typeof token === 'string' ? token : '';
+
+  return instance({
+    method: 'put',
+    url: `pharmacy/api/v2/medicines/orders/ongoing/${props.medicineOrderUlid}/complete`,
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
