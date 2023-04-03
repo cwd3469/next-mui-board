@@ -80,11 +80,11 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
     },
     {
       ...baseOption,
-      field: 'completionAt',
+      field: 'requestDateTime',
       headerName: '조제 수락 시간',
       width: 135,
       renderCell: (params) => {
-        return <WDayTimeTypography date={params.row.completionAt} />;
+        return <WDayTimeTypography date={params.row.requestDateTime} />;
       },
     },
     {
