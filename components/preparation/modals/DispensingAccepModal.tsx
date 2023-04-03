@@ -6,8 +6,11 @@ import { ErrorType } from '@components/common/inputs/type';
 import { ModalType } from '@components/common/layouts/gnb/types';
 import WConfirm from '@components/common/modals/WConfirm';
 import WSubTitle from '@components/common/typography/WSubTitle';
+import { apiPrescriptionFileBase } from '@hooks/apis/preparation/request';
 import useMutateDispensingAccept from '@hooks/apis/preparation/request/hooks/useMutateDispensingAccept';
-import usePrescriptionPreview from '@hooks/utils/fileUpload/usePrescriptionPreview';
+import usePrescriptionPreview, {
+  OneImagePreviewComponent,
+} from '@hooks/utils/fileUpload/usePrescriptionPreview';
 import { Box, Grid, Stack } from '@mui/material';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
@@ -35,6 +38,7 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
     medicineOrderUlid: medicineOrderUlid,
     prescriptionUlid: prescriptionUlid,
     handleClose: handleClose,
+    apiFileBase: apiPrescriptionFileBase,
   });
 
   /**DispensingAccepModal 버튼 활성화 상태 */
@@ -142,63 +146,7 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
         {tab ? (
           <>
             {fileArr.length ? (
-              <Stack gap="32px" padding="0px 40px">
-                <Box sx={{ height: '900px', position: 'relative' }}>
-                  <Stack justifyContent={'center'} alignItems="center">
-                    {fileArr[0].type === 'application/pdf' ? (
-                      <Box
-                        width="595px"
-                        height="842px"
-                        sx={{
-                          overflowY: 'scroll',
-                        }}
-                      >
-                        <WPdfView pdf={fileArr[0]} />
-                      </Box>
-                    ) : (
-                      <Box
-                        width="595px"
-                        height="842px"
-                        position="relative"
-                        sx={{
-                          overflowY: 'scroll',
-                        }}
-                      >
-                        <Box
-                          width="580px"
-                          height="auto"
-                          minHeight={'800px'}
-                          position="relative"
-                        >
-                          <Image
-                            src={imageUrl[0]?.url}
-                            alt="처방전"
-                            layout="fill"
-                            objectFit="contain"
-                          />
-                        </Box>
-                      </Box>
-                    )}
-                    <Box
-                      width="420px"
-                      borderBottom="2px solid #ebeced"
-                      margin="32px 0px 48px"
-                    />
-                  </Stack>
-                </Box>
-                <Grid container justifyContent="center">
-                  <Stack gap="14px" width="420px">
-                    <WSubTitle title="조제비 입력" require />
-                    <WPaymentsTextField
-                      state={info.payment}
-                      setState={onChangeState}
-                      keyId={'payment'}
-                      err={infoErr.payment}
-                      setErr={onChangeStateErr}
-                    />
-                  </Stack>
-                </Grid>
-              </Stack>
+              <OneImagePreviewComponent fileArr={fileArr} imageUrl={imageUrl} />
             ) : (
               <Stack height="500px"></Stack>
             )}

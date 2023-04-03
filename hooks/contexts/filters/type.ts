@@ -20,7 +20,7 @@ export interface FilterHistoryType extends DataPagition {
   deliveryStatus?: string;
 }
 export interface FilterProceedType extends DataPagition {
-  paymentStatus?: string;
+  medicineStatus?: string;
 }
 
 export interface FilterDateType {

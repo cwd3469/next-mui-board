@@ -24,12 +24,10 @@ export const transMedicineStatus = (state: string) => {
   switch (state) {
     case 'REGIST':
       return '대기';
-    case 'CANCEL':
-      return '취소';
-    case 'REFUSE':
-      return '거절';
-    case 'ACCEPT':
-      return '수락';
+    case 'IN_PREPARE':
+      return '조제 중';
+    case 'OUTSTANDING':
+      return '결제 대기';
     default:
       return '-';
   }
@@ -46,13 +44,38 @@ export const transDeliveryMethod = (state: string) => {
   }
 };
 
-export const transQueryUrl = (filter: FilterAllOtions | ParsedUrlQuery) => {
-  const pageNum = Number(filter.page);
-  const page = pageNum ? `&page=${pageNum - 1}` : '&page=0';
-  const type = filter.type ? `&type=${filter.type}` : '';
-  const title = filter.title ? `&title=${filter.title}` : '';
-  const keyword = filter.keyword ? `&keyword=${filter.keyword}` : '';
-  const url = page + type + keyword + title;
+const queryToFilter = (
+  key: string,
+  q: FilterAllOtions | ParsedUrlQuery,
+  f?: FilterAllOtions,
+) => {
+  const queryKey = q[key]
+    ? `&${key}=${q[key]}`
+    : f
+    ? f[key]
+      ? `&${key}=${f[key]}`
+      : ''
+    : '';
+
+  return queryKey;
+};
+
+export const transQueryUrl = (
+  query: FilterAllOtions | ParsedUrlQuery,
+  filter?: FilterAllOtions,
+) => {
+  const page = Number(query.page)
+    ? `&page=${Number(query.page)}`
+    : filter
+    ? filter.page
+      ? `&page=${filter.page}`
+      : ''
+    : '';
+  const title = queryToFilter('title', query, filter);
+  const type = queryToFilter('type', query, filter);
+  const keyword = queryToFilter('keyword', query, filter);
+  const medicineStatus = queryToFilter('medicineStatus', query, filter);
+  const url = page + keyword + medicineStatus + type + title;
   return url;
 };
 
@@ -67,16 +90,14 @@ export const transQueryDate = (date: DateRange<dayjs.Dayjs>) => {
 
 export const transQueryDateToString = (
   filter: ParsedUrlQuery,
-  week?: boolean,
+  date: DateRange<dayjs.Dayjs>,
 ) => {
-  const weekBefore = dayjs().subtract(7, 'day').format('YYYY-MM-DD');
-  const now = dayjs().format('YYYY-MM-DD');
   const startDate = filter.startDate
     ? `&startDate=${filter.startDate}`
-    : `&startDate=${week ? weekBefore : now}`;
+    : `&startDate=${date[0] ? date[0].format('YYYY-MM-DD') : ''}`;
   const endDate = filter.endDate
     ? `&endDate=${filter.endDate}`
-    : `&endDate=${now}`;
+    : `&endDate=${date[1] ? date[1].format('YYYY-MM-DD') : ''}`;
   const day = startDate + endDate;
   return day;
 };

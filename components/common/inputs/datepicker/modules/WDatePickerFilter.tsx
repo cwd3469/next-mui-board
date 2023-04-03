@@ -13,7 +13,10 @@ const WDatePickerFilter = (props: {
     date: DateRange<Dayjs>,
     keyboardInputValue?: string | undefined,
   ) => {
-    props.setInDate(date);
+    const start = date[0] ? date[0] : date[1];
+    const end = date[1] ? date[1] : date[0];
+    const rang: DateRange<Dayjs> = [start, end];
+    props.setInDate(rang);
   };
 
   return <WDatePicker date={props.date} selectDate={handleDate} />;

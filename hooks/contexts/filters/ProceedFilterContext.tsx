@@ -1,30 +1,26 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import dayjs from 'dayjs';
-import { createContext, useCallback, useState } from 'react';
-import { FilterDateType, FilterProceedType, FilterValue } from './type';
+import { createContext, useState } from 'react';
+import { FilterProceedType, FilterValue } from './type';
+import useFilter from '@hooks/utils/filter/useFilter';
+import { DateRange } from '@mui/x-date-pickers-pro';
 
 const ProceedFilterContext = createContext<{
   filter: FilterProceedType;
   setInFilter: (value: FilterValue, keyId: string) => void;
-  date: FilterDateType;
-  setInDate: (date: FilterDateType) => void;
+  date: DateRange<dayjs.Dayjs>;
+  setInDate: (date: DateRange<dayjs.Dayjs>) => void;
 }>({
   filter: {
-    code: '0',
-    page: 1,
+    page: 0,
     keyword: '',
-    // 변경 될 예정
-    preparationStatus: '',
-    deliveryStatus: '',
+    medicineStatus: 'IN_PREPARE',
   },
   setInFilter: (value: FilterValue, keyId: string) => {
     return;
   },
-  date: {
-    startDate: dayjs().format('YYYY-MM-DD'),
-    endDate: dayjs().format('YYYY-MM-DD'),
-  },
-  setInDate: (date: FilterDateType) => {
+  date: [dayjs(), dayjs().add(1, 'day')],
+  setInDate: (date: DateRange<dayjs.Dayjs>) => {
     return;
   },
 });
@@ -34,26 +30,23 @@ interface Props {
 }
 
 const ProceedFilterProvider = ({ children }: Props): JSX.Element => {
+  const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([
+    dayjs(),
+    dayjs().add(1, 'day'),
+  ]);
   const [filter, setFilter] = useState<FilterProceedType>({
-    code: '0',
-    page: 1,
+    page: 0,
     keyword: '',
-    status: '',
-  });
-  const [date, setDate] = useState<FilterDateType>({
-    startDate: dayjs().format('YYYY-MM-DD'),
-    endDate: dayjs().format('YYYY-MM-DD'),
+    medicineStatus: 'IN_PREPARE',
   });
 
-  const setInFilter = useCallback((value: FilterValue, keyId: string) => {
-    setFilter((prec) => {
-      return { ...prec, [keyId]: value };
-    });
-  }, []);
-
-  const setInDate = useCallback((date: FilterDateType) => {
-    setDate(date);
-  }, []);
+  const { setInFilter, setInDate } = useFilter({
+    url: '/preparation/proceed',
+    filter: filter,
+    setFilter: setFilter,
+    date: date,
+    setDate: setDate,
+  });
 
   return (
     <ProceedFilterContext.Provider

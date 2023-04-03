@@ -6,27 +6,37 @@ import { useContext } from 'react';
 import ProceedFilter from './modules/ProceedFilter';
 import ProceedStatusNoti from './modules/ProceedStatusNoti';
 import ProceedTable from './modules/ProceedTable';
+import { loadingErrorFallbackList } from '@components/common/api/LoadingErrorFallback';
 
 const ProceedPage = () => {
-  const { filter, date, setInFilter } = useContext(ProceedFilterContext);
-  const { listData, totalPages } = useListProceed({ filter, date });
+  const { filter, setInFilter, date } = useContext(ProceedFilterContext);
+  const { data, isError, isLoading, isWarning } = useListProceed();
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
-    setInFilter(value, 'page');
+    setInFilter(value - 1, 'page');
   };
 
+  const info = loadingErrorFallbackList({
+    data: data,
+    isError: isError,
+    isLoading: isLoading,
+    isWarning: isWarning,
+  });
+
   return (
-    <Stack gap="20px">
+    <Stack gap="10px">
       <Stack gap="10px">
-        <ProceedStatusNoti />
+        <ProceedStatusNoti
+          totalInPrepareCount={info.totalInPrepareCount}
+          totalOutstandingCount={info.totalOutstandingCount}
+        />
         <ProceedFilter />
       </Stack>
-      <ProceedTable data={listData} />
+      <ProceedTable data={info.contents} />
       <WPagination
-        paddingTop="4px"
-        page={filter.page}
+        page={filter.page + 1}
         pagination={pagination}
-        count={totalPages}
+        count={info.totalPages}
       />
     </Stack>
   );

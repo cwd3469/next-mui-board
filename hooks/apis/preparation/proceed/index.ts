@@ -6,14 +6,13 @@ import instance from '../../instance';
 /** 조제 진행 목록
  * GET API
  */
-export const apiProceedList = (prams: FilterListData) => {
+export const apiProceedList = (queryUrl: string) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
-  const queryUrl = transQueryUrl(prams.filter);
 
   return instance({
     method: 'get',
-    url: `apiPreparationProceedList/url?size=10${queryUrl}`,
+    url: `pharmacy/api/v2/medicines/orders/ongoing?size=10${queryUrl}`,
     headers: {
       Authorization: accessToken,
     },
@@ -38,13 +37,16 @@ export const apiProceedPreparationRequest = (prams: string) => {
 /** 조제 진행 처방전 정보
  * GET API
  */
-export const apiProceedPrescription = (prams: string) => {
+export const apiProceedPrescription = (
+  medicineOrderUlid: string,
+  prescriptionUlid: string,
+) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
 
   return instance({
     method: 'get',
-    url: `apiProceedPrescription/${prams}`,
+    url: `pharmacy/api/v2/medicines/orders/ongoing/${medicineOrderUlid}/prescription/${prescriptionUlid}/`,
     headers: {
       Authorization: accessToken,
     },
@@ -66,20 +68,38 @@ export const apiProceedNoti = () => {
     },
   });
 };
-/** 조제 진행 상태 알림
- * GET API
+/** 조제 진행 조제비 수정
+ * PUT API
  */
-export const apiDispensingExpenses = (text: string) => {
+export const apiDispensingExpenses = (props: {
+  medicineCost: string;
+  medicineOrderUlid: string;
+}) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
   const dto = {
-    dispensingExpenses: text,
+    medicineCost: props.medicineCost,
   };
 
   return instance({
-    method: 'get',
-    url: `apiDispensingExpenses/noti`,
+    method: 'put',
+    url: `pharmacy/api/v2/medicines/orders/ongoing/${props.medicineOrderUlid}/re-payment`,
     data: dto,
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
+/** 조제 진행 조제 완료
+ * PUT API
+ */
+export const apiPrepared = (props: { medicineOrderUlid: string }) => {
+  const token = getCookie('accessToken');
+  const accessToken = typeof token === 'string' ? token : '';
+
+  return instance({
+    method: 'put',
+    url: `pharmacy/api/v2/medicines/orders/ongoing/${props.medicineOrderUlid}/complete`,
     headers: {
       Authorization: accessToken,
     },

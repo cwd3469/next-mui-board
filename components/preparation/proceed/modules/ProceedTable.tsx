@@ -2,8 +2,6 @@ import React, { useCallback, useState } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { ProceedInterface } from '../type';
 import WDataTable, { baseOption } from '@components/common/dataGrid/WDataTable';
-import { Button, Stack, Typography } from '@mui/material';
-import { dateFormat } from '@utils/date';
 import GridButton from '@components/common/button/modules/GridButton';
 import {
   CheckIcon,
@@ -12,66 +10,109 @@ import {
   PencilIcon,
 } from '@components/common/dataDisplay/WIcons';
 import RequesterModal from '@components/preparation/modals/RequesterModal';
-import PrescriptionModal from '@components/preparation/modals/PrescriptionModal';
-import DispensingModal from '@components/preparation/modals/DispensingModal';
+import { transDeliveryMethod, transMedicineStatus } from '@utils/transtext';
+import WDayTimeTypography from '@components/common/typography/WDayTimeTypography';
+import { ReceiveData } from '@components/preparation/request/modules/RequestTable';
+import PrescriptionPreviewModal from '@components/preparation/modals/PrescriptionPreviewModal';
 import DispensingExpensesModal from '@components/preparation/modals/DispensingExpensesModal';
+import DispensingModal from '@components/preparation/modals/DispensingModal';
+
+export interface PrescriptionId {
+  prescriptionUlid: string;
+  medicineOrderUlid: string;
+}
+export interface PatientInfo {
+  patientName: string;
+  requestDate: string;
+}
 
 const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
   const { data } = props;
-  const [requesterId, setRequesterId] = useState<string>('');
+  const [receiveData, setReceiveData] = useState<ReceiveData>();
   const [requesterOpen, setRequesterOpen] = useState<boolean>(false);
-  const [prescriptionId, setPrescriptionId] = useState<string>('');
   const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
-
-  const [dispensingExpensesId, setDispensingExpensesId] = useState<string>('');
+  const [completedOpen, setCompletedOpen] = useState<boolean>(false);
   const [dispensingExpensesOpen, setDispensingExpensesOpen] =
     useState<boolean>(false);
-  const [completedId, setCompletedId] = useState<string>('');
-  const [completedOpen, setCompletedOpen] = useState<boolean>(false);
+  const [patientInfo, setPatientInfo] = useState<string>('');
+  const [medicineCost, setMedicineCost] = useState<number>(0);
+  const [userUlid, setUserUlid] = useState<PrescriptionId>({
+    prescriptionUlid: '',
+    medicineOrderUlid: '',
+  });
 
   const rows = data.map((item, index) => {
     return { ...item, ['id']: index };
   });
 
-  const requesterOnOff = useCallback((id: string, open: boolean) => {
-    setRequesterId(id);
+  /**ProceedTable 요청자 정보 */
+  const requesterOnOff = useCallback((open: boolean, data?: ReceiveData) => {
+    setReceiveData(data);
     setRequesterOpen(open);
   }, []);
-  const prescriptionIdOnOff = useCallback((id: string, open: boolean) => {
-    setPrescriptionId(id);
-    setPrescriptionOpen(open);
-  }, []);
-  const dispensingExpensesOnOff = useCallback((id: string, open: boolean) => {
-    setDispensingExpensesId(id);
-    setDispensingExpensesOpen(open);
-  }, []);
-  const completedOnOff = useCallback((id: string, open: boolean) => {
-    setCompletedId(id);
-    setCompletedOpen(open);
-  }, []);
+
+  /**ProceedTable 처방전 보기 */
+  const userUlidOnOff = useCallback(
+    (params: {
+      prescriptionUlid: string;
+      medicineOrderUlid: string;
+      patientInfo: string;
+      open: boolean;
+    }) => {
+      setUserUlid({
+        prescriptionUlid: params.prescriptionUlid,
+        medicineOrderUlid: params.medicineOrderUlid,
+      });
+      setPatientInfo(params.patientInfo);
+      setPrescriptionOpen(params.open);
+    },
+    [],
+  );
+  /**ProceedTable 조제비 수정 */
+  const coastModifiOnOff = useCallback(
+    (medicineOrderUlid: string, medicineCost: number, open: boolean) => {
+      setUserUlid({ prescriptionUlid: '', medicineOrderUlid });
+      setMedicineCost(medicineCost);
+      setDispensingExpensesOpen(open);
+    },
+    [],
+  );
+  /**ProceedTable 조제 완료  */
+  const coastCompletedOnOff = useCallback(
+    (medicineOrderUlid: string, open: boolean) => {
+      setUserUlid({ prescriptionUlid: '', medicineOrderUlid });
+      setCompletedOpen(open);
+    },
+    [],
+  );
 
   const columns: GridColDef[] = [
     {
       ...baseOption,
-      field: 'statusNameKo',
+      field: 'medicineStatus',
       headerName: '상태',
       width: 80,
-    },
-    {
-      ...baseOption,
-      field: 'completionAt',
-      headerName: '조제 수락 시간',
-      width: 120,
       renderCell: (params) => {
-        const { dayTime } = dateFormat(params.row.completionAt);
-        return <>{dayTime}</>;
+        return <>{transMedicineStatus(params.row.medicineStatus)}</>;
       },
     },
     {
       ...baseOption,
-      field: 'deliveryFormKo',
+      field: 'requestDateTime',
+      headerName: '조제 수락 시간',
+      width: 135,
+      renderCell: (params) => {
+        return <WDayTimeTypography date={params.row.requestDateTime} />;
+      },
+    },
+    {
+      ...baseOption,
+      field: 'deliveryMethod',
       headerName: '수령 방법',
       width: 80,
+      renderCell: (params) => {
+        return <>{transDeliveryMethod(params.row.deliveryMethod)}</>;
+      },
     },
 
     {
@@ -80,15 +121,17 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       headerName: '요청자 정보',
       width: 130,
       renderCell: (prams) => {
-        const { deliveryStatus, status, ulid } = prams.row;
+        const { deliveryMethod, medicineStatus, receiveData } = prams.row;
         return (
           <GridButton
-            onClick={() => requesterOnOff(ulid, true)}
+            onClick={() => {
+              requesterOnOff(true, receiveData);
+            }}
             startIcon={<UserIcon />}
             disabled={
-              status === 'CANCEL'
+              medicineStatus === 'CANCEL'
                 ? true
-                : deliveryStatus === 'COMPLETION'
+                : deliveryMethod === 'COMPLETION'
                 ? true
                 : false
             }
@@ -100,28 +143,19 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
     },
     {
       ...baseOption,
-      field: 'treatHospitalName',
+      field: 'hospitalNameKo',
       headerName: '진료 병원 명',
       width: 180,
-      renderCell: (prams) => {
-        return (
-          <Stack justifyContent={'center'} width="100%">
-            <Typography textAlign={'center'}>
-              {prams.row.treatHospitalName}
-            </Typography>
-          </Stack>
-        );
-      },
     },
     {
       ...baseOption,
-      field: 'treatDoctorName',
+      field: 'doctorNameKo',
       headerName: '진료 병원 의사 명',
       width: 110,
     },
     {
       ...baseOption,
-      field: 'treatHospitalPhone',
+      field: 'hospitalPhoneNum',
       headerName: '병원 연락처',
       width: 105,
     },
@@ -129,12 +163,24 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       ...baseOption,
       field: 'prescriptionPreview',
       headerName: '처방전 보기',
-      width: 130,
+      width: 125,
       renderCell: (prams) => {
-        const { status, deliveryStatus, ulid } = prams.row;
+        const {
+          prescriptionUlid,
+          medicineOrderUlid,
+          requestDateTime,
+          receiveData,
+        } = prams.row;
         return (
           <GridButton
-            onClick={() => prescriptionIdOnOff(ulid, true)}
+            onClick={() =>
+              userUlidOnOff({
+                prescriptionUlid: prescriptionUlid,
+                medicineOrderUlid: medicineOrderUlid,
+                patientInfo: `${receiveData.receiveNameKo}_${requestDateTime}`,
+                open: true,
+              })
+            }
             startIcon={<CheckIcon />}
           >
             처방전 보기
@@ -146,12 +192,14 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       ...baseOption,
       field: 'billingExpenses',
       headerName: '청구 조제비',
-      width: 130,
+      width: 125,
       renderCell: (prams) => {
-        const { ulid } = prams.row;
+        const { medicineOrderUlid, medicineCost } = prams.row;
         return (
           <GridButton
-            onClick={() => dispensingExpensesOnOff(ulid, true)}
+            onClick={() =>
+              coastModifiOnOff(medicineOrderUlid, medicineCost, true)
+            }
             startIcon={<PencilIcon />}
           >
             조제비 수정
@@ -163,14 +211,14 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       ...baseOption,
       field: 'preparationCompleted',
       headerName: '조제 완료',
-      width: 130,
+      width: 125,
       renderCell: (prams) => {
-        const { status, ulid } = prams.row;
+        const { medicineOrderUlid, medicineStatus } = prams.row;
         return (
           <GridButton
-            onClick={() => completedOnOff(ulid, true)}
+            onClick={() => coastCompletedOnOff(medicineOrderUlid, true)}
             startIcon={<CheckIconGray />}
-            disabled={status === 'PAYMENT_WAITING' ? true : false}
+            disabled={medicineStatus === 'OUTSTANDING' ? true : false}
           >
             조제 완료
           </GridButton>
@@ -183,45 +231,42 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
     <>
       <WDataTable rows={rows} columns={columns} />
       {/* 요청자 정보 */}
-      {/* {requesterId ? (
+      {receiveData ? (
         <RequesterModal
-          id={requesterId}
+          receiveData={receiveData}
           open={requesterOpen}
-          handleClose={() => requesterOnOff('', false)}
-        />
-      ) : (
-        ''
-      )} */}
-      {/* 처방전 보기 */}
-      {prescriptionId ? (
-        <PrescriptionModal
-          id={prescriptionId}
-          open={prescriptionOpen}
-          handleClose={() => prescriptionIdOnOff('', false)}
+          handleClose={() => requesterOnOff(false, undefined)}
         />
       ) : (
         ''
       )}
+      <PrescriptionPreviewModal
+        prescriptionUlid={userUlid.prescriptionUlid}
+        medicineOrderUlid={userUlid.medicineOrderUlid}
+        patientInfo={patientInfo}
+        open={prescriptionOpen}
+        handleClose={() =>
+          userUlidOnOff({
+            prescriptionUlid: '',
+            medicineOrderUlid: '',
+            patientInfo: '',
+            open: false,
+          })
+        }
+      />
       {/* 조제비 수정 */}
-      {dispensingExpensesId ? (
-        <DispensingExpensesModal
-          id={dispensingExpensesId}
-          open={dispensingExpensesOpen}
-          handleClose={() => dispensingExpensesOnOff('', false)}
-        />
-      ) : (
-        ''
-      )}
-      {/* 조제비 수정 */}
-      {completedId ? (
-        <DispensingModal
-          id={completedId}
-          open={completedOpen}
-          handleClose={() => completedOnOff('', false)}
-        />
-      ) : (
-        ''
-      )}
+      <DispensingExpensesModal
+        id={userUlid.medicineOrderUlid}
+        medicineCost={medicineCost}
+        open={dispensingExpensesOpen}
+        handleClose={() => coastModifiOnOff('', 0, false)}
+      />
+      {/* 조제 완료 */}
+      <DispensingModal
+        id={userUlid.medicineOrderUlid}
+        open={completedOpen}
+        handleClose={() => coastCompletedOnOff('', false)}
+      />
     </>
   );
 };

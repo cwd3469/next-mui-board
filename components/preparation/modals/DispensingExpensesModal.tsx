@@ -1,17 +1,17 @@
 import { ModalType } from '@components/common/layouts/gnb/types';
 import WConfirm from '@components/common/modals/WConfirm';
 import { Stack, Typography } from '@mui/material';
-import processStatus from 'public/assets/icon/processStatus.svg';
-import Image from 'next/image';
-import useMutateDeliveryRequest from '@hooks/apis/preparation/history/hooks/useMutateDeliveryRequest';
 import WPaymentsTextField from '@components/common/inputs/textField/modules/WPaymentsTextField';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ErrorType } from '@components/common/inputs/type';
 import WSubTitle from '@components/common/typography/WSubTitle';
 import useMutateDispensingExpenses from '@hooks/apis/preparation/proceed/hooks/useMutateDispensingExpenses';
+import { useDebounceFn } from 'ahooks';
+import { commaRemove } from '@utils/formatNumber';
 
 interface DispensingExpensesModalType extends ModalType {
   id: string;
+  medicineCost: number;
 }
 
 interface Paymentsinfo {
@@ -22,30 +22,68 @@ interface PaymentsinfoErr {
 }
 
 const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
-  const { open, handleClose, id } = props;
+  const { open, handleClose, id, medicineCost } = props;
+  /**DispensingExpensesModal 버튼 활성호 상태*/
   const [disabled, setDisabled] = useState<boolean>(true);
+  /**DispensingExpensesModal 입력 상태*/
   const [info, setInfo] = useState<Paymentsinfo>({
-    payment: '',
+    payment: String(medicineCost),
   });
+  /**DispensingExpensesModal 입력 에러 상태*/
   const [infoErr, setInfoErr] = useState<PaymentsinfoErr>({
     payment: { msg: '', boo: false },
   });
+  /**DispensingExpensesModal 모달 닫기 기능*/
+  const onClickModalOff = useCallback(() => {
+    setInfoErr({
+      payment: { msg: '', boo: false },
+    });
+    setInfo({
+      payment: '',
+    });
+    handleClose();
+  }, [handleClose]);
+  /**DispensingExpensesModal 조제비 수정 api 통신 */
   const { onClickDispensingExpenses } = useMutateDispensingExpenses({
-    dispensingExpenses: info.payment,
+    medicineCost: info.payment,
+    medicineOrderUlid: id,
+    onError: onClickModalOff,
+    onSuccess: onClickModalOff,
   });
-
-  useEffect(() => {
-    if (info.payment) {
-      if (!infoErr.payment.boo) {
-        setDisabled(false);
-      } else {
-        setDisabled(true);
+  /**DispensingExpensesModal 조제비 수정 DebounceFn 기능*/
+  const onClickCostDebounce = useDebounceFn(onClickDispensingExpenses, {
+    wait: 300,
+  });
+  /**DispensingExpensesModal 조제비 수정 onKeyDown 기능*/
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'Enter') {
+        if (!disabled) {
+          onClickCostDebounce.run();
+        }
       }
-    } else {
-      setDisabled(true);
-    }
-  }, [info.payment, infoErr.payment.boo]);
+    },
+    [disabled, onClickCostDebounce],
+  );
 
+  /**DispensingExpensesModal 버튼 활성 상태 업데이트 기능 라이프 사이클*/
+  useEffect(() => {
+    if (String(medicineCost) !== commaRemove(info.payment)) {
+      const reg = /\d+/;
+      if (reg.test(info.payment)) {
+        if (!infoErr.payment.boo) {
+          setDisabled(false);
+          return;
+        }
+        setDisabled(true);
+        return;
+      }
+      setDisabled(true);
+      return;
+    }
+    setDisabled(true);
+  }, [info.payment, infoErr.payment.boo, medicineCost]);
+  /**DispensingExpensesModal render*/
   return (
     <WConfirm
       activeOn
@@ -56,7 +94,7 @@ const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
       btnTitle={'수정'}
       handleClose={handleClose}
       disabled={disabled}
-      // handleEvent={onClickDispensingExpenses}
+      handleEvent={onClickCostDebounce.run}
     >
       <Stack gap="40px" padding="0px 0 85px" width="430px">
         <Typography variant="body2" color="#666" fontWeight="400">
@@ -78,6 +116,7 @@ const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
                 return { ...prev, [keyId]: err };
               });
             }}
+            onKeyDown={onKeyDown}
           />
         </Stack>
       </Stack>

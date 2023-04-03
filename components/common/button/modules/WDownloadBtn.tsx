@@ -18,40 +18,21 @@ const WDownloadBtn = (props: WDownloadBtnType) => {
   const { failed, url, disabled, sx, download } = props;
   return (
     <DownloadBtn
-      className="wDownloadBtn"
+      className={`wDownloadBtn ${
+        failed
+          ? 'w-download-disabled'
+          : url
+          ? 'w-download-available'
+          : 'w-download-disabled'
+      }`}
       href={failed ? undefined : url}
       download={download ? download : true}
-      sx={{
-        color: failed ? '#b6b6b6' : url ? '#000' : '#b6b6b6',
-        ...sx,
-      }}
+      sx={sx}
     >
-      <Grid
-        container
-        width="100%"
-        height={'100%'}
-        justifyContent="center"
-        alignItems={'center'}
-        gap="5px"
-      >
-        <Box width={'16px'} height={'16px'} position="relative">
-          <Image
-            src={downloadIcon}
-            alt="copy"
-            layout="fill"
-            objectFit="contain"
-          />
-        </Box>
-
-        <Typography
-          variant="body2"
-          letterSpacing={'-1px'}
-          marginTop="2px"
-          color="#949494"
-        >
-          다운로드
-        </Typography>
-      </Grid>
+      <Image src={downloadIcon} alt="copy" />
+      <Typography variant="body1" color="#949494" fontWeight="bold">
+        다운로드
+      </Typography>
     </DownloadBtn>
   );
 };
@@ -59,10 +40,20 @@ const WDownloadBtn = (props: WDownloadBtnType) => {
 const DownloadBtn = styled(Link)(({ theme }) => ({
   backgroundColor: '#fff',
   textDecoration: 'none',
-  border: '2px solid #e0e1e2',
-  height: '48px',
-  width: '120px',
+  border: '1px solid #949494',
+  height: '40px',
+  width: '100px',
   borderRadius: '6px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '5px',
+  '&.w-download-disabled': {
+    color: '#b6b6b6',
+  },
+  '&.w-download-available': {
+    color: '#000',
+  },
 }));
 
 export default WDownloadBtn;
