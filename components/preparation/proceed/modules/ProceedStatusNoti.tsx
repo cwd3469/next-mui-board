@@ -1,8 +1,7 @@
 import WStatusNoti, {
   WNotiBox,
 } from '@components/common/typography/WStatusNoti';
-import useQueryProceedyNoti from '@hooks/apis/preparation/proceed/hooks/useQueryProceedyNoti';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 
 const ProceedStatusNoti = (props: {
   totalInPrepareCount?: number;
