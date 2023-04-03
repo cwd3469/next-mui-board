@@ -1,6 +1,14 @@
 import { Gnb } from '@components/common/layouts/gnb/Gnb';
 import { WLayout } from '@components/common/layouts/WLayout';
-import BusinessHourPage from '@components/setting/businessHour/BusinessHourPage';
+import dynamic from 'next/dynamic';
+
+const BusinessHourPage = dynamic(
+  () => import('../../components/setting/businessHour/BusinessHourPage'),
+  {
+    loading: () => <p>Loading...</p>,
+    ssr: false,
+  },
+);
 
 const BusinessHour = () => {
   return (
