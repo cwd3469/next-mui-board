@@ -8,7 +8,7 @@ export const WIconButton = styled((props: ButtonProps) => (
   backgroundColor: '#fff',
   border: '1px solid #949494',
   color: '#949494',
-  padding: '8px 15px',
+  padding: '0px 15px',
   borderRadius: '6px',
   boxShadow: 'none',
   '&:hover': {
