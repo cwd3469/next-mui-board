@@ -1,15 +1,20 @@
 export interface ProceedInterface {
-  ulid: string;
-  status: string;
-  statusNameKo: string;
-  deliveryForm: string;
-  deliveryFormKo: string;
-  waybillNumber: string;
-  courier: string;
-  completionAt: string;
-  treatHospitalName: string;
-  treatDoctorName: string;
-  treatHospitalPhone: string;
+  deliveryMethod: string;
+  doctorNameKo: string;
+  hospitalNameKo: string;
+  hospitalPhoneNum: string;
+  medicineCost: number;
+  medicineOrderUlid: string;
+  medicineStatus: string;
+  prescriptionUlid: string;
+  receiveData: UserInfo;
+  requestDateTime: string;
+}
+
+interface UserInfo {
+  receiveNameKo: string;
+  receivePhoneNum: string;
+  receiveZipCode: string;
 }
 
 export interface PreparationRequestDto {
