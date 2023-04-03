@@ -46,6 +46,7 @@
     "react-query": "^3.39.2",
     "react-quill": "^2.0.0",
     "react-router-dom": "6",
+    "react-zoom-pan-pinch": "^3.0.6",
     "sb": "^6.5.10"
   },
   "devDependencies": {
