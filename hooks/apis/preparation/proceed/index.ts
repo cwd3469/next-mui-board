@@ -68,19 +68,22 @@ export const apiProceedNoti = () => {
     },
   });
 };
-/** 조제 진행 상태 알림
- * GET API
+/** 조제 진행 조제비 수정
+ * PUT API
  */
-export const apiDispensingExpenses = (text: string) => {
+export const apiDispensingExpenses = (props: {
+  medicineCost: string;
+  medicineOrderUlid: string;
+}) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
   const dto = {
-    dispensingExpenses: text,
+    medicineCost: props.medicineCost,
   };
 
   return instance({
-    method: 'get',
-    url: `apiDispensingExpenses/noti`,
+    method: 'put',
+    url: `pharmacy/api/v2/medicines/orders/ongoing/${props.medicineOrderUlid}/re-payment`,
     data: dto,
     headers: {
       Authorization: accessToken,
