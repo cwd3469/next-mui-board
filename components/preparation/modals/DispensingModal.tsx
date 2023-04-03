@@ -4,6 +4,8 @@ import { Stack, Typography } from '@mui/material';
 import processStatus from 'public/assets/icon/processStatus.svg';
 import Image from 'next/image';
 import useMutateDeliveryRequest from '@hooks/apis/preparation/history/hooks/useMutateDeliveryRequest';
+import useMutateDispensingExpenses from '@hooks/apis/preparation/proceed/hooks/useMutateDispensingExpenses';
+import { useDebounceFn, useKeyPress } from 'ahooks';
 
 interface DispensingModalType extends ModalType {
   id: string;
@@ -11,7 +13,20 @@ interface DispensingModalType extends ModalType {
 
 const DispensingModal = (props: DispensingModalType) => {
   const { open, handleClose, id } = props;
-  // const { onClickDeliveryRequest } = useMutateDeliveryRequest({ id });
+  const { onClickPreparationComplete } = useMutateDispensingExpenses({
+    medicineOrderUlid: id,
+    onError: handleClose,
+    onSuccess: handleClose,
+  });
+  const onClickPreparationCompleteDebounceFn = useDebounceFn(
+    onClickPreparationComplete,
+    {
+      wait: 300,
+    },
+  );
+  useKeyPress('enter', () => {
+    onClickPreparationCompleteDebounceFn.run();
+  });
   return (
     <WConfirm
       activeOn
