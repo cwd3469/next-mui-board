@@ -26,7 +26,10 @@ const ProceedPage = () => {
   return (
     <Stack gap="10px">
       <Stack gap="10px">
-        <ProceedStatusNoti />
+        <ProceedStatusNoti
+          totalInPrepareCount={info.totalInPrepareCount}
+          totalOutstandingCount={info.totalOutstandingCount}
+        />
         <ProceedFilter />
       </Stack>
       <ProceedTable data={info.contents} />

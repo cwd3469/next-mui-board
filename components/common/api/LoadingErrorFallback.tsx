@@ -43,6 +43,8 @@ export const loadingErrorFallbackList = (props: LoadingErrorProps) => {
     contents: [],
     totalPages: 0,
     totalElements: 0,
+    totalInPrepareCount: 0,
+    totalOutstandingCount: 0,
   };
   const info = isLoading
     ? def
@@ -56,6 +58,8 @@ export const loadingErrorFallbackList = (props: LoadingErrorProps) => {
           contents: data.data.data.page.content,
           totalPages: data.data.data.page.totalPages,
           totalElements: data.data.data.page.totalElements,
+          totalInPrepareCount: data.data.data.totalInPrepareCount,
+          totalOutstandingCount: data.data.data.totalOutstandingCount,
         }
       : def
     : def;
