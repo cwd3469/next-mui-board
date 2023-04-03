@@ -13,7 +13,7 @@ const ProceedPage = () => {
   const { data, isError, isLoading, isWarning } = useListProceed();
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
-    setInFilter(value, 'page');
+    setInFilter(value - 1, 'page');
   };
 
   const info = loadingErrorFallbackList({

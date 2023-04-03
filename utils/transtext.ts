@@ -65,7 +65,7 @@ export const transQueryUrl = (
   filter?: FilterAllOtions,
 ) => {
   const page = Number(query.page)
-    ? `&page=${Number(query.page) - 1}`
+    ? `&page=${Number(query.page)}`
     : filter
     ? filter.page
       ? `&page=${filter.page}`

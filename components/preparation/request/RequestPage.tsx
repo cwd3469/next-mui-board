@@ -20,7 +20,7 @@ const RequestPage = () => {
   });
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
-    setInFilter(value, 'page');
+    setInFilter(value - 1, 'page');
   };
   const info = loadingErrorFallbackList({
     data: data,
