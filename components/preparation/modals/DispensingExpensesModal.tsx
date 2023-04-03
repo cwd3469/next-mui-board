@@ -7,9 +7,11 @@ import { ErrorType } from '@components/common/inputs/type';
 import WSubTitle from '@components/common/typography/WSubTitle';
 import useMutateDispensingExpenses from '@hooks/apis/preparation/proceed/hooks/useMutateDispensingExpenses';
 import { useDebounceFn } from 'ahooks';
+import { commaRemove } from '@utils/formatNumber';
 
 interface DispensingExpensesModalType extends ModalType {
   id: string;
+  medicineCost: number;
 }
 
 interface Paymentsinfo {
@@ -20,12 +22,12 @@ interface PaymentsinfoErr {
 }
 
 const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
-  const { open, handleClose, id } = props;
+  const { open, handleClose, id, medicineCost } = props;
   /**DispensingExpensesModal 버튼 활성호 상태*/
   const [disabled, setDisabled] = useState<boolean>(true);
   /**DispensingExpensesModal 입력 상태*/
   const [info, setInfo] = useState<Paymentsinfo>({
-    payment: '',
+    payment: String(medicineCost),
   });
   /**DispensingExpensesModal 입력 에러 상태*/
   const [infoErr, setInfoErr] = useState<PaymentsinfoErr>({
@@ -66,17 +68,21 @@ const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
 
   /**DispensingExpensesModal 버튼 활성 상태 업데이트 기능 라이프 사이클*/
   useEffect(() => {
-    const reg = /\d+/;
-    if (reg.test(info.payment)) {
-      if (!infoErr.payment.boo) {
-        setDisabled(false);
+    if (String(medicineCost) !== commaRemove(info.payment)) {
+      const reg = /\d+/;
+      if (reg.test(info.payment)) {
+        if (!infoErr.payment.boo) {
+          setDisabled(false);
+          return;
+        }
+        setDisabled(true);
         return;
       }
       setDisabled(true);
       return;
     }
     setDisabled(true);
-  }, [info.payment, infoErr.payment.boo]);
+  }, [info.payment, infoErr.payment.boo, medicineCost]);
   /**DispensingExpensesModal render*/
   return (
     <WConfirm
