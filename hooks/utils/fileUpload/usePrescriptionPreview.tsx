@@ -1,6 +1,5 @@
 import {
   b64DecodeUnicode,
-  blobToFile,
   dataURItoFile,
   resizeFileCompression,
 } from '@utils/file';
@@ -8,9 +7,8 @@ import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { useToastContext } from '../useToastContext';
 import useCodeMsgBundle from '../useCodeMsgBundle';
-import { apiPrescriptionFileBase } from '@hooks/apis/preparation/request';
 import { FileInfo } from './types';
-import { AxiosPromise, AxiosResponse } from 'axios';
+import { AxiosPromise } from 'axios';
 import { Stack } from '@mui/material';
 import WPdfView from '@components/common/editor/WPdfView';
 
@@ -28,9 +26,10 @@ const usePrescriptionPreview = (props: {
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
   const reset = useCallback(() => {
+    props.handleClose();
     setFileArr([]);
     setImageUrl([]);
-  }, []);
+  }, [props]);
 
   const onImagePreview = useCallback(
     async (medicineOrderUlid: string, prescriptionUlid: string) => {
@@ -43,7 +42,6 @@ const usePrescriptionPreview = (props: {
           const code = data.data.code;
           if (code !== '0000') {
             toast?.on(msg.errMsg(code), 'error');
-            props.handleClose();
             reset();
             return;
           } else {
@@ -81,7 +79,6 @@ const usePrescriptionPreview = (props: {
             `처방전 조회에 실패 하셨습니다. \n 잠시후 다시 시도하세요.`,
             'error',
           );
-          props.handleClose();
           reset();
         });
     },
