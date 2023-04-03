@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import { UidList } from '@hooks/utils/fileUpload/types';
+import { FileInfo } from '@hooks/utils/fileUpload/types';
 import WPdfPreView from '@components/common/image/WPdfPreView';
 
 export const SignupFileLadel = styled('label')`
@@ -96,7 +96,7 @@ export const DefaltInfo = (props: { sx?: SxProps<Theme> }) => {
 export const ImageView = (props: {
   inx: number;
   file: File;
-  img: UidList | UidList;
+  img: FileInfo | FileInfo;
   deleteImg: (index: number) => void;
   sx?: SxProps<Theme>;
 }) => {
@@ -128,7 +128,7 @@ export const ImageView = (props: {
           <WPdfPreView pdf={file} />
         </Box>
       ) : (
-        <Image src={img.url} alt="이미지" layout="fill" objectFit="cover" />
+        <Image src={img.src} alt="이미지" layout="fill" objectFit="cover" />
       )}
 
       <DeleteBtn

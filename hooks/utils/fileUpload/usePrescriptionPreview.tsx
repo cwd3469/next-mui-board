@@ -1,10 +1,15 @@
-import { blobToFile, dataURItoFile, resizeFileCompression } from '@utils/file';
+import {
+  b64DecodeUnicode,
+  blobToFile,
+  dataURItoFile,
+  resizeFileCompression,
+} from '@utils/file';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { useToastContext } from '../useToastContext';
 import useCodeMsgBundle from '../useCodeMsgBundle';
 import { apiPrescriptionFileBase } from '@hooks/apis/preparation/request';
-import { UidList } from './types';
+import { FileInfo } from './types';
 import { AxiosPromise, AxiosResponse } from 'axios';
 import { Stack } from '@mui/material';
 import WPdfView from '@components/common/editor/WPdfView';
@@ -19,17 +24,19 @@ const usePrescriptionPreview = (props: {
   ) => AxiosPromise<any>;
 }) => {
   const [fileArr, setFileArr] = useState<File[]>([]);
-  const [imageUrl, setImageUrl] = useState<UidList[]>([]);
+  const [imageUrl, setImageUrl] = useState<FileInfo[]>([]);
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
   const reset = useCallback(() => {
     setFileArr([]);
     setImageUrl([]);
   }, []);
+
   const onImagePreview = useCallback(
     async (medicineOrderUlid: string, prescriptionUlid: string) => {
       let arr: File[] = [];
-      let temp: UidList[] = [];
+      let temp: FileInfo[] = [];
+
       await props
         .apiFileBase(medicineOrderUlid, prescriptionUlid)
         .then(async (data) => {
@@ -51,14 +58,14 @@ const usePrescriptionPreview = (props: {
                 : await resizeFileCompression(file);
             reader.readAsDataURL(imageImg);
             reader.onload = () => {
-              const csv: string = reader.result as string;
+              const utf8 = b64DecodeUnicode(res);
               const objectURL = URL.createObjectURL(imageImg);
               const fileObj = {
-                id: imageImg.name,
-                src: csv,
-                index: imageImg.lastModified,
-                type: imageImg.type,
-                url: objectURL,
+                name: imageImg.name, //파일 이름
+                type: imageImg.type, //파일 정보
+                src: objectURL, // 파일 미리보기
+                index: imageImg.lastModified, // 파일 등록 일수
+                utf8: utf8,
               };
               temp.push(fileObj);
               arr.push(imageImg);
@@ -93,7 +100,7 @@ const usePrescriptionPreview = (props: {
 
 export const OneImagePreviewComponent = (props: {
   fileArr: File[];
-  imageUrl: UidList[];
+  imageUrl: FileInfo[];
 }) => {
   return (
     <Stack alignItems="center">
@@ -103,7 +110,7 @@ export const OneImagePreviewComponent = (props: {
             <WPdfView pdf={props.fileArr[0]} />
           ) : (
             <Image
-              src={props.imageUrl[0]?.url}
+              src={props.imageUrl[0]?.src}
               alt="처방전"
               layout="fill"
               objectFit="contain"

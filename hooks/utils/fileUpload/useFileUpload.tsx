@@ -2,9 +2,14 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import imageCompression from 'browser-image-compression';
 import useValidation from '../useValidation';
-import { UidList } from './types';
+import { FileInfo } from './types';
 import useDropDrag from './useDropDrag';
-import { blobToFile, forinArr, resizeFileCompression } from '@utils/file';
+import {
+  b64DecodeUnicode,
+  blobToFile,
+  forinArr,
+  resizeFileCompression,
+} from '@utils/file';
 import { ErrorType } from '@components/common/inputs/type';
 
 export interface UseMultiFileUpload {
@@ -20,7 +25,7 @@ const useFileUpload = (props: UseMultiFileUpload) => {
   const { multi, limit } = props;
   const validation = useValidation();
   const [files, setFile] = useState<File[]>([]);
-  const [imageSrc, setImageSrc] = useState<UidList[]>([]);
+  const [imageSrc, setImageSrc] = useState<FileInfo[]>([]);
   const [err, setErr] = useState<ErrorType>({ msg: '', boo: false });
   const errorMsgOn = (msg: string) => {
     setErr({ msg, boo: true });
@@ -57,7 +62,7 @@ const useFileUpload = (props: UseMultiFileUpload) => {
           if (selectFile) {
             const fileArr = forinArr(selectFile);
             let fileList: File[] = [];
-            let temp: UidList[] = [];
+            let temp: FileInfo[] = [];
             [].forEach.call(
               selectFile,
               async function (file: File, index: number) {
@@ -71,14 +76,12 @@ const useFileUpload = (props: UseMultiFileUpload) => {
                       : await resizeFileCompression(file);
                   reader.readAsDataURL(imageImg);
                   reader.onload = () => {
-                    const csv: string = reader.result as string;
                     const objectURL = URL.createObjectURL(imageImg);
                     const fileObj = {
-                      id: imageImg.name,
-                      src: csv,
-                      index: imageImg.lastModified,
-                      type: imageImg.type,
-                      url: objectURL,
+                      name: imageImg.name, //파일 이름
+                      type: imageImg.type, //파일 정보
+                      src: objectURL, // 파일 미리보기
+                      index: imageImg.lastModified, // 파일 등록 일수
                     };
 
                     if (multi) {
@@ -133,7 +136,7 @@ const useFileUpload = (props: UseMultiFileUpload) => {
     (fileList: File[]) => {
       if (fileList.length) {
         let fileList: File[] = [];
-        let temp: UidList[] = [];
+        let temp: FileInfo[] = [];
         [].forEach.call(
           fileList.length,
           async function (file: File, index: number) {
@@ -147,14 +150,12 @@ const useFileUpload = (props: UseMultiFileUpload) => {
                   : await resizeFileCompression(file);
               reader.readAsDataURL(imageImg);
               reader.onload = () => {
-                const csv: string = reader.result as string;
                 const objectURL = URL.createObjectURL(imageImg);
                 const fileObj = {
-                  id: imageImg.name,
-                  src: csv,
-                  index: imageImg.lastModified,
-                  type: imageImg.type,
-                  url: objectURL,
+                  name: imageImg.name, //파일 이름
+                  type: imageImg.type, //파일 정보
+                  src: objectURL, // 파일 미리보기
+                  index: imageImg.lastModified, // 파일 등록 일수
                 };
                 temp.push(fileObj);
                 fileList.push(imageImg);

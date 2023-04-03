@@ -71,7 +71,7 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  {img.id}
+                  {img.name}
                 </Typography>
                 <Box height="22px" />
                 <ImageView
