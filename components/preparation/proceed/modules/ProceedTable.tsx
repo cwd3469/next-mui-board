@@ -35,6 +35,7 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
   const [dispensingExpensesOpen, setDispensingExpensesOpen] =
     useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<string>('');
+  const [medicineCost, setMedicineCost] = useState<number>(0);
   const [userUlid, setUserUlid] = useState<PrescriptionId>({
     prescriptionUlid: '',
     medicineOrderUlid: '',
@@ -69,8 +70,9 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
   );
   /**ProceedTable 조제비 수정 */
   const coastModifiOnOff = useCallback(
-    (medicineOrderUlid: string, open: boolean) => {
+    (medicineOrderUlid: string, medicineCost: number, open: boolean) => {
       setUserUlid({ prescriptionUlid: '', medicineOrderUlid });
+      setMedicineCost(medicineCost);
       setDispensingExpensesOpen(open);
     },
     [],
@@ -192,10 +194,12 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       headerName: '청구 조제비',
       width: 125,
       renderCell: (prams) => {
-        const { medicineOrderUlid } = prams.row;
+        const { medicineOrderUlid, medicineCost } = prams.row;
         return (
           <GridButton
-            onClick={() => coastModifiOnOff(medicineOrderUlid, true)}
+            onClick={() =>
+              coastModifiOnOff(medicineOrderUlid, medicineCost, true)
+            }
             startIcon={<PencilIcon />}
           >
             조제비 수정
@@ -253,8 +257,9 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       {/* 조제비 수정 */}
       <DispensingExpensesModal
         id={userUlid.medicineOrderUlid}
+        medicineCost={medicineCost}
         open={dispensingExpensesOpen}
-        handleClose={() => coastModifiOnOff('', false)}
+        handleClose={() => coastModifiOnOff('', 0, false)}
       />
       {/* 조제 완료 */}
       <DispensingModal
