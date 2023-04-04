@@ -27,7 +27,7 @@ const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
   const [disabled, setDisabled] = useState<boolean>(true);
   /**DispensingExpensesModal 입력 상태*/
   const [info, setInfo] = useState<Paymentsinfo>({
-    payment: String(medicineCost),
+    payment: '0',
   });
   /**DispensingExpensesModal 입력 에러 상태*/
   const [infoErr, setInfoErr] = useState<PaymentsinfoErr>({
@@ -47,8 +47,10 @@ const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
   const { onClickDispensingExpenses } = useMutateDispensingExpenses({
     medicineCost: info.payment,
     medicineOrderUlid: id,
-    onError: onClickModalOff,
-    onSuccess: onClickModalOff,
+    modifyCoast: {
+      onError: onClickModalOff,
+      onSuccess: onClickModalOff,
+    },
   });
   /**DispensingExpensesModal 조제비 수정 DebounceFn 기능*/
   const onClickCostDebounce = useDebounceFn(onClickDispensingExpenses, {
@@ -65,6 +67,12 @@ const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
     },
     [disabled, onClickCostDebounce],
   );
+  /**DispensingExpensesModal 라이브 사이클 업데이트 -> info payment */
+  useEffect(() => {
+    setInfo({
+      payment: medicineCost ? String(medicineCost) + '원' : '0원',
+    });
+  }, [medicineCost]);
 
   /**DispensingExpensesModal 버튼 활성 상태 업데이트 기능 라이프 사이클*/
   useEffect(() => {

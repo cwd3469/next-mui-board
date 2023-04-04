@@ -15,8 +15,10 @@ const DispensingModal = (props: DispensingModalType) => {
   const { open, handleClose, id } = props;
   const { onClickPreparationComplete } = useMutateDispensingExpenses({
     medicineOrderUlid: id,
-    onError: handleClose,
-    onSuccess: handleClose,
+    completeCoast: {
+      onError: handleClose,
+      onSuccess: handleClose,
+    },
   });
   const onClickPreparationCompleteDebounceFn = useDebounceFn(
     onClickPreparationComplete,
