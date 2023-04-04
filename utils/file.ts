@@ -15,6 +15,26 @@ export function printShow(url: string) {
   printWin?.blur();
 }
 
+export function printImage(imageUrl: string) {
+  const img = new Image();
+  img.src = imageUrl;
+
+  img.onload = function () {
+    let printWindow = window.open('', 'PrintWindow');
+    if (printWindow) {
+      printWindow.document.write(
+        '<html><head><title>Print a prescription</title></head><body><img src="' +
+          imageUrl +
+          '"/></body></html>',
+      );
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    }
+  };
+}
+
 // Encoding UTF8 ⇢ base64
 export function b64EncodeUnicode(str: string) {
   return btoa(
