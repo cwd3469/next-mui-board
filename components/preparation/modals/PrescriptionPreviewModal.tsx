@@ -65,7 +65,7 @@ const PrescriptionPreviewModal = (props: PrescriptionModalType) => {
       btnTitle="인쇄하기"
       activeOn
     >
-      <>
+      <Box>
         <TransformWrapper initialScale={1}>
           {({ zoomIn, zoomOut, resetTransform, centerView, ...rest }) => (
             <Stack gap="10px">
@@ -116,8 +116,7 @@ const PrescriptionPreviewModal = (props: PrescriptionModalType) => {
             </Stack>
           )}
         </TransformWrapper>
-        <Box height="60px" />
-      </>
+      </Box>
     </WConfirm>
   );
 };

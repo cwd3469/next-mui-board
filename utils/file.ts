@@ -9,7 +9,6 @@ export function blobToFile(theBlob: Blob, fileName: string) {
 }
 
 export function printShow(url: string) {
-  console.log(url);
   const printWin = window.open(url, 'print', 'width=1100,height=800');
   printWin?.print();
   printWin?.blur();

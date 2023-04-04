@@ -117,7 +117,7 @@ export const OneImagePreviewComponent = (props: {
         ) : (
           ''
         )}
-        <Box height="100px" />
+        <Box height="60px" />
       </>
     </Stack>
   );
