@@ -1,5 +1,4 @@
 import WTwoTab from '@components/common/button/radio/modules/WTwoTab';
-import WPdfView from '@components/common/editor/WPdfView';
 import WPaymentsTextField from '@components/common/inputs/textField/modules/WPaymentsTextField';
 import WRefusalDispenTextField from '@components/common/inputs/textField/modules/WRefusalDispenTextField';
 import { ErrorType } from '@components/common/inputs/type';
@@ -11,8 +10,7 @@ import useMutateDispensingAccept from '@hooks/apis/preparation/request/hooks/use
 import usePrescriptionPreview, {
   OneImagePreviewComponent,
 } from '@hooks/utils/fileUpload/usePrescriptionPreview';
-import { Box, Grid, Stack } from '@mui/material';
-import Image from 'next/image';
+import { Box, Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 
 interface Paymentsinfo {
@@ -61,6 +59,17 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
 
   /**DispensingAccepModal 모달 닫기 기능 */
   const onClickReset = useCallback(() => {
+    setInfo({
+      payment: '',
+      refusal: '',
+    });
+    setInfoErr({
+      payment: { msg: '', boo: false },
+      refusal: { msg: '', boo: false },
+    });
+    setTab(true);
+    setDisabledAccept(true);
+    setDisabledRefuse(true);
     handleClose();
     reset();
   }, [handleClose, reset]);
@@ -146,7 +155,24 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
         {tab ? (
           <>
             {fileArr.length ? (
-              <OneImagePreviewComponent fileArr={fileArr} imageUrl={imageUrl} />
+              <>
+                <OneImagePreviewComponent
+                  fileArr={fileArr}
+                  imageUrl={imageUrl}
+                />
+                <Stack gap="14px" alignItems="center">
+                  <Stack width="420px">
+                    <WSubTitle title="조제비 입력" require />
+                    <WPaymentsTextField
+                      state={info.payment}
+                      setState={onChangeState}
+                      keyId={'payment'}
+                      err={infoErr.payment}
+                      setErr={onChangeStateErr}
+                    />
+                  </Stack>
+                </Stack>
+              </>
             ) : (
               <Stack height="500px"></Stack>
             )}
