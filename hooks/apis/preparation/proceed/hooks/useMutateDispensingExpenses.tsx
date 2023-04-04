@@ -8,11 +8,17 @@ import { commaRemove } from '@utils/formatNumber';
 export interface UseDispensingExpensesType {
   medicineCost?: string;
   medicineOrderUlid: string;
-  onError?: () => void;
-  onSuccess?: () => void;
+  modifyCoast?: {
+    onError?: () => void;
+    onSuccess?: () => void;
+  };
+  completeCoast?: {
+    onError?: () => void;
+    onSuccess?: () => void;
+  };
 }
 const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
-  const { medicineCost, medicineOrderUlid, onError, onSuccess } = props;
+  const { medicineCost, medicineOrderUlid, modifyCoast, completeCoast } = props;
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
   /**useMutateDispensingExpenses 조제비 수정  useMutation*/
@@ -35,9 +41,12 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
           if (code !== '0000') {
             toast?.on(msg.errMsg(code), 'info');
           } else {
-            if (onSuccess) {
-              onSuccess();
+            if (modifyCoast) {
+              if (modifyCoast.onSuccess) {
+                modifyCoast.onSuccess();
+              }
             }
+
             return;
           }
         },
@@ -46,8 +55,10 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
             `조제비 수정이 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
             'error',
           );
-          if (onError) {
-            onError();
+          if (modifyCoast) {
+            if (modifyCoast.onError) {
+              modifyCoast.onError();
+            }
           }
         },
       });
@@ -55,11 +66,10 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
   }, [
     medicineCost,
     medicineOrderUlid,
-    msg,
     mutateDispensingExpenses,
-    onError,
-    onSuccess,
     toast,
+    msg,
+    modifyCoast,
   ]);
   /**useMutateDispensingExpenses 조제 완료 기능*/
   const onClickPreparationComplete = useCallback(() => {
@@ -73,8 +83,10 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
           if (code !== '0000') {
             toast?.on(msg.errMsg(code), 'info');
           } else {
-            if (onSuccess) {
-              onSuccess();
+            if (completeCoast) {
+              if (completeCoast.onSuccess) {
+                completeCoast.onSuccess();
+              }
             }
             return;
           }
@@ -84,13 +96,15 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
             `조제 완료가 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
             'error',
           );
-          if (onError) {
-            onError();
+          if (completeCoast) {
+            if (completeCoast.onError) {
+              completeCoast.onError();
+            }
           }
         },
       });
     }
-  }, [medicineOrderUlid, msg, mutationPrepared, onError, onSuccess, toast]);
+  }, [completeCoast, medicineOrderUlid, msg, mutationPrepared, toast]);
 
   return { onClickDispensingExpenses, onClickPreparationComplete };
 };
