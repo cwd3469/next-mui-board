@@ -38,13 +38,14 @@ const useMutateDispensingAccept = (props: UseDispensingExpensesType) => {
               toast?.on(msg.errMsg(code), 'warning');
             } else {
               props.onSuccess();
+              toast?.on(`조제비 입력을 완료하였습니다.`, 'success');
               queryClient.invalidateQueries(REQUEST_LIST(router.query));
               return;
             }
           },
           onError: (errMsg) => {
             toast?.on(
-              `조제비 수정이 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
+              `조제비 입력에 실패하였습니다.\n 잠시 후, 다시 시도해 주세요.`,
               'error',
             );
             props.onError();
@@ -67,13 +68,14 @@ const useMutateDispensingAccept = (props: UseDispensingExpensesType) => {
               toast?.on(msg.errMsg(code), 'warning');
             } else {
               props.onSuccess();
+              toast?.on(`거절 사유 입력을 완료하였습니다.`, 'success');
               queryClient.invalidateQueries(REQUEST_LIST(router.query));
               return;
             }
           },
           onError: (errMsg) => {
             toast?.on(
-              `조제비 수정이 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
+              `거절 사유 입력에 실패하였습니다.\n 잠시 후, 다시 시도해 주세요.`,
               'error',
             );
             props.onError();
