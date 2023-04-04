@@ -13,7 +13,7 @@ import resetIcon from 'public/assets/icon/zoom/reset-icon.svg';
 import zoomInIcon from 'public/assets/icon/zoom/zoom-in.svg';
 import zoomOutIcon from 'public/assets/icon/zoom/zoom-out.svg';
 import WDownloadBtn from '@components/common/button/modules/WDownloadBtn';
-import { printShow } from '@utils/file';
+import { printShow, printImage } from '@utils/file';
 
 interface PrescriptionModalType extends ModalType {
   medicineOrderUlid: string;
@@ -49,7 +49,15 @@ const PrescriptionPreviewModal = (props: PrescriptionModalType) => {
       open={open}
       handleClose={onReset}
       handleEvent={() => {
-        printShow(`${imageUrl[0].src}`);
+        if (imageUrl.length) {
+          if (imageUrl[0].type === 'application/pdf') {
+            printShow(`${imageUrl[0].src}`);
+          } else {
+            if (imageUrl[0].utf8) {
+              printImage(imageUrl[0].src);
+            }
+          }
+        }
       }}
       title="처방전 보기"
       maxWidth="xl"
