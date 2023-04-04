@@ -67,7 +67,7 @@ export const transQueryUrl = (
   const page = Number(query.page)
     ? `&page=${Number(query.page)}`
     : filter
-    ? filter.page
+    ? typeof filter.page !== 'undefined'
       ? `&page=${filter.page}`
       : ''
     : '';
