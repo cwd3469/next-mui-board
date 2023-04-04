@@ -9,10 +9,29 @@ export function blobToFile(theBlob: Blob, fileName: string) {
 }
 
 export function printShow(url: string) {
-  console.log(url);
   const printWin = window.open(url, 'print', 'width=1100,height=800');
   printWin?.print();
   printWin?.blur();
+}
+
+export function printImage(imageUrl: string) {
+  const img = new Image();
+  img.src = imageUrl;
+
+  img.onload = function () {
+    let printWindow = window.open('', 'PrintWindow');
+    if (printWindow) {
+      printWindow.document.write(
+        '<html><head><title>Print a prescription</title></head><body><img src="' +
+          imageUrl +
+          '"/></body></html>',
+      );
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    }
+  };
 }
 
 // Encoding UTF8 ⇢ base64
