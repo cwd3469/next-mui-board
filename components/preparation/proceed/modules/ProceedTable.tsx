@@ -13,9 +13,11 @@ import RequesterModal from '@components/preparation/modals/RequesterModal';
 import { transDeliveryMethod, transMedicineStatus } from '@utils/transtext';
 import WDayTimeTypography from '@components/common/typography/WDayTimeTypography';
 import { ReceiveData } from '@components/preparation/request/modules/RequestTable';
-import PrescriptionPreviewModal from '@components/preparation/modals/PrescriptionPreviewModal';
 import DispensingExpensesModal from '@components/preparation/modals/DispensingExpensesModal';
 import DispensingModal from '@components/preparation/modals/DispensingModal';
+import usePrescriptionPreview from '@hooks/utils/fileUpload/usePrescriptionPreview';
+import { apiProceedPrescription } from '@hooks/apis/preparation/proceed';
+import PrescriptionPreviewView from '@components/preparation/modals/PrescriptionPreviewView';
 
 export interface PrescriptionId {
   prescriptionUlid: string;
@@ -227,6 +229,20 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
     },
   ];
 
+  /**PrescriptionPreviewModal 처방전 미리보기 기능 */
+  const { fileArr, imageUrl, reset } = usePrescriptionPreview({
+    medicineOrderUlid: userUlid.medicineOrderUlid,
+    prescriptionUlid: userUlid.prescriptionUlid,
+    handleClose: () =>
+      userUlidOnOff({
+        prescriptionUlid: '',
+        medicineOrderUlid: '',
+        patientInfo: '',
+        open: false,
+      }),
+    apiFileBase: apiProceedPrescription,
+  });
+
   return (
     <>
       <WDataTable rows={rows} columns={columns} />
@@ -240,20 +256,14 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       ) : (
         ''
       )}
-      <PrescriptionPreviewModal
-        prescriptionUlid={userUlid.prescriptionUlid}
-        medicineOrderUlid={userUlid.medicineOrderUlid}
-        patientInfo={patientInfo}
+      <PrescriptionPreviewView
         open={prescriptionOpen}
-        handleClose={() =>
-          userUlidOnOff({
-            prescriptionUlid: '',
-            medicineOrderUlid: '',
-            patientInfo: '',
-            open: false,
-          })
-        }
+        fileArr={fileArr}
+        imageUrl={imageUrl}
+        reset={reset}
+        patientInfo={patientInfo}
       />
+
       {/* 조제비 수정 */}
       <DispensingExpensesModal
         id={userUlid.medicineOrderUlid}
