@@ -18,6 +18,7 @@ export const apiHistoryList = (queryUrl: string) => {
     },
   });
 };
+
 /** 조제 내역 요청자 정보
  * GET API
  */
@@ -37,13 +38,16 @@ export const apiHistoryPreparationRequest = (prams: string) => {
 /** 조제 내역 처방전 정보
  * GET API
  */
-export const apiHistoryPrescription = (prams: string) => {
+export const apiHistoryPrescription = (
+  medicineOrderUlid: string,
+  prescriptionUlid: string,
+) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
 
   return instance({
     method: 'get',
-    url: `apiHistoryPrescription/${prams}`,
+    url: `/pharmacy/api/v2/medicines/orders/history/${medicineOrderUlid}/prescription/${prescriptionUlid}`,
     headers: {
       Authorization: accessToken,
     },
