@@ -3,9 +3,11 @@ import WConfirm from '@components/common/modals/WConfirm';
 import { Stack, Typography } from '@mui/material';
 import processStatus from 'public/assets/icon/processStatus.svg';
 import Image from 'next/image';
-import useMutateDeliveryRequest from '@hooks/apis/preparation/history/hooks/useMutateDeliveryRequest';
 import useMutateDispensingExpenses from '@hooks/apis/preparation/proceed/hooks/useMutateDispensingExpenses';
 import { useDebounceFn, useKeyPress } from 'ahooks';
+import DeliveryRequestModal from './DeliveryRequestModal';
+import { useCallback, useState } from 'react';
+import FailedChangeModal from './FailedChangeModal';
 
 interface DispensingModalType extends ModalType {
   id: string;
@@ -13,20 +15,52 @@ interface DispensingModalType extends ModalType {
 
 const DispensingModal = (props: DispensingModalType) => {
   const { open, handleClose, id } = props;
+  /**DispensingModal 당일배송 요청 모달 상태*/
+  const [deliveryOpen, setDeliveryOpen] = useState<boolean>(false);
+  const [errorOpen, setErrorOpen] = useState<boolean>(false);
+  const [bgOpen, setBgOpen] = useState<boolean>(false);
+
+  /**DispensingModal 조제 완료 모달 초기화*/
+  const onClickReset = useCallback(() => {
+    setDeliveryOpen(false);
+    setErrorOpen(false);
+    setBgOpen(false);
+    handleClose();
+  }, [handleClose]);
+
+  /**DispensingModal 조제 완료 모달 onError*/
+  const onClickOnError = useCallback(() => {
+    setErrorOpen(true);
+    setBgOpen(true);
+  }, []);
+
+  /**DispensingModal 조제 완료 모달 onSuccess*/
+  const onClickOnSuccess = useCallback(() => {
+    setDeliveryOpen(true);
+    setBgOpen(true);
+  }, []);
+
+  /**DispensingModal 조제 완료 api 통신 */
   const { onClickPreparationComplete } = useMutateDispensingExpenses({
     medicineOrderUlid: id,
-    onError: handleClose,
-    onSuccess: handleClose,
+    completeCoast: {
+      onError: onClickOnError,
+      onSuccess: onClickOnSuccess,
+    },
   });
+  /**DispensingModal 조제 완료 api 통신 useDebounceFn*/
   const onClickPreparationCompleteDebounceFn = useDebounceFn(
     onClickPreparationComplete,
     {
       wait: 300,
     },
   );
+
+  /**DispensingModal enter 기능*/
   useKeyPress('enter', () => {
     onClickPreparationCompleteDebounceFn.run();
   });
+
   return (
     <WConfirm
       activeOn
@@ -35,8 +69,9 @@ const DispensingModal = (props: DispensingModalType) => {
       maxWidth="sm"
       titleSx={{ padding: '50px 0 60px' }}
       btnTitle={'배송 요청'}
-      handleClose={handleClose}
-      // handleEvent={ mode === 'delivery' ? onClickDeliveryRequest : onClicksameDayRequest}
+      handleClose={onClickReset}
+      bgDisable={bgOpen}
+      handleEvent={onClickPreparationCompleteDebounceFn.run}
     >
       <Stack gap="16px" padding="0px 0 85px" width="420px">
         <Image src={processStatus} alt="상태" />
@@ -50,6 +85,19 @@ const DispensingModal = (props: DispensingModalType) => {
             </Typography>
           </Stack>
         </>
+        <FailedChangeModal
+          open={errorOpen}
+          handleClose={() => {
+            setErrorOpen(false);
+            setBgOpen(false);
+          }}
+        />
+        <DeliveryRequestModal
+          mode={'sameDay'}
+          id={id}
+          open={deliveryOpen}
+          handleClose={onClickReset}
+        />
       </Stack>
     </WConfirm>
   );

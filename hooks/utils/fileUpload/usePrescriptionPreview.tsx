@@ -9,7 +9,7 @@ import { useToastContext } from '../useToastContext';
 import useCodeMsgBundle from '../useCodeMsgBundle';
 import { FileInfo } from './types';
 import { AxiosPromise } from 'axios';
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import WPdfView from '@components/common/editor/WPdfView';
 
 const usePrescriptionPreview = (props: {
@@ -100,8 +100,8 @@ export const OneImagePreviewComponent = (props: {
   imageUrl: FileInfo[];
 }) => {
   return (
-    <Stack alignItems="center">
-      <Stack sx={{ width: '600px' }}>
+    <Stack alignItems="center" height="100%">
+      <>
         {props.fileArr.length ? (
           props.fileArr[0].type === 'application/pdf' ? (
             <WPdfView pdf={props.fileArr[0]} />
@@ -118,7 +118,8 @@ export const OneImagePreviewComponent = (props: {
         ) : (
           ''
         )}
-      </Stack>
+        <Box height="60px" />
+      </>
     </Stack>
   );
 };

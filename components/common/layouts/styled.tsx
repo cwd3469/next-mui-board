@@ -111,9 +111,7 @@ export const GnbLink = (props: {
       }}
     >
       {router.pathname === props.href ? (
-        <GnbATag style={props.style} onClick={handleTokenInfo}>
-          {props.children}
-        </GnbATag>
+        <GnbATag style={props.style}>{props.children}</GnbATag>
       ) : (
         <Link
           href={props.disabled ? '/' : props.href}
