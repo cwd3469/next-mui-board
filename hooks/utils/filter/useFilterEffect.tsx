@@ -17,7 +17,16 @@ const useFilterEffect = (props: UseFilterEffectType) => {
 
   useEffect(() => {
     const query = router.query;
-    const { keyword, page, type, title, startDate, endDate } = query;
+    const {
+      keyword,
+      page,
+      type,
+      title,
+      startDate,
+      endDate,
+      medicineStatus,
+      deliveryStatus,
+    } = query;
 
     if (props.filter) {
       if (props.setFilter) {
@@ -26,6 +35,18 @@ const useFilterEffect = (props: UseFilterEffectType) => {
           reFilter = {
             ...reFilter,
             ['page']: Number(page as string),
+          };
+        }
+        if (medicineStatus) {
+          reFilter = {
+            ...reFilter,
+            ['medicineStatus']: medicineStatus as string,
+          };
+        }
+        if (deliveryStatus) {
+          reFilter = {
+            ...reFilter,
+            ['deliveryStatus']: deliveryStatus as string,
           };
         }
         if (type) {
