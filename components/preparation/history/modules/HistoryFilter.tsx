@@ -26,7 +26,10 @@ const HistoryFilter = () => {
           value={filter.deliveryStatus}
           callBack={(id: string, keyId: string) => setInFilter(id, keyId)}
         />
-        <WSearchInput search={searchEvent} placeholder="제목 검색" />
+        <WSearchInput
+          search={searchEvent}
+          placeholder="요청자 이름, 휴대폰번호, 병원 이름 검색"
+        />
       </Grid>
     </Grid>
   );
