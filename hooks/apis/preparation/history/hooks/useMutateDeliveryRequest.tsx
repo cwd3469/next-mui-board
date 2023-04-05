@@ -4,7 +4,6 @@ import { useToastContext } from '@hooks/utils/useToastContext';
 import { useCallback, useEffect } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { apiDeliveryRequest, apiHistoryPreparationRequest } from '..';
-import { PREPARATIONREQUEST } from '../queryKey';
 
 interface UseDeliveryRequestType {
   id: string;
