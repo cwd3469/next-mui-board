@@ -32,7 +32,6 @@ const HistoryFilterProvider = ({ children }: Props): JSX.Element => {
   const [filter, setFilter] = useState<FilterHistoryType>({
     page: 0,
     keyword: '',
-    status: '',
   });
   const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([
     dayjs(),

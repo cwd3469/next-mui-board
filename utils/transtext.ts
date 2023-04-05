@@ -28,6 +28,10 @@ export const transMedicineStatus = (state: string) => {
       return '조제 중';
     case 'OUTSTANDING':
       return '결제 대기';
+    case 'COMPLETED':
+      return '완료';
+    case 'REFUSE':
+      return '취소';
     default:
       return '-';
   }
@@ -54,6 +58,8 @@ const queryToFilter = (
     : f
     ? f[key]
       ? `&${key}=${f[key]}`
+      : key === 'page'
+      ? '&page=0'
       : ''
     : '';
 
@@ -64,18 +70,13 @@ export const transQueryUrl = (
   query: FilterAllOtions | ParsedUrlQuery,
   filter?: FilterAllOtions,
 ) => {
-  const page = Number(query.page)
-    ? `&page=${Number(query.page)}`
-    : filter
-    ? typeof filter.page !== 'undefined'
-      ? `&page=${filter.page}`
-      : ''
-    : '';
+  const page = queryToFilter('page', query, filter);
   const title = queryToFilter('title', query, filter);
   const type = queryToFilter('type', query, filter);
   const keyword = queryToFilter('keyword', query, filter);
   const medicineStatus = queryToFilter('medicineStatus', query, filter);
-  const url = page + keyword + medicineStatus + type + title;
+  const deliveryStatus = queryToFilter('deliveryStatus', query, filter);
+  const url = page + keyword + medicineStatus + type + title + deliveryStatus;
   return url;
 };
 
