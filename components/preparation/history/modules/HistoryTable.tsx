@@ -95,7 +95,7 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '조제 완료 시간',
       width: 120,
       renderCell: (params) => {
-        const { dayTime } = dateFormat(params.row.completionAt);
+        const { dayTime } = dateFormat(params.row.requestDateTime);
         return <>{dayTime}</>;
       },
     },
@@ -229,14 +229,17 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 요청',
       width: 120,
       renderCell: (prams) => {
-        const { deliveryStatus, medicineStatus, ulid, deliveryMethod } =
-          prams.row;
-        const mode = deliveryMethod === 'PARCEL' ? 'delivery' : 'sameDay';
+        const { deliveryStatus, ulid, deliveryMethod } = prams.row;
+
         return (
           <GridButton
-            onClick={() => deliveryIdOnOff(ulid, true, mode)}
+            onClick={() => deliveryIdOnOff(ulid, true, deliveryMethod)}
             startIcon={<TruckIcon />}
-            disabled={deliveryStatus === 'WAITING' ? false : true}
+            disabled={
+              deliveryStatus === 'WAITING' || deliveryStatus === 'IN_PREPARE'
+                ? false
+                : true
+            }
           >
             배송 요청
           </GridButton>
@@ -263,15 +266,12 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
     <>
       <WDataTable rows={rows} columns={columns} />
       {/* 요청자 정보 */}
-      {receiveData ? (
-        <RequesterModal
-          receiveData={receiveData}
-          open={requesterOpen}
-          handleClose={() => requesterOnOff(false, undefined)}
-        />
-      ) : (
-        ''
-      )}
+      <RequesterModal
+        receiveData={receiveData}
+        open={requesterOpen}
+        handleClose={() => requesterOnOff(false, undefined)}
+      />
+      {/* 요청자 정보 */}
       <PrescriptionPreviewView
         open={prescriptionOpen}
         fileArr={fileArr}
@@ -279,16 +279,12 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
         reset={reset}
         patientInfo={patientInfo}
       />
-      {deliveryId ? (
-        <DeliveryRequestModal
-          mode={deliveryMode}
-          id={deliveryId}
-          open={deliveryOpen}
-          handleClose={() => deliveryIdOnOff('', false, '')}
-        />
-      ) : (
-        ''
-      )}
+      <DeliveryRequestModal
+        mode={deliveryMode}
+        id={deliveryId}
+        open={deliveryOpen}
+        handleClose={() => deliveryIdOnOff('', false, '')}
+      />
     </>
   );
 };
