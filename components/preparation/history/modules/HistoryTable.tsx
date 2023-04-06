@@ -127,20 +127,18 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 상태',
       width: 130,
       renderCell: (prams) => {
-        const { deliveryStatus, trackingNumber, medicineStatus } = prams.row;
+        const { deliveryStatus, medicineStatus } = prams.row;
         return (
           <>
             {medicineStatus !== 'REFUSE' ? (
-              <Stack justifyContent={'center'} width="100%">
-                <Typography textAlign={'center'}>
-                  {transDeliveryStatus(deliveryStatus)}
-                </Typography>
-                {trackingNumber ? (
-                  <Typography textAlign={'center'}>{trackingNumber}</Typography>
+              <div style={{ textAlign: 'center' }}>
+                <p>{transDeliveryStatus(deliveryStatus)}</p>
+                {deliveryStatus === 'OUTSTANDING' ? (
+                  <p>{`(배송비 미결제)`}</p>
                 ) : (
                   ''
                 )}
-              </Stack>
+              </div>
             ) : (
               '-'
             )}
@@ -236,7 +234,8 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
             onClick={() => deliveryIdOnOff(ulid, true, deliveryMethod)}
             startIcon={<TruckIcon />}
             disabled={
-              deliveryStatus === 'WAITING' || deliveryStatus === 'IN_PREPARE'
+              deliveryStatus === 'IN_PREPARE' ||
+              deliveryStatus === 'OUTSTANDING'
                 ? false
                 : true
             }

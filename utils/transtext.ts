@@ -40,6 +40,8 @@ export const transDeliveryStatus = (state: string) => {
       return '배송 중';
     case 'COMPLETED':
       return '배송 완료';
+    case 'OUTSTANDING':
+      return '배송 준비 중';
     default:
       return '-';
   }
