@@ -1,50 +1,32 @@
-import { PreparationRequestDto } from '@components/preparation/history/type';
 import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
 import { useToastContext } from '@hooks/utils/useToastContext';
-import { useCallback, useEffect } from 'react';
-import { useMutation, useQuery } from 'react-query';
-import { apiDeliveryRequest, apiHistoryPreparationRequest } from '..';
+import { useCallback } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { apiDeliveryRequest } from '..';
+import { HISTORY_LIST } from '../queryKey';
+import { useRouter } from 'next/router';
 
 interface UseDeliveryRequestType {
   id: string;
 }
 const useMutateDeliveryRequest = (props: UseDeliveryRequestType) => {
   const { id } = props;
+  const router = useRouter();
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
+  const queryClient = useQueryClient();
   const { mutate: mutateDeliveryRequest } = useMutation(apiDeliveryRequest);
 
-  const onClickDeliveryRequest = useCallback(() => {
-    if (id) {
-      mutateDeliveryRequest(id, {
-        onSuccess: (res) => {
-          const code = res.data.code;
-          const data = res.data.data;
-          if (code !== '0000') {
-            toast?.on(msg.errMsg(code), 'info');
-          } else {
-            return;
-          }
-        },
-        onError: (errMsg) => {
-          toast?.on(
-            `택배 수거 요청에 실패하였습니다 잠시 후, 다시 시도해 주세요.`,
-            'error',
-          );
-        },
-      });
-    }
-  }, [id, msg, mutateDeliveryRequest, toast]);
-
+  /**useMutateDeliveryRequest 당일 배송 요청*/
   const onClicksameDayRequest = useCallback(() => {
     if (id) {
       mutateDeliveryRequest(id, {
         onSuccess: (res) => {
           const code = res.data.code;
-          const data = res.data.data;
           if (code !== '0000') {
             toast?.on(msg.errMsg(code), 'info');
           } else {
+            queryClient.invalidateQueries(HISTORY_LIST(router.query));
             return;
           }
         },
@@ -56,9 +38,9 @@ const useMutateDeliveryRequest = (props: UseDeliveryRequestType) => {
         },
       });
     }
-  }, [id, msg, mutateDeliveryRequest, toast]);
+  }, [id, msg, mutateDeliveryRequest, queryClient, router.query, toast]);
 
-  return { onClickDeliveryRequest, onClicksameDayRequest };
+  return { onClicksameDayRequest };
 };
 
 export default useMutateDeliveryRequest;
