@@ -78,9 +78,10 @@ const PrescriptionPreviewView = (props: {
               <Grid
                 container
                 justifyContent="center"
+                alignItems={'center'}
                 sx={{
                   position: 'relative',
-                  height: '1000px',
+                  minHeight: '600px',
                 }}
               >
                 <TransformComponent>
