@@ -227,11 +227,13 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 요청',
       width: 120,
       renderCell: (prams) => {
-        const { deliveryStatus, ulid, deliveryMethod } = prams.row;
+        const { deliveryStatus, medicineOrderUlid, deliveryMethod } = prams.row;
 
         return (
           <GridButton
-            onClick={() => deliveryIdOnOff(ulid, true, deliveryMethod)}
+            onClick={() =>
+              deliveryIdOnOff(medicineOrderUlid, true, deliveryMethod)
+            }
             startIcon={<TruckIcon />}
             disabled={
               deliveryStatus === 'IN_PREPARE' ||
