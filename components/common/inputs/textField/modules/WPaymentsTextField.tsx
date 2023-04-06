@@ -63,7 +63,7 @@ const WPaymentsTextField = (props: WTextFieldModulesType) => {
           setState(comma, keyId);
           onValid(comma);
         } else {
-          setErr({ msg: '금액이 부족합니다.', boo: true }, keyId);
+          setErr({ msg: '금액을 입력해주세요.', boo: true }, keyId);
         }
       }
     },
