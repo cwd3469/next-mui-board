@@ -19,22 +19,6 @@ export const apiHistoryList = (queryUrl: string) => {
   });
 };
 
-/** 조제 내역 요청자 정보
- * GET API
- */
-export const apiHistoryPreparationRequest = (prams: string) => {
-  const token = getCookie('accessToken');
-  const accessToken = typeof token === 'string' ? token : '';
-
-  return instance({
-    method: 'get',
-    url: `apiHistoryPreparationRequest/${prams}`,
-    headers: {
-      Authorization: accessToken,
-    },
-  });
-};
-
 /** 조제 내역 처방전 정보
  * GET API
  */
@@ -62,23 +46,8 @@ export const apiDeliveryRequest = (prams: string) => {
   const accessToken = typeof token === 'string' ? token : '';
 
   return instance({
-    method: 'get',
-    url: `apiDeliveryRequest/${prams}`,
-    headers: {
-      Authorization: accessToken,
-    },
-  });
-};
-/** 조제 내역 상태 알림
- * GET API
- */
-export const apiHistoryNoti = () => {
-  const token = getCookie('accessToken');
-  const accessToken = typeof token === 'string' ? token : '';
-
-  return instance({
-    method: 'get',
-    url: `apiHistory/noti`,
+    method: 'post',
+    url: `/pharmacy/api/v2/medicines/orders/history/${prams}/deliveries`,
     headers: {
       Authorization: accessToken,
     },
