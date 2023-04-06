@@ -40,25 +40,21 @@ const DispensingModal = (props: DispensingModalType) => {
     setBgOpen(true);
   }, []);
 
-  /**DispensingModal 조제 완료 api 통신 */
-  const { onClickPreparationComplete } = useMutateDispensingExpenses({
+  /**ProceedTable 조제 완료 api 통신 */
+  const { onClickQuickPayment } = useMutateDispensingExpenses({
     medicineOrderUlid: id,
-    completeCoast: {
+    quickPayment: {
       onError: onClickOnError,
       onSuccess: onClickOnSuccess,
     },
   });
-  /**DispensingModal 조제 완료 api 통신 useDebounceFn*/
-  const onClickPreparationCompleteDebounceFn = useDebounceFn(
-    onClickPreparationComplete,
-    {
-      wait: 300,
-    },
-  );
+  /**ProceedTable 조제 완료 api 통신 useDebounceFn*/
+  const onClickQuickPaymentDebounce = useDebounceFn(onClickQuickPayment, {
+    wait: 300,
+  });
 
-  /**DispensingModal enter 기능*/
   useKeyPress('enter', () => {
-    onClickPreparationCompleteDebounceFn.run();
+    onClickQuickPaymentDebounce.run();
   });
 
   return (
@@ -71,7 +67,7 @@ const DispensingModal = (props: DispensingModalType) => {
       btnTitle={'배송 요청'}
       handleClose={onClickReset}
       bgDisable={bgOpen}
-      handleEvent={onClickPreparationCompleteDebounceFn.run}
+      handleEvent={onClickQuickPaymentDebounce.run}
     >
       <Stack gap="16px" padding="0px 0 85px" width="420px">
         <Image src={processStatus} alt="상태" />
@@ -93,7 +89,7 @@ const DispensingModal = (props: DispensingModalType) => {
           }}
         />
         <DeliveryRequestModal
-          mode={'sameDay'}
+          mode={'QUICK'}
           id={id}
           open={deliveryOpen}
           handleClose={onClickReset}
