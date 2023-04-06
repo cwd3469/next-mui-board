@@ -4,29 +4,50 @@ import { Stack, Typography } from '@mui/material';
 import processStatus from 'public/assets/icon/processStatus.svg';
 import Image from 'next/image';
 import useMutateDeliveryRequest from '@hooks/apis/preparation/history/hooks/useMutateDeliveryRequest';
+import { useCallback } from 'react';
 
+export type DeliveryState = 'QUICK' | 'PARCEL' | string;
 interface DeliveryRequestModalType extends ModalType {
   id: string;
-  mode: 'sameDay' | 'delivery' | '';
+  mode: DeliveryState;
 }
 
 const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
   const { open, handleClose, id, mode } = props;
-  // const { onClickDeliveryRequest } = useMutateDeliveryRequest({ id });
+  const { onClicksameDayRequest } = useMutateDeliveryRequest({ id });
+  const info = useCallback(() => {
+    switch (mode) {
+      case 'QUICK':
+        return {
+          title: '당일 배송 요청',
+          btnTitle: '지금 기사 호출',
+        };
+      case 'PARCEL':
+        return {
+          title: '택배 배송 요청',
+          btnTitle: '택배 수거 요청',
+        };
+      default:
+        return {
+          title: '-',
+          btnTitle: '-',
+        };
+    }
+  }, [mode])();
   return (
     <WConfirm
       activeOn
       open={open}
-      title={mode === 'delivery' ? '택배 배송 요청' : '당일 배송 요청'}
+      title={info.title}
       maxWidth="sm"
       titleSx={{ padding: '50px 0 28px' }}
-      btnTitle={mode === 'delivery' ? '택배 수거 요청' : '지금 기사 호출'}
+      btnTitle={info.btnTitle}
       handleClose={handleClose}
-      // handleEvent={ mode === 'delivery' ? onClickDeliveryRequest : onClicksameDayRequest}
+      handleEvent={onClicksameDayRequest}
     >
       <Stack gap="16px" padding="0px 0 37px" width="420px">
         <Image src={processStatus} alt="상태" />
-        {mode === 'delivery' ? (
+        {mode === 'PARCEL' ? (
           <>
             <Typography
               variant="h6"
@@ -49,7 +70,7 @@ const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
               </Typography>
             </Stack>
           </>
-        ) : mode === 'sameDay' ? (
+        ) : mode === 'QUICK' ? (
           <>
             <Typography
               variant="h6"
