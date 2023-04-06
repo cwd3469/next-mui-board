@@ -1,32 +1,46 @@
 import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
 import { useToastContext } from '@hooks/utils/useToastContext';
 import { useCallback } from 'react';
-import { useMutation } from 'react-query';
-import { apiDispensingExpenses, apiPrepared } from '..';
+import { useMutation, useQueryClient } from 'react-query';
+import { apiDispensingExpenses, apiPrepared, apiQuickPayment } from '..';
 import { commaRemove } from '@utils/formatNumber';
+import { useRouter } from 'next/router';
+import { PROCEED_LIST } from '../queryKey';
+import { DeliveryState } from '@components/preparation/modals/DeliveryRequestModal';
+
+type OnEvent = {
+  onError?: () => void;
+  onSuccess?: (ulid?: string, deliveryMethod?: DeliveryState) => void;
+};
 
 export interface UseDispensingExpensesType {
   medicineCost?: string;
   medicineOrderUlid: string;
-  modifyCoast?: {
-    onError?: () => void;
-    onSuccess?: () => void;
-  };
-  completeCoast?: {
-    onError?: () => void;
-    onSuccess?: () => void;
-  };
+  modifyCoast?: OnEvent;
+  completeCoast?: OnEvent;
+  quickPayment?: OnEvent;
 }
 const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
-  const { medicineCost, medicineOrderUlid, modifyCoast, completeCoast } = props;
+  const {
+    medicineCost,
+    medicineOrderUlid,
+    modifyCoast,
+    completeCoast,
+    quickPayment,
+  } = props;
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   /**useMutateDispensingExpenses 조제비 수정  useMutation*/
   const { mutate: mutateDispensingExpenses } = useMutation(
     apiDispensingExpenses,
   );
   /**useMutateDispensingExpenses 조제 완료  useMutation*/
   const { mutate: mutationPrepared } = useMutation(apiPrepared);
+
+  /**useMutateDispensingExpenses 조제 완료  useMutation*/
+  const { mutate: mutationQuickPayment } = useMutation(apiQuickPayment);
 
   /**useMutateDispensingExpenses 조제비 수정  기능*/
   const onClickDispensingExpenses = useCallback(() => {
@@ -41,11 +55,10 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
           if (code !== '0000') {
             toast?.on(msg.errMsg(code), 'info');
           } else {
-            if (modifyCoast) {
-              if (modifyCoast.onSuccess) {
-                modifyCoast.onSuccess();
-              }
+            if (modifyCoast && modifyCoast.onSuccess) {
+              modifyCoast.onSuccess();
             }
+            queryClient.invalidateQueries(PROCEED_LIST(router.query));
 
             return;
           }
@@ -55,10 +68,8 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
             `조제비 수정이 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
             'error',
           );
-          if (modifyCoast) {
-            if (modifyCoast.onError) {
-              modifyCoast.onError();
-            }
+          if (modifyCoast && modifyCoast.onError) {
+            modifyCoast.onError();
           }
         },
       });
@@ -70,43 +81,91 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
     toast,
     msg,
     modifyCoast,
+    queryClient,
+    router.query,
   ]);
   /**useMutateDispensingExpenses 조제 완료 기능*/
-  const onClickPreparationComplete = useCallback(() => {
-    if (medicineOrderUlid) {
-      const dto = {
-        medicineOrderUlid: medicineOrderUlid,
-      };
-      mutationPrepared(dto, {
-        onSuccess: (res) => {
-          const code = res.data.code;
-          if (code !== '0000') {
-            toast?.on(msg.errMsg(code), 'info');
-          } else {
-            if (completeCoast) {
-              if (completeCoast.onSuccess) {
-                completeCoast.onSuccess();
+  const onClickPreparationComplete = useCallback(
+    (ulid?: string, deliveryMethod?: DeliveryState) => {
+      if (ulid) {
+        const dto = {
+          medicineOrderUlid: ulid,
+        };
+        mutationPrepared(dto, {
+          onSuccess: (res) => {
+            const code = res.data.code;
+            if (code !== '0000') {
+              toast?.on(msg.errMsg(code), 'info');
+            } else {
+              if (completeCoast && completeCoast.onSuccess) {
+                completeCoast.onSuccess(ulid, deliveryMethod);
               }
+              queryClient.invalidateQueries(PROCEED_LIST(router.query));
+              return;
             }
-            return;
-          }
-        },
-        onError: (errMsg) => {
-          toast?.on(
-            `조제 완료가 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
-            'error',
-          );
-          if (completeCoast) {
-            if (completeCoast.onError) {
+          },
+          onError: (errMsg) => {
+            if (completeCoast && completeCoast.onError) {
               completeCoast.onError();
             }
-          }
-        },
-      });
-    }
-  }, [completeCoast, medicineOrderUlid, msg, mutationPrepared, toast]);
+            toast?.on(
+              `조제 완료가 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
+              'error',
+            );
+          },
+        });
+      }
+    },
+    [completeCoast, msg, mutationPrepared, queryClient, router.query, toast],
+  );
 
-  return { onClickDispensingExpenses, onClickPreparationComplete };
+  /**useMutateDispensingExpenses 퀵 배송비 결제 기능*/
+  const onClickQuickPayment = useCallback(() => {
+    const dto = {
+      medicineOrderUlid: medicineOrderUlid,
+    };
+    mutationQuickPayment(dto, {
+      onSuccess: (res) => {
+        const code = res.data.code;
+        if (code !== '0000') {
+          toast?.on(msg.errMsg(code), 'info');
+        } else {
+          console.log(res);
+          if (res.data.data.result) {
+            if (quickPayment && quickPayment.onSuccess) {
+              quickPayment.onSuccess();
+            }
+          } else {
+            if (quickPayment && quickPayment.onError) {
+              quickPayment.onError();
+            }
+          }
+          queryClient.invalidateQueries(PROCEED_LIST(router.query));
+          return;
+        }
+      },
+      onError: (errMsg) => {
+        toast?.on(
+          `조제 완료가 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
+          'error',
+        );
+      },
+    });
+  }, [
+    medicineOrderUlid,
+    msg,
+    mutationQuickPayment,
+    queryClient,
+    quickPayment,
+    router.query,
+    toast,
+  ]);
+
+  return {
+    onClickDispensingExpenses,
+    onClickPreparationComplete,
+    onClickQuickPayment,
+  };
 };
 
 export default useMutateDispensingExpenses;
