@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { PROCEED_LIST } from '../queryKey';
 import { DeliveryState } from '@components/preparation/modals/DeliveryRequestModal';
 
-type OnEvent = {
+export type OnEvent = {
   onError?: () => void;
   onSuccess?: (ulid?: string, deliveryMethod?: DeliveryState) => void;
 };
@@ -52,9 +52,18 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
       mutateDispensingExpenses(dto, {
         onSuccess: (res) => {
           const code = res.data.code;
+          const data = res.data.data;
           if (code !== '0000') {
             toast?.on(msg.errMsg(code), 'info');
           } else {
+            if (data) {
+              toast?.on(`조제비 수정이 성공 하였습니다`, 'success');
+            } else {
+              toast?.on(
+                `조제비 수정이 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
+                'warning',
+              );
+            }
             if (modifyCoast && modifyCoast.onSuccess) {
               modifyCoast.onSuccess();
             }
