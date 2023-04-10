@@ -26,7 +26,7 @@ const HistoryPage = () => {
   });
 
   return (
-    <Stack gap="20px">
+    <Stack gap="13px">
       <Stack gap="10px">
         <HistoryStatusNoti
           totalDeliveryPrepareCount={info.totalDeliveryPrepareCount}
@@ -48,7 +48,7 @@ const HistoryPage = () => {
       </Stack>
       <HistoryTable data={info.contents} />
       <WPagination
-        paddingTop="4px"
+        paddingTop="3px"
         page={filter.page + 1}
         pagination={pagination}
         count={info.totalPages}

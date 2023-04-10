@@ -14,7 +14,10 @@ interface DeliveryRequestModalType extends ModalType {
 
 const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
   const { open, handleClose, id, mode } = props;
-  const { onClicksameDayRequest } = useMutateDeliveryRequest({ id });
+  const { onClicksameDayRequest } = useMutateDeliveryRequest({ id ,dayRequest:{
+    onError:handleClose,
+    onSuccess:handleClose,
+  }});
   const info = useCallback(() => {
     switch (mode) {
       case 'QUICK':
