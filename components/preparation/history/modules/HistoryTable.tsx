@@ -12,7 +12,9 @@ import {
   UserIcon,
 } from '@components/common/dataDisplay/WIcons';
 import RequesterModal from '@components/preparation/modals/RequesterModal';
-import DeliveryRequestModal from '@components/preparation/modals/DeliveryRequestModal';
+import DeliveryRequestModal, {
+  DeliveryState,
+} from '@components/preparation/modals/DeliveryRequestModal';
 import {
   transDeliveryMethod,
   transDeliveryStatus,
@@ -23,6 +25,7 @@ import usePrescriptionPreview from '@hooks/utils/fileUpload/usePrescriptionPrevi
 import { PrescriptionId } from '@components/preparation/proceed/modules/ProceedTable';
 import { apiHistoryPrescription } from '@hooks/apis/preparation/history';
 import PrescriptionPreviewView from '@components/preparation/modals/PrescriptionPreviewView';
+import DispensingModal from '@components/preparation/modals/DispensingModal';
 
 const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
   const { data } = props;
@@ -30,8 +33,7 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
   const [requesterOpen, setRequesterOpen] = useState<boolean>(false);
   const [deliveryOpen, setDeliveryOpen] = useState<boolean>(false);
   const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
-  const [deliveryMode, setDeliveryMode] =
-    useState<'sameDay' | 'delivery' | ''>('');
+  const [deliveryMode, setDeliveryMode] = useState<DeliveryState>('');
   const [deliveryId, setDeliveryId] = useState<string>('');
   const [patientInfo, setPatientInfo] = useState<string>('');
   const [receiveData, setReceiveData] = useState<ReceiveData>();
@@ -70,7 +72,7 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
 
   /**HistoryTable 배송 요청 기능 추가*/
   const deliveryIdOnOff = useCallback(
-    (id: string, open: boolean, mode: 'sameDay' | 'delivery' | '') => {
+    (id: string, open: boolean, mode: DeliveryState) => {
       setDeliveryId(id);
       setDeliveryOpen(open);
       setDeliveryMode(mode);
@@ -280,12 +282,21 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
         reset={reset}
         patientInfo={patientInfo}
       />
-      <DeliveryRequestModal
-        mode={deliveryMode}
-        id={deliveryId}
-        open={deliveryOpen}
-        handleClose={() => deliveryIdOnOff('', false, '')}
-      />
+      {deliveryMode === 'QUICK' ? (
+        <DispensingModal
+          mode="history"
+          id={deliveryId}
+          open={deliveryOpen}
+          handleClose={() => deliveryIdOnOff('', false, '')}
+        />
+      ) : (
+        <DeliveryRequestModal
+          mode={'PARCEL'}
+          id={deliveryId}
+          open={deliveryOpen}
+          handleClose={() => deliveryIdOnOff('', false, '')}
+        />
+      )}
     </>
   );
 };
