@@ -14,6 +14,7 @@ const HistoryFilterContext = createContext<{
   filter: {
     page: 0,
     keyword: '',
+    medicineStatus: 'COMPLETED',
   },
   setInFilter: (value: FilterValue, keyId: string) => {
     return;
@@ -32,6 +33,7 @@ const HistoryFilterProvider = ({ children }: Props): JSX.Element => {
   const [filter, setFilter] = useState<FilterHistoryType>({
     page: 0,
     keyword: '',
+    medicineStatus: 'COMPLETED',
   });
   const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([
     dayjs(),
