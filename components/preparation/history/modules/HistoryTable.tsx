@@ -2,8 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { HistoryInterface } from '../type';
 import WDataTable, { baseOption } from '@components/common/dataGrid/WDataTable';
-import { Button, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
+import { Typography } from '@mui/material';
 import { dateFormat } from '@utils/date';
 import GridButton from '@components/common/button/modules/GridButton';
 import {
@@ -27,9 +26,17 @@ import { apiHistoryPrescription } from '@hooks/apis/preparation/history';
 import PrescriptionPreviewView from '@components/preparation/modals/PrescriptionPreviewView';
 import DispensingModal from '@components/preparation/modals/DispensingModal';
 
+type DeliveryPayment = {
+  approvedAt: string;
+  cardCompanyNameKo: string;
+  cost: number;
+  paymentStatus: string;
+};
+
 const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
   const { data } = props;
   /**HistoryTable 상태 */
+  const [deliveryPayment, setDeliveryPayment] = useState<DeliveryPayment>();
   const [requesterOpen, setRequesterOpen] = useState<boolean>(false);
   const [deliveryOpen, setDeliveryOpen] = useState<boolean>(false);
   const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
@@ -72,10 +79,16 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
 
   /**HistoryTable 배송 요청 기능 추가*/
   const deliveryIdOnOff = useCallback(
-    (id: string, open: boolean, mode: DeliveryState) => {
+    (
+      id: string,
+      open: boolean,
+      mode: DeliveryState,
+      paymentState?: DeliveryPayment,
+    ) => {
       setDeliveryId(id);
       setDeliveryOpen(open);
       setDeliveryMode(mode);
+      setDeliveryPayment(paymentState);
     },
     [],
   );
@@ -129,13 +142,13 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 상태',
       width: 130,
       renderCell: (prams) => {
-        const { deliveryStatus, medicineStatus } = prams.row;
+        const { deliveryStatus, medicineStatus, deliveryPayment } = prams.row;
         return (
           <>
             {medicineStatus !== 'REFUSE' ? (
               <div style={{ textAlign: 'center' }}>
                 <p>{transDeliveryStatus(deliveryStatus)}</p>
-                {deliveryStatus === 'OUTSTANDING' ? (
+                {deliveryPayment.paymentStatus === '' ? (
                   <p>{`(배송비 미결제)`}</p>
                 ) : (
                   ''
@@ -229,18 +242,31 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 요청',
       width: 120,
       renderCell: (prams) => {
-        const { deliveryStatus, medicineOrderUlid, deliveryMethod } = prams.row;
-
+        const {
+          deliveryStatus,
+          medicineOrderUlid,
+          deliveryMethod,
+          medicineStatus,
+          deliveryPayment,
+        } = prams.row;
+        // console.log(medicineStatus);
         return (
           <GridButton
             onClick={() =>
-              deliveryIdOnOff(medicineOrderUlid, true, deliveryMethod)
+              deliveryIdOnOff(
+                medicineOrderUlid,
+                true,
+                deliveryMethod,
+                deliveryPayment,
+              )
             }
             startIcon={<TruckIcon />}
             disabled={
               deliveryStatus === 'IN_PREPARE' ||
               deliveryStatus === 'OUTSTANDING'
-                ? false
+                ? medicineStatus === 'REFUSE'
+                  ? true
+                  : false
                 : true
             }
           >
@@ -282,20 +308,33 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
         reset={reset}
         patientInfo={patientInfo}
       />
-      {deliveryMode === 'QUICK' ? (
-        <DispensingModal
-          mode="history"
-          id={deliveryId}
-          open={deliveryOpen}
-          handleClose={() => deliveryIdOnOff('', false, '')}
-        />
+      {deliveryPayment ? (
+        deliveryMode === 'QUICK' ? (
+          deliveryPayment.paymentStatus === 'SUCCESS' ? (
+            <DeliveryRequestModal
+              mode={'QUICK'}
+              id={deliveryId}
+              open={deliveryOpen}
+              handleClose={() => deliveryIdOnOff('', false, '', undefined)}
+            />
+          ) : (
+            <DispensingModal
+              mode="history"
+              id={deliveryId}
+              open={deliveryOpen}
+              handleClose={() => deliveryIdOnOff('', false, '', undefined)}
+            />
+          )
+        ) : (
+          <DeliveryRequestModal
+            mode={'PARCEL'}
+            id={deliveryId}
+            open={deliveryOpen}
+            handleClose={() => deliveryIdOnOff('', false, '', undefined)}
+          />
+        )
       ) : (
-        <DeliveryRequestModal
-          mode={'PARCEL'}
-          id={deliveryId}
-          open={deliveryOpen}
-          handleClose={() => deliveryIdOnOff('', false, '')}
-        />
+        ''
       )}
     </>
   );
