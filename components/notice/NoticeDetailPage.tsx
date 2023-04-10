@@ -15,7 +15,7 @@ const NoticeDetailPage = (props: { id: string }) => {
   const router = useRouter();
   const onClickBack = useCallback(() => {
     const storage = globalThis?.sessionStorage;
-    console.log(storage);
+    // console.log(storage);
     if (storage.prevPath === storage.currentPath) {
       router.push('/notice');
       return;

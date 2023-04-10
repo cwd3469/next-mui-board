@@ -25,7 +25,7 @@ const SecurityPage = () => {
   }, []);
 
   const onClickFix = useCallback(() => {
-    console.log('onClickFix');
+    // console.log('onClickFix');
   }, []);
   return (
     <FlexCenterC gap="26px">

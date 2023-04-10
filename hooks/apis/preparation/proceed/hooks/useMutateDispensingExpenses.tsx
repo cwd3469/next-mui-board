@@ -139,7 +139,7 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
         if (code !== '0000') {
           toast?.on(msg.errMsg(code), 'info');
         } else {
-          console.log(res);
+          // console.log(res);
           if (res.data.data.result) {
             if (quickPayment && quickPayment.onSuccess) {
               quickPayment.onSuccess();

@@ -35,7 +35,7 @@ const usePrepareReceptionChange = (prosp: {
 
   /**usePrepareReceptionOnOff 조제 접수 상태 close*/
   const onClickPrepareReceptionStatusClose = useCallback(() => {
-    console.log('close');
+    // console.log('close');
     mutatePrepareReceptionStatusClose(undefined, {
       onSuccess(data, variables, context) {
         const code = data.data.code;
@@ -58,7 +58,7 @@ const usePrepareReceptionChange = (prosp: {
 
   /**usePrepareReceptionOnOff 조제 접수 상태 open*/
   const onClickPrepareReceptionStatusOpen = useCallback(() => {
-    console.log('open');
+    // console.log('open');
     mutatePrepareReceptionStatusOpen(undefined, {
       onSuccess(data, variables, context) {
         const code = data.data.code;
