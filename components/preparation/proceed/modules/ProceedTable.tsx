@@ -93,7 +93,18 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       headerName: '상태',
       width: 80,
       renderCell: (params) => {
-        return <>{transMedicineStatus(params.row.medicineStatus)}</>;
+        return (
+          <span
+            style={{
+              color:
+                params.row.medicineStatus === 'OUTSTANDING'
+                  ? '#fc5935'
+                  : '#555',
+            }}
+          >
+            {transMedicineStatus(params.row.medicineStatus)}
+          </span>
+        );
       },
     },
     {
