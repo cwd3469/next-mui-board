@@ -79,7 +79,7 @@ jobs:
       - name: Upload docker-compose
         run: |
           tar cvfz ./docker-compose.tar.gz ./docker-compose/*
-          aws s3 cp --region ap-northeast-2 ./docker-compose.tar.gz s3://wau-prod-build-s3/$BUILD_S3_APP_PATH/
+          aws s3 cp --region ap-northeast-2 ./docker-compose.tar.gz s3://wau-production-build-s3/$BUILD_S3_APP_PATH/
 
       - name: Deploy with AWS codeDeploy
         run: aws deploy create-deployment
