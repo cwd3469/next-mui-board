@@ -1,14 +1,14 @@
-name: Deploy WhatAilsYou Dev
+name: Deploy WhatAilsYou Prod
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
 jobs:
-  deploy-dev-app:
+  deploy-prod-app:
     env:
-      BUILD_ENVIRONMENT: dev
-      IMAGE_TAG: dev
+      BUILD_ENVIRONMENT: prod
+      IMAGE_TAG: prod
       BUILD_S3_APP_PATH: wau-frontend-pharmacy
 
     name: Deploy Development App
@@ -38,18 +38,19 @@ jobs:
 
       - name: Generate Environment Variables File for Production
         env:
-          NEXT_PUBLIC_API_URL: https://dev-api.whatailsyou.io/
-          NEXT_PUBLIC_REST_API_KEY: ${{ secrets.DEV_NEXT_PUBLIC_REST_API_KEY }}
-          NEXT_PUBLIC_KAKAO_API_KEY: ${{ secrets.DEV_NEXT_PUBLIC_KAKAO_API_KEY }}
-          NEXT_PUBLIC_MUI_PRO_KEY: ${{ secrets.DEV_NEXT_PUBLIC_MUI_PRO_KEY }}
-          NEXT_PUBLIC_FIREBASE_APP_KEY: ${{ secrets.DEV_NEXT_PUBLIC_FIREBASE_APP_KEY }}
-          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.DEV_NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
-          NEXT_PUBLIC_FIREBASE_DATABASEURL: ${{ secrets.DEV_NEXT_PUBLIC_FIREBASE_DATABASEURL }}
-          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.DEV_NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
-          NEXT_PUBLIC_FIREBASE_MESSAGINGSENDER_ID: ${{ secrets.DEV_NEXT_PUBLIC_FIREBASE_MESSAGINGSENDER_ID }}
-          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.DEV_NEXT_PUBLIC_FIREBASE_APP_ID }}
-          NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.DEV_NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
+          NEXT_PUBLIC_API_URL: https://api.whatailsyou.io/
+          NEXT_PUBLIC_REST_API_KEY: ${{ secrets.PROD_NEXT_PUBLIC_REST_API_KEY }}
+          NEXT_PUBLIC_KAKAO_API_KEY: ${{ secrets.PROD_NEXT_PUBLIC_KAKAO_API_KEY }}
+          NEXT_PUBLIC_MUI_PRO_KEY: ${{ secrets.PROD_NEXT_PUBLIC_MUI_PRO_KEY }}
+          NEXT_PUBLIC_FIREBASE_APP_KEY: ${{ secrets.PROD_NEXT_PUBLIC_FIREBASE_APP_KEY }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.PROD_NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_DATABASEURL: ${{ secrets.PROD_NEXT_PUBLIC_FIREBASE_DATABASEURL }}
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.PROD_NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+          NEXT_PUBLIC_FIREBASE_MESSAGINGSENDER_ID: ${{ secrets.PROD_NEXT_PUBLIC_FIREBASE_MESSAGINGSENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.PROD_NEXT_PUBLIC_FIREBASE_APP_ID }}
+          NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.PROD_NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
         run: |
+          echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
           echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
           echo "NEXT_PUBLIC_REST_API_KEY=$NEXT_PUBLIC_REST_API_KEY" >> .env.production
           echo "NEXT_PUBLIC_KAKAO_API_KEY=$NEXT_PUBLIC_KAKAO_API_KEY" >> .env.production
@@ -78,14 +79,14 @@ jobs:
       - name: Upload docker-compose
         run: |
           tar cvfz ./docker-compose.tar.gz ./docker-compose/*
-          aws s3 cp --region ap-northeast-2 ./docker-compose.tar.gz s3://wau-dev-build-s3/$BUILD_S3_APP_PATH/
+          aws s3 cp --region ap-northeast-2 ./docker-compose.tar.gz s3://wau-prod-build-s3/$BUILD_S3_APP_PATH/
 
       - name: Deploy with AWS codeDeploy
         run: aws deploy create-deployment
           --application-name wau-pharmacy-app
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name wau-pharmacy-app-dev
-          --s3-location bucket=wau-dev-build-s3,bundleType=tgz,key=$BUILD_S3_APP_PATH/docker-compose.tar.gz
+          --deployment-group-name wau-pharmacy-app-prod
+          --s3-location bucket=wau-prod-build-s3,bundleType=tgz,key=$BUILD_S3_APP_PATH/docker-compose.tar.gz
 
       - name: Slack hook
         uses: 8398a7/action-slack@v3.8.0
