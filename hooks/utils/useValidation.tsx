@@ -94,7 +94,7 @@ export class Validation {
     this.regExNumberOnly = /^[0-9-]{0,15}$/;
 
     /**팩스 유효성 정규식 */
-    this.regExFaxNumber = /^[0-9]{0,10}$/;
+    this.regExFaxNumber = /^[0-9]{0,11}$/;
 
     /**생년월일 포멧 확인 */
     this.regExpBirthDate =
