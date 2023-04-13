@@ -2,35 +2,25 @@
 import dayjs from 'dayjs';
 import { createContext, useCallback, useState } from 'react';
 import { FilterDateType, FilterHistoryType, FilterValue } from './type';
+import { DateRange } from '@mui/x-date-pickers-pro';
+import useFilter from '@hooks/utils/filter/useFilter';
 
 const HistoryFilterContext = createContext<{
   filter: FilterHistoryType;
   setInFilter: (value: FilterValue, keyId: string) => void;
-  date: FilterDateType;
-  setInDate: (date: FilterDateType) => void;
-  ulid: string;
-  setInUlid: (id: string) => void;
+  date: DateRange<dayjs.Dayjs>;
+  setInDate: (date: DateRange<dayjs.Dayjs>) => void;
 }>({
-  ulid: '',
   filter: {
-    code: '0',
-    page: 1,
+    page: 0,
     keyword: '',
-    // 변경 될 예정
-    preparationStatus: '',
-    deliveryStatus: '',
+    medicineStatus: 'COMPLETED',
   },
   setInFilter: (value: FilterValue, keyId: string) => {
     return;
   },
-  date: {
-    startDate: dayjs().format('YYYY-MM-DD'),
-    endDate: dayjs().format('YYYY-MM-DD'),
-  },
-  setInUlid: (id: string) => {
-    return;
-  },
-  setInDate: (date: FilterDateType) => {
+  date: [dayjs(), dayjs().add(1, 'day')],
+  setInDate: (date: DateRange<dayjs.Dayjs>) => {
     return;
   },
 });
@@ -41,29 +31,22 @@ interface Props {
 
 const HistoryFilterProvider = ({ children }: Props): JSX.Element => {
   const [filter, setFilter] = useState<FilterHistoryType>({
-    code: '0',
-    page: 1,
+    page: 0,
     keyword: '',
-    status: '',
+    medicineStatus: 'COMPLETED',
   });
-  const [date, setDate] = useState<FilterDateType>({
-    startDate: dayjs().format('YYYY-MM-DD'),
-    endDate: dayjs().format('YYYY-MM-DD'),
+  const [date, setDate] = useState<DateRange<dayjs.Dayjs>>([
+    dayjs(),
+    dayjs().add(7, 'day'),
+  ]);
+
+  const { setInFilter, setInDate } = useFilter({
+    url: '/preparation/history',
+    filter: filter,
+    setFilter: setFilter,
+    date: date,
+    setDate: setDate,
   });
-  const [ulid, setUlid] = useState<string>('');
-
-  const setInFilter = useCallback((value: FilterValue, keyId: string) => {
-    setFilter((prec) => {
-      return { ...prec, [keyId]: value };
-    });
-  }, []);
-
-  const setInDate = useCallback((date: FilterDateType) => {
-    setDate(date);
-  }, []);
-  const setInUlid = useCallback((id: string) => {
-    setUlid(id);
-  }, []);
 
   return (
     <HistoryFilterContext.Provider
@@ -72,8 +55,6 @@ const HistoryFilterProvider = ({ children }: Props): JSX.Element => {
         setInFilter,
         date,
         setInDate,
-        ulid,
-        setInUlid,
       }}
     >
       {children}

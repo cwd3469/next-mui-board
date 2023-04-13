@@ -34,11 +34,16 @@ const useMutateDispensingAccept = (props: UseDispensingExpensesType) => {
         {
           onSuccess: (res) => {
             const code = res.data.code;
+            const data = res.data.data;
             if (code !== '0000') {
               toast?.on(msg.errMsg(code), 'warning');
             } else {
+              if (data) {
+                toast?.on(`조제비 입력을 완료하였습니다.`, 'success');
+              } else {
+                toast?.on(`조제비 입력이 실패하였습니다.`, 'warning');
+              }
               props.onSuccess();
-              toast?.on(`조제비 입력을 완료하였습니다.`, 'success');
               queryClient.invalidateQueries(REQUEST_LIST(router.query));
               return;
             }

@@ -6,18 +6,11 @@ import { useContext } from 'react';
 import RequestFilter from './modules/RequestFilter';
 import RequestStatusNoti from './modules/RequestStatusNoti';
 import RequestTable from './modules/RequestTable';
-import LoadingErrorFallback, {
-  loadingErrorFallbackList,
-} from '@components/common/api/LoadingErrorFallback';
-import { useRouter } from 'next/router';
+import { loadingErrorFallbackList } from '@components/common/api/LoadingErrorFallback';
 
 const RequestPage = () => {
-  const { filter, setInFilter, date } = useContext(RequestFilterContext);
-  const router = useRouter();
-  const { data, isError, isLoading, isWarning } = useListRequest({
-    query: router.query,
-    date: date,
-  });
+  const { filter, setInFilter } = useContext(RequestFilterContext);
+  const { data, isError, isLoading, isWarning } = useListRequest();
 
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setInFilter(value - 1, 'page');

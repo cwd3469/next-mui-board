@@ -2,8 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { HistoryInterface } from '../type';
 import WDataTable, { baseOption } from '@components/common/dataGrid/WDataTable';
-import { Button, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
+import { Typography } from '@mui/material';
 import { dateFormat } from '@utils/date';
 import GridButton from '@components/common/button/modules/GridButton';
 import {
@@ -12,65 +11,106 @@ import {
   UserIcon,
 } from '@components/common/dataDisplay/WIcons';
 import RequesterModal from '@components/preparation/modals/RequesterModal';
-import PrescriptionModal from '@components/preparation/modals/PrescriptionModal';
-import DeliveryRequestModal from '@components/preparation/modals/DeliveryRequestModal';
+import DeliveryRequestModal, {
+  DeliveryState,
+} from '@components/preparation/modals/DeliveryRequestModal';
+import {
+  transDeliveryMethod,
+  transDeliveryStatus,
+  transMedicineStatus,
+} from '@utils/transtext';
+import { ReceiveData } from '@components/preparation/request/modules/RequestTable';
+import usePrescriptionPreview from '@hooks/utils/fileUpload/usePrescriptionPreview';
+import { PrescriptionId } from '@components/preparation/proceed/modules/ProceedTable';
+import { apiHistoryPrescription } from '@hooks/apis/preparation/history';
+import PrescriptionPreviewView from '@components/preparation/modals/PrescriptionPreviewView';
+import DispensingModal from '@components/preparation/modals/DispensingModal';
+
+type DeliveryPayment = {
+  approvedAt: string;
+  cardCompanyNameKo: string;
+  cost: number;
+  paymentStatus: string;
+};
 
 const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
   const { data } = props;
-  const [requesterId, setRequesterId] = useState<string>('');
+  /**HistoryTable 상태 */
+  const [deliveryPayment, setDeliveryPayment] = useState<DeliveryPayment>();
   const [requesterOpen, setRequesterOpen] = useState<boolean>(false);
-  const [prescriptionId, setPrescriptionId] = useState<string>('');
-  const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
-  const [deliveryId, setDeliveryId] = useState<string>('');
-  const [deliveryMode, setDeliveryMode] =
-    useState<'sameDay' | 'delivery' | ''>('');
   const [deliveryOpen, setDeliveryOpen] = useState<boolean>(false);
+  const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
+  const [deliveryMode, setDeliveryMode] = useState<DeliveryState>('');
+  const [deliveryId, setDeliveryId] = useState<string>('');
+  const [patientInfo, setPatientInfo] = useState<string>('');
+  const [receiveData, setReceiveData] = useState<ReceiveData>();
+  const [userUlid, setUserUlid] = useState<PrescriptionId>({
+    prescriptionUlid: '',
+    medicineOrderUlid: '',
+  });
 
+  /**HistoryTable 테이블 데이터 id 추가 */
   const rows = data.map((item, index) => {
     return { ...item, ['id']: index };
   });
-  const router = useRouter();
 
-  const requesterOnOff = useCallback((id: string, open: boolean) => {
-    setRequesterId(id);
+  /**HistoryTable 요청자 정보 추가  */
+  const requesterOnOff = useCallback((open: boolean, info?: ReceiveData) => {
+    setReceiveData(info);
     setRequesterOpen(open);
   }, []);
-  const prescriptionIdOnOff = useCallback((id: string, open: boolean) => {
-    setPrescriptionId(id);
-    setPrescriptionOpen(open);
-  }, []);
-  const deliveryIdOnOff = useCallback(
-    (id: string, open: boolean, mode: 'sameDay' | 'delivery' | '') => {
-      setDeliveryId(id);
-      setDeliveryOpen(open);
-      setDeliveryMode(mode);
+  /**HistoryTable 처방전 ulid 추가 */
+  const prescriptionIdOnOff = useCallback(
+    (params: {
+      prescriptionUlid: string;
+      medicineOrderUlid: string;
+      patientInfo: string;
+      open: boolean;
+    }) => {
+      setUserUlid({
+        prescriptionUlid: params.prescriptionUlid,
+        medicineOrderUlid: params.medicineOrderUlid,
+      });
+      setPrescriptionOpen(params.open);
+      setPatientInfo(params.patientInfo);
     },
     [],
   );
 
-  const onNoticeDetail = useCallback(
-    (id: string) => {
-      router.push({
-        pathname: `/notice/${id}`,
-      });
+  /**HistoryTable 배송 요청 기능 추가*/
+  const deliveryIdOnOff = useCallback(
+    (
+      id: string,
+      open: boolean,
+      mode: DeliveryState,
+      paymentState?: DeliveryPayment,
+    ) => {
+      setDeliveryId(id);
+      setDeliveryOpen(open);
+      setDeliveryMode(mode);
+      setDeliveryPayment(paymentState);
     },
-    [router],
+    [],
   );
 
+  /**HistoryTable 테이블 데이터*/
   const columns: GridColDef[] = [
     {
       ...baseOption,
-      field: 'statusNameKo',
+      field: 'medicineStatus',
       headerName: '상태',
       width: 70,
+      renderCell: (params) => {
+        return <>{transMedicineStatus(params.row.medicineStatus)}</>;
+      },
     },
     {
       ...baseOption,
-      field: 'completionAt',
+      field: 'requestDateTime',
       headerName: '조제 완료 시간',
       width: 120,
       renderCell: (params) => {
-        const { dayTime } = dateFormat(params.row.completionAt);
+        const { dayTime } = dateFormat(params.row.requestDateTime);
         return <>{dayTime}</>;
       },
     },
@@ -89,9 +129,12 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
     },
     {
       ...baseOption,
-      field: 'deliveryFormKo',
+      field: 'deliveryMethod',
       headerName: '수령 방법',
       width: 70,
+      renderCell: (params) => {
+        return <>{transDeliveryMethod(params.row.deliveryMethod)}</>;
+      },
     },
     {
       ...baseOption,
@@ -99,44 +142,38 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 상태',
       width: 130,
       renderCell: (prams) => {
-        const {
-          deliveryStatus,
-          deliveryStatusKo,
-          waybillNumber,
-          courier,
-          deliveryForm,
-        } = prams.row;
-        return deliveryForm !== 'DELIVERY' ? (
-          deliveryStatusKo
-        ) : deliveryStatus === 'WAIT' ? (
-          deliveryStatusKo
-        ) : (
-          <Stack justifyContent={'center'} width="100%">
-            <Typography textAlign={'center'}>{courier}</Typography>
-            <Typography textAlign={'center'}>{waybillNumber}</Typography>
-          </Stack>
+        const { deliveryStatus, medicineStatus, deliveryPayment } = prams.row;
+        return (
+          <>
+            {medicineStatus !== 'REFUSE' ? (
+              <div style={{ textAlign: 'center' }}>
+                <p>{transDeliveryStatus(deliveryStatus)}</p>
+                {deliveryPayment.paymentStatus === '' ? (
+                  <p>{`(배송비 미결제)`}</p>
+                ) : (
+                  ''
+                )}
+              </div>
+            ) : (
+              '-'
+            )}
+          </>
         );
       },
     },
     {
       ...baseOption,
-      field: 'requesterInfo',
+      field: 'receiveData',
       headerName: '요청자 정보',
       width: 120,
       renderCell: (prams) => {
-        const { deliveryStatus, status, ulid } = prams.row;
+        const { medicineStatus, receiveData } = prams.row;
 
         return (
           <GridButton
-            onClick={() => requesterOnOff(ulid, true)}
+            onClick={() => requesterOnOff(true, receiveData)}
             startIcon={<UserIcon />}
-            disabled={
-              status === 'CANCEL'
-                ? true
-                : deliveryStatus === 'COMPLETION'
-                ? true
-                : false
-            }
+            disabled={medicineStatus === 'REFUSE' ? true : false}
           >
             요청자 정보
           </GridButton>
@@ -145,28 +182,19 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
     },
     {
       ...baseOption,
-      field: 'treatHospitalName',
+      field: 'hospitalNameKo',
       headerName: '진료 병원 명',
       width: 125,
-      renderCell: (prams) => {
-        return (
-          <Stack justifyContent={'center'} width="100%">
-            <Typography textAlign={'center'}>
-              {prams.row.treatHospitalName}
-            </Typography>
-          </Stack>
-        );
-      },
     },
     {
       ...baseOption,
-      field: 'treatDoctorName',
+      field: 'doctorNameKo',
       headerName: '진료 병원 의사 명',
       width: 100,
     },
     {
       ...baseOption,
-      field: 'treatHospitalPhone',
+      field: 'hospitalPhoneNum',
       headerName: '병원 연락처',
       width: 100,
     },
@@ -176,17 +204,31 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '처방전 보기',
       width: 120,
       renderCell: (prams) => {
-        const { status, deliveryStatus, ulid } = prams.row;
+        const {
+          medicineStatus,
+          deliveryStatus,
+          prescriptionUlid,
+          medicineOrderUlid,
+          receiveData,
+          requestDateTime,
+        } = prams.row;
         return (
           <GridButton
-            onClick={() => prescriptionIdOnOff(ulid, true)}
+            onClick={() =>
+              prescriptionIdOnOff({
+                prescriptionUlid: prescriptionUlid,
+                medicineOrderUlid: medicineOrderUlid,
+                patientInfo: `${receiveData.receiveNameKo}_${requestDateTime}`,
+                open: true,
+              })
+            }
             startIcon={<CheckIcon />}
             disabled={
-              status === 'CANCEL'
+              medicineStatus === 'REFUSE'
                 ? true
-                : deliveryStatus === 'WAIT'
-                ? false
-                : true
+                : deliveryStatus === 'IN_DELIVERY'
+                ? true
+                : false
             }
           >
             처방전 보기
@@ -200,17 +242,31 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 요청',
       width: 120,
       renderCell: (prams) => {
-        const { status, deliveryStatus, ulid, deliveryForm } = prams.row;
-        const mode = deliveryForm === 'DELIVERY' ? 'delivery' : 'sameDay';
+        const {
+          deliveryStatus,
+          medicineOrderUlid,
+          deliveryMethod,
+          medicineStatus,
+          deliveryPayment,
+        } = prams.row;
+        // console.log(medicineStatus);
         return (
           <GridButton
-            onClick={() => deliveryIdOnOff(ulid, true, mode)}
+            onClick={() =>
+              deliveryIdOnOff(
+                medicineOrderUlid,
+                true,
+                deliveryMethod,
+                deliveryPayment,
+              )
+            }
             startIcon={<TruckIcon />}
             disabled={
-              status === 'CANCEL'
-                ? true
-                : deliveryStatus === 'WAIT'
-                ? false
+              deliveryStatus === 'IN_PREPARE' ||
+              deliveryStatus === 'OUTSTANDING'
+                ? medicineStatus === 'REFUSE'
+                  ? true
+                  : false
                 : true
             }
           >
@@ -221,26 +277,62 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
     },
   ];
 
+  /**PrescriptionPreviewModal 처방전 미리보기 기능 */
+  const { fileArr, imageUrl, reset } = usePrescriptionPreview({
+    medicineOrderUlid: userUlid.medicineOrderUlid,
+    prescriptionUlid: userUlid.prescriptionUlid,
+    handleClose: () =>
+      prescriptionIdOnOff({
+        prescriptionUlid: '',
+        medicineOrderUlid: '',
+        patientInfo: '',
+        open: false,
+      }),
+    apiFileBase: apiHistoryPrescription,
+  });
+
   return (
     <>
       <WDataTable rows={rows} columns={columns} />
-
-      {prescriptionId ? (
-        <PrescriptionModal
-          id={prescriptionId}
-          open={prescriptionOpen}
-          handleClose={() => prescriptionIdOnOff('', false)}
-        />
-      ) : (
-        ''
-      )}
-      {deliveryId ? (
-        <DeliveryRequestModal
-          mode={deliveryMode}
-          id={deliveryId}
-          open={deliveryOpen}
-          handleClose={() => deliveryIdOnOff('', false, '')}
-        />
+      {/* 요청자 정보 */}
+      <RequesterModal
+        receiveData={receiveData}
+        open={requesterOpen}
+        handleClose={() => requesterOnOff(false, undefined)}
+      />
+      {/* 요청자 정보 */}
+      <PrescriptionPreviewView
+        open={prescriptionOpen}
+        fileArr={fileArr}
+        imageUrl={imageUrl}
+        reset={reset}
+        patientInfo={patientInfo}
+      />
+      {deliveryPayment ? (
+        deliveryMode === 'QUICK' ? (
+          deliveryPayment.paymentStatus === 'SUCCESS' ? (
+            <DeliveryRequestModal
+              mode={'QUICK'}
+              id={deliveryId}
+              open={deliveryOpen}
+              handleClose={() => deliveryIdOnOff('', false, '', undefined)}
+            />
+          ) : (
+            <DispensingModal
+              mode="history"
+              id={deliveryId}
+              open={deliveryOpen}
+              handleClose={() => deliveryIdOnOff('', false, '', undefined)}
+            />
+          )
+        ) : (
+          <DeliveryRequestModal
+            mode={'PARCEL'}
+            id={deliveryId}
+            open={deliveryOpen}
+            handleClose={() => deliveryIdOnOff('', false, '', undefined)}
+          />
+        )
       ) : (
         ''
       )}

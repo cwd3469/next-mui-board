@@ -40,11 +40,17 @@ const LoadingErrorFallback = (props: LoadingErrorFallbackProps) => {
 export const loadingErrorFallbackList = (props: LoadingErrorProps) => {
   const { data, isError, isLoading, isWarning } = props;
   const def = {
+    //조제 요청
     contents: [],
     totalPages: 0,
     totalElements: 0,
+    // 조제 진행
     totalInPrepareCount: 0,
     totalOutstandingCount: 0,
+    // 조제 내역
+    totalDeliveryPrepareCount: 0,
+    totalMedicineCompleteCount: 0,
+    totalMedicineCost: 0,
   };
   const info = isLoading
     ? def
@@ -55,11 +61,17 @@ export const loadingErrorFallbackList = (props: LoadingErrorProps) => {
     : data
     ? data.data.code === '0000'
       ? {
+          //조제 요청
           contents: data.data.data.page.content,
           totalPages: data.data.data.page.totalPages,
           totalElements: data.data.data.page.totalElements,
+          // 조제 진행
           totalInPrepareCount: data.data.data.totalInPrepareCount,
           totalOutstandingCount: data.data.data.totalOutstandingCount,
+          // 조제 내역
+          totalDeliveryPrepareCount: data.data.data.totalDeliveryPrepareCount,
+          totalMedicineCompleteCount: data.data.data.totalMedicineCompleteCount,
+          totalMedicineCost: data.data.data.totalMedicineCost,
         }
       : def
     : def;

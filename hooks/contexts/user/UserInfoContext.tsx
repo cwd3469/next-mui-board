@@ -106,7 +106,7 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
             }
           })
           .catch(() => {
-            console.log('4');
+            // console.log('4');
             toast?.on(
               '토큰 유효기간이 만료 되었습니다. \n 로그인 페이지로 이동합니다.',
               'error',

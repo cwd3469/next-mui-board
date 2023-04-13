@@ -106,13 +106,9 @@ export const OneImagePreviewComponent = (props: {
           props.fileArr[0].type === 'application/pdf' ? (
             <WPdfView pdf={props.fileArr[0]} />
           ) : (
-            <Image
-              src={props.imageUrl[0]?.src}
-              alt="처방전 이미지"
-              width="600px"
-              height="800px"
-              objectFit="inherit"
-            />
+            <Stack sx={{ width: '600px' }}>
+              <img src={props.imageUrl[0]?.src} alt="처방전" />
+            </Stack>
           )
         ) : (
           ''

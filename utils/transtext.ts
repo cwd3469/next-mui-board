@@ -3,12 +3,6 @@ import { DateRange } from '@mui/x-date-pickers-pro';
 import dayjs from 'dayjs';
 import { ParsedUrlQuery } from 'querystring';
 
-export const sideDot = (txt: string, spe: string) => {
-  const center = txt.substring(4);
-  const dot = `${spe}${spe}${spe}${spe}${center}`;
-  return dot;
-};
-
 export const transTextNotice = (state: string) => {
   switch (state) {
     case 'NOTICE':
@@ -28,6 +22,26 @@ export const transMedicineStatus = (state: string) => {
       return '조제 중';
     case 'OUTSTANDING':
       return '결제 대기';
+    case 'COMPLETED':
+      return '완료';
+    case 'REFUSE':
+      return '취소';
+    default:
+      return '-';
+  }
+};
+export const transDeliveryStatus = (state: string) => {
+  switch (state) {
+    case 'WAITING':
+      return '배송 대기';
+    case 'IN_PREPARE':
+      return '배송 준비 중';
+    case 'IN_DELIVERY':
+      return '배송 중';
+    case 'COMPLETED':
+      return '배송 완료';
+    case 'OUTSTANDING':
+      return '배송 준비 중';
     default:
       return '-';
   }
@@ -54,6 +68,8 @@ const queryToFilter = (
     : f
     ? f[key]
       ? `&${key}=${f[key]}`
+      : key === 'page'
+      ? '&page=0'
       : ''
     : '';
 
@@ -64,18 +80,13 @@ export const transQueryUrl = (
   query: FilterAllOtions | ParsedUrlQuery,
   filter?: FilterAllOtions,
 ) => {
-  const page = Number(query.page)
-    ? `&page=${Number(query.page)}`
-    : filter
-    ? filter.page
-      ? `&page=${filter.page}`
-      : ''
-    : '';
+  const page = queryToFilter('page', query, filter);
   const title = queryToFilter('title', query, filter);
   const type = queryToFilter('type', query, filter);
   const keyword = queryToFilter('keyword', query, filter);
   const medicineStatus = queryToFilter('medicineStatus', query, filter);
-  const url = page + keyword + medicineStatus + type + title;
+  const deliveryStatus = queryToFilter('deliveryStatus', query, filter);
+  const url = page + keyword + medicineStatus + type + title + deliveryStatus;
   return url;
 };
 

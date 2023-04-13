@@ -16,7 +16,7 @@ export interface FilterNoticeType extends DataPagition {
   title?: string;
 }
 export interface FilterHistoryType extends DataPagition {
-  preparationStatus?: string;
+  medicineStatus?: string;
   deliveryStatus?: string;
 }
 export interface FilterProceedType extends DataPagition {

@@ -8,7 +8,7 @@ const NoticeFilterContext = createContext<{
   setInFilter: (value: FilterValue, keyId: string) => void;
 }>({
   filter: {
-    page: 1,
+    page: 0,
     type: '',
     title: '',
   },
@@ -23,7 +23,7 @@ interface Props {
 
 const NoticeFilterProvider = ({ children }: Props): JSX.Element => {
   const [filter, setFilter] = useState<FilterNoticeType>({
-    page: 1,
+    page: 0,
     type: '',
     title: '',
   });

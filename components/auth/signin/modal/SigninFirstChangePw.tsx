@@ -21,7 +21,7 @@ const SigninFirstChangePw = (props: ModalType) => {
     let status = 200;
     if (status === 200) {
       props.handleClose();
-      console.log(dto);
+      // console.log(dto);
     } else {
       toast?.on('입력하신 비밀번호와 일치하지 않습니다.', 'error');
     }

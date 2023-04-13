@@ -1,53 +1,30 @@
 import { WIconButton } from '@components/common/button/modules/WIconButton';
-import { ModalType } from '@components/common/layouts/gnb/types';
 import WConfirm from '@components/common/modals/WConfirm';
-import { apiProceedPrescription } from '@hooks/apis/preparation/proceed';
-import usePrescriptionPreview, {
-  OneImagePreviewComponent,
-} from '@hooks/utils/fileUpload/usePrescriptionPreview';
+import { OneImagePreviewComponent } from '@hooks/utils/fileUpload/usePrescriptionPreview';
 import { Box, Grid, Stack } from '@mui/material';
-import { useCallback, useEffect } from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import Image from 'next/image';
 import resetIcon from 'public/assets/icon/zoom/reset-icon.svg';
 import zoomInIcon from 'public/assets/icon/zoom/zoom-in.svg';
 import zoomOutIcon from 'public/assets/icon/zoom/zoom-out.svg';
 import WDownloadBtn from '@components/common/button/modules/WDownloadBtn';
+import { FileInfo } from '@hooks/utils/fileUpload/types';
 import { printShow, printImage } from '@utils/file';
 
-interface PrescriptionModalType extends ModalType {
-  medicineOrderUlid: string;
-  prescriptionUlid: string;
+const PrescriptionPreviewView = (props: {
+  open: boolean;
+  fileArr: File[];
+  imageUrl: FileInfo[];
   patientInfo: string;
-}
-
-const PrescriptionPreviewModal = (props: PrescriptionModalType) => {
-  const {
-    open,
-    handleClose,
-    medicineOrderUlid,
-    prescriptionUlid,
-    patientInfo,
-  } = props;
-  /**PrescriptionPreviewModal 처방전 미리보기 기능 */
-  const { fileArr, imageUrl, reset } = usePrescriptionPreview({
-    medicineOrderUlid: medicineOrderUlid,
-    prescriptionUlid: prescriptionUlid,
-    handleClose: handleClose,
-    apiFileBase: apiProceedPrescription,
-  });
-
-  /**PrescriptionPreviewModal 처방전 닫기 */
-  const onReset = useCallback(() => {
-    handleClose();
-    reset();
-  }, [handleClose, reset]);
+  reset: () => void;
+}) => {
+  const { fileArr, imageUrl, reset, open } = props;
 
   /**PrescriptionPreviewModal render */
   return (
     <WConfirm
       open={open}
-      handleClose={onReset}
+      handleClose={reset}
       handleEvent={() => {
         if (imageUrl.length) {
           if (imageUrl[0].type === 'application/pdf') {
@@ -73,7 +50,7 @@ const PrescriptionPreviewModal = (props: PrescriptionModalType) => {
                 {imageUrl.length ? (
                   <WDownloadBtn
                     failed={false}
-                    download={`${patientInfo}_${imageUrl[0].name}`}
+                    download={`${props.patientInfo}_${imageUrl[0].name}`}
                     url={`${imageUrl[0].src}`}
                   />
                 ) : (
@@ -101,9 +78,10 @@ const PrescriptionPreviewModal = (props: PrescriptionModalType) => {
               <Grid
                 container
                 justifyContent="center"
+                alignItems={'center'}
                 sx={{
                   position: 'relative',
-                  height: '600px',
+                  minHeight: '600px',
                 }}
               >
                 <TransformComponent>
@@ -121,4 +99,4 @@ const PrescriptionPreviewModal = (props: PrescriptionModalType) => {
   );
 };
 
-export default PrescriptionPreviewModal;
+export default PrescriptionPreviewView;

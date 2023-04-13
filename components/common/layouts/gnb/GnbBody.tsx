@@ -64,7 +64,7 @@ const GnbBody = (props: GnbBodyType) => {
             <>isError...</>
           )}
 
-          <GnbTimer />
+          {/* <GnbTimer /> */}
           <GnbMyInfo disabled={disabled} />
         </GnbNavList>
       </FlexSpaceBetween>

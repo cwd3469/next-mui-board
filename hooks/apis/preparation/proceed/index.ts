@@ -105,3 +105,19 @@ export const apiPrepared = (props: { medicineOrderUlid: string }) => {
     },
   });
 };
+
+/** 조제 진행 조제 완료
+ * PUT API
+ */
+export const apiQuickPayment = (props: { medicineOrderUlid: string }) => {
+  const token = getCookie('accessToken');
+  const accessToken = typeof token === 'string' ? token : '';
+
+  return instance({
+    method: 'put',
+    url: `pharmacy/api/v2/medicines/orders/ongoing/${props.medicineOrderUlid}/quick/payment`,
+    headers: {
+      Authorization: accessToken,
+    },
+  });
+};
