@@ -14,7 +14,7 @@ const ProceedFilterContext = createContext<{
   filter: {
     page: 0,
     keyword: '',
-    medicineStatus: 'IN_PREPARE',
+    medicineStatus: '',
   },
   setInFilter: (value: FilterValue, keyId: string) => {
     return;
@@ -37,7 +37,7 @@ const ProceedFilterProvider = ({ children }: Props): JSX.Element => {
   const [filter, setFilter] = useState<FilterProceedType>({
     page: 0,
     keyword: '',
-    medicineStatus: 'IN_PREPARE',
+    medicineStatus: '',
   });
 
   const { setInFilter, setInDate } = useFilter({
