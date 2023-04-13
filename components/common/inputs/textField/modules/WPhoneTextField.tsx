@@ -11,9 +11,10 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const txt = e.target.value;
       if (valid.regExpPhoneNumber.test(txt)) {
-        if (txt.length < 12) {
+        if (txt.length < 15) {
           props.setState(txt, props.keyId);
-          if (txt.length < 8) {
+          const number = txt.replace('-', '').replace('-', '');
+          if (number.length < 8) {
             props.setErr(
               {
                 msg: '조건에 맞는 전화번호를 입력해 주세요.',
@@ -48,7 +49,7 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      helper={'8~11자 이내의 약국 전화번호를 입력해 주세요.'}
+      helper={'8~12자 이내의 약국 전화번호를 입력해 주세요.'}
       placeholder={'약국전화번호를 입력해 주세요.'}
       disabled={props.disabled}
       error={props.err}
