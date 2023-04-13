@@ -75,6 +75,11 @@ jobs:
           docker push $ECR_REGISTRY/$MODULE_NAME:$IMAGE_TAG
           echo "name=image::$ECR_REGISTRY/$MODULE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
+      - name: Set environment to docker-compose.yml
+        run: |
+          cd ./docker-compose
+          sed -i "s|USE_ENVIRONMENT|$BUILD_ENVIRONMENT|g" "docker-compose.yml"
+
       - name: Upload docker-compose
         run: |
           tar cvfz ./docker-compose.tar.gz ./docker-compose/*

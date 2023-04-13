@@ -139,7 +139,7 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
   const handleEventAccept = useDebounceFn(onClickDispensingAccept, {
     wait: 300,
   });
-  const handleEventRefuse = useDebounceFn(onClickDispensingAccept, {
+  const handleEventRefuse = useDebounceFn(onClickMutateDispensingRefuse, {
     wait: 300,
   });
 

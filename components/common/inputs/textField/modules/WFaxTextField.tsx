@@ -30,10 +30,14 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
   const onChangeInfo = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const txt = e.target.value;
-      if (txt.length <= 10) {
+      if (txt.length <= 11) {
         if (valid.regExFaxNumber.test(txt)) {
           setState(txt, keyId);
-          passMsg();
+          if (txt.length <= 11 && txt.length >= 8) {
+            passMsg();
+          } else {
+            errMsg();
+          }
         } else {
           errMsg();
           return;
@@ -47,7 +51,7 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      helper={'숫자만 입력이 가능합니다.'}
+      helper={'팩스번호 8~11자리를 입력해 주세요.'}
       placeholder={'약국 팩스번호를 입력해 주세요.'}
       disabled={disabled}
       error={err}
