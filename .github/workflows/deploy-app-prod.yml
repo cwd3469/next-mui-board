@@ -86,13 +86,13 @@ jobs:
           --application-name wau-pharmacy-app
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name wau-pharmacy-app-prod
-          --s3-location bucket=wau-prod-build-s3,bundleType=tgz,key=$BUILD_S3_APP_PATH/docker-compose.tar.gz
+          --s3-location bucket=wau-production-build-s3,bundleType=tgz,key=$BUILD_S3_APP_PATH/docker-compose.tar.gz
 
       - name: Slack hook
         uses: 8398a7/action-slack@v3.8.0
         with:
           status: ${{ job.status }}
-          author_name: Build WhatAilsYou Pharmacy App - DEV
+          author_name: Build WhatAilsYou Pharmacy App - PRDO
           fields: repo,commit,message,author
           mention: here,U040ZD7MEEM
           if_mention: failure,cancelled
