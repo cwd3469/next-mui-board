@@ -39,9 +39,6 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
   /**useMutateDispensingExpenses 조제 완료  useMutation*/
   const { mutate: mutationPrepared } = useMutation(apiPrepared);
 
-  /**useMutateDispensingExpenses 조제 완료  useMutation*/
-  const { mutate: mutationQuickPayment } = useMutation(apiQuickPayment);
-
   /**useMutateDispensingExpenses 조제비 수정  기능*/
   const onClickDispensingExpenses = useCallback(() => {
     if (medicineCost) {
@@ -136,52 +133,9 @@ const useMutateDispensingExpenses = (props: UseDispensingExpensesType) => {
     toast,
   ]);
 
-  /**useMutateDispensingExpenses 퀵 배송비 결제 기능*/
-  const onClickQuickPayment = useCallback(() => {
-    const dto = {
-      medicineOrderUlid: medicineOrderUlid,
-    };
-    mutationQuickPayment(dto, {
-      onSuccess: (res) => {
-        const code = res.data.code;
-        if (code !== '0000') {
-          toast?.on(msg.errMsg(code), 'info');
-        } else {
-          // console.log(res);
-          if (res.data.data.result) {
-            if (quickPayment && quickPayment.onSuccess) {
-              quickPayment.onSuccess();
-            }
-          } else {
-            if (quickPayment && quickPayment.onError) {
-              quickPayment.onError();
-            }
-          }
-          queryClient.invalidateQueries(PROCEED_LIST(router.query));
-          return;
-        }
-      },
-      onError: (errMsg) => {
-        toast?.on(
-          `조제 완료가 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
-          'error',
-        );
-      },
-    });
-  }, [
-    medicineOrderUlid,
-    msg,
-    mutationQuickPayment,
-    queryClient,
-    quickPayment,
-    router.query,
-    toast,
-  ]);
-
   return {
     onClickDispensingExpenses,
     onClickPreparationComplete,
-    onClickQuickPayment,
   };
 };
 
