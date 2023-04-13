@@ -14,13 +14,12 @@ import { transDeliveryMethod, transMedicineStatus } from '@utils/transtext';
 import WDayTimeTypography from '@components/common/typography/WDayTimeTypography';
 import { ReceiveData } from '@components/preparation/request/modules/RequestTable';
 import DispensingExpensesModal from '@components/preparation/modals/DispensingExpensesModal';
-import DispensingModal from '@components/preparation/modals/DispensingModal';
 import usePrescriptionPreview from '@hooks/utils/fileUpload/usePrescriptionPreview';
 import { apiProceedPrescription } from '@hooks/apis/preparation/proceed';
 import PrescriptionPreviewView from '@components/preparation/modals/PrescriptionPreviewView';
 import useMutateDispensingExpenses from '@hooks/apis/preparation/proceed/hooks/useMutateDispensingExpenses';
 import { useDebounceFn } from 'ahooks';
-import DeliveryRequestModal from '@components/preparation/modals/DeliveryRequestModal';
+import PreparationCompletedModal from '@components/preparation/modals/PreparationCompletedModal';
 
 export interface PrescriptionId {
   prescriptionUlid: string;
@@ -30,14 +29,17 @@ export interface PatientInfo {
   patientName: string;
   requestDate: string;
 }
+export interface StateChangeType {
+  medicineOrderUlid: string;
+  open: boolean;
+}
 
 const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
   const { data } = props;
+  const [stateCompleted, setStateCompleted] = useState<StateChangeType>();
   const [receiveData, setReceiveData] = useState<ReceiveData>();
-  const [deliveryOpen, setDeliveryOpen] = useState<boolean>(false);
   const [requesterOpen, setRequesterOpen] = useState<boolean>(false);
   const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
-  const [completedOpen, setCompletedOpen] = useState<boolean>(false);
   const [dispensingExpensesOpen, setDispensingExpensesOpen] =
     useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<string>('');
@@ -83,44 +85,6 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
     },
     [],
   );
-  /**ProceedTable 조제 완료  */
-  const coastCompletedOnOff = useCallback(
-    (medicineOrderUlid: string, open: boolean) => {
-      setUserUlid({ prescriptionUlid: '', medicineOrderUlid });
-      setCompletedOpen(open);
-    },
-    [],
-  );
-  /**ProceedTable 조제 완료  */
-  const deliveryModalOnOff = useCallback(
-    (medicineOrderUlid: string, open: boolean) => {
-      setUserUlid({ prescriptionUlid: '', medicineOrderUlid });
-      setDeliveryOpen(open);
-    },
-    [],
-  );
-
-  /**ProceedTable 조제 완료 api 통신 */
-  const { onClickPreparationComplete } = useMutateDispensingExpenses({
-    medicineOrderUlid: userUlid.medicineOrderUlid,
-    completeCoast: {
-      onSuccess(ulid, deliveryMethod) {
-        if (ulid && deliveryMethod) {
-          if (deliveryMethod == 'QUICK') {
-            coastCompletedOnOff(ulid, true);
-          } else if (deliveryMethod === 'PARCEL') {
-            deliveryModalOnOff(ulid, true);
-          } else {
-            return;
-          }
-        }
-      },
-    },
-  });
-  /**ProceedTable 조제 완료 api 통신 useDebounceFn*/
-  const onClickCompleteDebounce = useDebounceFn(onClickPreparationComplete, {
-    wait: 300,
-  });
 
   const columns: GridColDef[] = [
     {
@@ -249,11 +213,14 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       headerName: '조제 완료',
       width: 125,
       renderCell: (prams) => {
-        const { medicineOrderUlid, medicineStatus, deliveryMethod } = prams.row;
+        const { medicineOrderUlid, medicineStatus } = prams.row;
         return (
           <GridButton
             onClick={() =>
-              onClickCompleteDebounce.run(medicineOrderUlid, deliveryMethod)
+              setStateCompleted({
+                medicineOrderUlid: medicineOrderUlid,
+                open: true,
+              })
             }
             startIcon={<CheckIconGray />}
             disabled={medicineStatus === 'OUTSTANDING' ? true : false}
@@ -292,6 +259,15 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
       ) : (
         ''
       )}
+      <PreparationCompletedModal
+        open={stateCompleted ? stateCompleted.open : false}
+        medicineOrderUlid={
+          stateCompleted ? stateCompleted.medicineOrderUlid : undefined
+        }
+        handleClose={() => setStateCompleted(undefined)}
+      />
+
+      {/* 처방전 보기 */}
       <PrescriptionPreviewView
         open={prescriptionOpen}
         fileArr={fileArr}
@@ -306,18 +282,6 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
         medicineCost={medicineCost}
         open={dispensingExpensesOpen}
         handleClose={() => coastModifiOnOff('', 0, false)}
-      />
-      {/* 조제 완료 */}
-      <DispensingModal
-        id={userUlid.medicineOrderUlid}
-        open={completedOpen}
-        handleClose={() => coastCompletedOnOff('', false)}
-      />
-      <DeliveryRequestModal
-        mode={'PARCEL'}
-        id={userUlid.medicineOrderUlid}
-        open={deliveryOpen}
-        handleClose={() => deliveryModalOnOff('', false)}
       />
     </>
   );
