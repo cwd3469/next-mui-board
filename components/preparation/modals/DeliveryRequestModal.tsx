@@ -5,6 +5,7 @@ import processStatus from 'public/assets/icon/processStatus.svg';
 import Image from 'next/image';
 import useMutateDeliveryRequest from '@hooks/apis/preparation/history/hooks/useMutateDeliveryRequest';
 import { useCallback } from 'react';
+import { useDebounceFn } from 'ahooks';
 
 export type DeliveryState = 'QUICK' | 'PARCEL' | string;
 interface DeliveryRequestModalType extends ModalType {
@@ -14,10 +15,13 @@ interface DeliveryRequestModalType extends ModalType {
 
 const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
   const { open, handleClose, id, mode } = props;
-  const { onClicksameDayRequest } = useMutateDeliveryRequest({ id ,dayRequest:{
-    onError:handleClose,
-    onSuccess:handleClose,
-  }});
+  const { onClicksameDayRequest } = useMutateDeliveryRequest({
+    id,
+    dayRequest: {
+      onError: handleClose,
+      onSuccess: handleClose,
+    },
+  });
   const info = useCallback(() => {
     switch (mode) {
       case 'QUICK':
@@ -37,6 +41,10 @@ const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
         };
     }
   }, [mode])();
+
+  const handleEventRequest = useDebounceFn(onClicksameDayRequest, {
+    wait: 300,
+  });
   return (
     <WConfirm
       activeOn
@@ -46,7 +54,7 @@ const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
       titleSx={{ padding: '50px 0 28px' }}
       btnTitle={info.btnTitle}
       handleClose={handleClose}
-      handleEvent={onClicksameDayRequest}
+      handleEvent={handleEventRequest.run}
     >
       <Stack gap="16px" padding="0px 0 37px" width="420px">
         <Image src={processStatus} alt="상태" />

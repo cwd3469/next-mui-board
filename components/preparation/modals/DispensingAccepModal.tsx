@@ -11,6 +11,7 @@ import usePrescriptionPreview, {
   OneImagePreviewComponent,
 } from '@hooks/utils/fileUpload/usePrescriptionPreview';
 import { Box, Stack } from '@mui/material';
+import { useDebounceFn } from 'ahooks';
 import { useCallback, useEffect, useState } from 'react';
 
 interface Paymentsinfo {
@@ -135,14 +136,19 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
     }
   }, [acceptInvigorator, refusalInvigorator, tab]);
 
+  const handleEventAccept = useDebounceFn(onClickDispensingAccept, {
+    wait: 300,
+  });
+  const handleEventRefuse = useDebounceFn(onClickDispensingAccept, {
+    wait: 300,
+  });
+
   /**DispensingAccepModal render */
   return (
     <WConfirm
       open={open}
       handleClose={onClickReset}
-      handleEvent={
-        tab ? onClickDispensingAccept : onClickMutateDispensingRefuse
-      }
+      handleEvent={tab ? handleEventAccept.run : handleEventRefuse.run}
       title="조제 수락 / 거절"
       maxWidth={tab ? 'xl' : 'sm'}
       titleSx={{ padding: '50px 0px 16px' }}
