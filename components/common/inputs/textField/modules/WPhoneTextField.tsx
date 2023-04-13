@@ -11,13 +11,9 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const txt = e.target.value;
       if (valid.regExpPhoneNumber.test(txt)) {
-        if (txt.length < 14) {
-          props.setState(
-            txt.replace(/[^0-9]/g, '').replace(valid.regExpPhone, `$1-$2-$3`),
-            props.keyId,
-          );
-          const number = txt.replace('-', '').replace('-', '');
-          if (number.length < 8) {
+        if (txt.length < 12) {
+          props.setState(txt, props.keyId);
+          if (txt.length < 8) {
             props.setErr(
               {
                 msg: '조건에 맞는 전화번호를 입력해 주세요.',
@@ -45,7 +41,7 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
         );
       }
     },
-    [props, valid.regExpPhone, valid.regExpPhoneNumber],
+    [props, valid.regExpPhoneNumber],
   );
 
   return (
