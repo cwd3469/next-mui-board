@@ -33,7 +33,11 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
       if (txt.length <= 10) {
         if (valid.regExFaxNumber.test(txt)) {
           setState(txt, keyId);
-          passMsg();
+          if (txt.length === 10) {
+            passMsg();
+          } else {
+            errMsg();
+          }
         } else {
           errMsg();
           return;
