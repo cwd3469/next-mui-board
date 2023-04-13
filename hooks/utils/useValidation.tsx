@@ -46,7 +46,7 @@ export class Validation {
     this.regExAuthNumder = /^[0-9-]{0,6}$/;
 
     // 일반 전화번호 유효성 정규식 입력
-    this.regExpPhoneNumber = /^[0-9-]{0,14}$/;
+    this.regExpPhoneNumber = /^[0-9-]{0,15}$/;
 
     /** 일반 전화번호 정규식 */
     this.regExpPhone = /^(\d{2,3})(\d{3,4})(\d{4})$/;
@@ -94,7 +94,7 @@ export class Validation {
     this.regExNumberOnly = /^[0-9-]{0,15}$/;
 
     /**팩스 유효성 정규식 */
-    this.regExFaxNumber = /^[0-9]{0,10}$/;
+    this.regExFaxNumber = /^[0-9]{0,11}$/;
 
     /**생년월일 포멧 확인 */
     this.regExpBirthDate =
