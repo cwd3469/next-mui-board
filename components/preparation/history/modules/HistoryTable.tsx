@@ -36,7 +36,7 @@ type DeliveryPayment = {
 const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
   const { data } = props;
   /**HistoryTable 상태 */
-  const [deliveryPayment, setDeliveryPayment] = useState<DeliveryPayment>();
+
   const [requesterOpen, setRequesterOpen] = useState<boolean>(false);
   const [deliveryOpen, setDeliveryOpen] = useState<boolean>(false);
   const [prescriptionOpen, setPrescriptionOpen] = useState<boolean>(false);
@@ -79,16 +79,10 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
 
   /**HistoryTable 배송 요청 기능 추가*/
   const deliveryIdOnOff = useCallback(
-    (
-      id: string,
-      open: boolean,
-      mode: DeliveryState,
-      paymentState?: DeliveryPayment,
-    ) => {
+    (id: string, open: boolean, mode: DeliveryState) => {
       setDeliveryId(id);
       setDeliveryOpen(open);
       setDeliveryMode(mode);
-      setDeliveryPayment(paymentState);
     },
     [],
   );
@@ -142,17 +136,12 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 상태',
       width: 130,
       renderCell: (prams) => {
-        const { deliveryStatus, medicineStatus, deliveryPayment } = prams.row;
+        const { deliveryStatus, medicineStatus } = prams.row;
         return (
           <>
             {medicineStatus !== 'REFUSE' ? (
               <div style={{ textAlign: 'center' }}>
                 <p>{transDeliveryStatus(deliveryStatus)}</p>
-                {deliveryPayment.paymentStatus === '' ? (
-                  <p>{`(배송비 미결제)`}</p>
-                ) : (
-                  ''
-                )}
               </div>
             ) : (
               '-'
@@ -184,13 +173,13 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       ...baseOption,
       field: 'hospitalNameKo',
       headerName: '진료 병원 명',
-      width: 125,
+      width: 122,
     },
     {
       ...baseOption,
       field: 'doctorNameKo',
       headerName: '진료 병원 의사 명',
-      width: 100,
+      width: 103,
     },
     {
       ...baseOption,
@@ -242,33 +231,15 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 요청',
       width: 120,
       renderCell: (prams) => {
-        const {
-          deliveryStatus,
-          medicineOrderUlid,
-          deliveryMethod,
-          medicineStatus,
-          deliveryPayment,
-        } = prams.row;
+        const { deliveryStatus, medicineOrderUlid, deliveryMethod } = prams.row;
         // console.log(medicineStatus);
         return (
           <GridButton
             onClick={() =>
-              deliveryIdOnOff(
-                medicineOrderUlid,
-                true,
-                deliveryMethod,
-                deliveryPayment,
-              )
+              deliveryIdOnOff(medicineOrderUlid, true, deliveryMethod)
             }
             startIcon={<TruckIcon />}
-            disabled={
-              deliveryStatus === 'IN_PREPARE' ||
-              deliveryStatus === 'OUTSTANDING'
-                ? medicineStatus === 'REFUSE'
-                  ? true
-                  : false
-                : true
-            }
+            disabled={deliveryStatus === 'IN_PREPARE' ? false : true}
           >
             배송 요청
           </GridButton>
@@ -308,34 +279,13 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
         reset={reset}
         patientInfo={patientInfo}
       />
-      {deliveryPayment ? (
-        deliveryMode === 'QUICK' ? (
-          deliveryPayment.paymentStatus === 'SUCCESS' ? (
-            <DeliveryRequestModal
-              mode={'QUICK'}
-              id={deliveryId}
-              open={deliveryOpen}
-              handleClose={() => deliveryIdOnOff('', false, '', undefined)}
-            />
-          ) : (
-            <DispensingModal
-              mode="history"
-              id={deliveryId}
-              open={deliveryOpen}
-              handleClose={() => deliveryIdOnOff('', false, '', undefined)}
-            />
-          )
-        ) : (
-          <DeliveryRequestModal
-            mode={'PARCEL'}
-            id={deliveryId}
-            open={deliveryOpen}
-            handleClose={() => deliveryIdOnOff('', false, '', undefined)}
-          />
-        )
-      ) : (
-        ''
-      )}
+      {/* 배송 요청 */}
+      <DispensingModal
+        mode={deliveryMode}
+        id={deliveryId}
+        open={deliveryOpen}
+        handleClose={() => deliveryIdOnOff('', false, '')}
+      />
     </>
   );
 };

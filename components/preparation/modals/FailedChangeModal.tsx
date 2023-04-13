@@ -9,7 +9,7 @@ const FailedChangeModal = (props: ModalType) => {
     <WAlert
       open={open}
       handleClose={handleClose}
-      title="조제 완료 상태 변경 실태"
+      title="조제 완료 상태 변경 실패"
       maxWidth="sm"
       btnTitle="닫기"
       titleSx={{ padding: '50px 0px 60px' }}
