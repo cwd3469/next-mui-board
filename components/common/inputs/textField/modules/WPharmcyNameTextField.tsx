@@ -32,7 +32,11 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
       if (value.length <= 15) {
         if (valid.regPharmacyName.test(value)) {
           setState(value, keyId);
-          passMsg();
+          if (value.length > 3 && value.length <= 15) {
+            passMsg();
+          } else {
+            errMsg();
+          }
         } else {
           errMsg();
         }
