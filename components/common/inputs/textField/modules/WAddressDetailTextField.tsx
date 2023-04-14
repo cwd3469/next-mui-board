@@ -48,7 +48,6 @@ const WAddressDetailTextField = (props: WTextFieldModulesType) => {
       error={err}
       disabled={disabled}
       placeholder="약국상세 주소를 입력 해주세요."
-      helper={'최대 15자리까지 입력 가능합니다.'}
       onKeyDown={props.onKeyDown}
     />
   );

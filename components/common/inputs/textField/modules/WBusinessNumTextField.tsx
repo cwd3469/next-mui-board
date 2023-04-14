@@ -2,24 +2,17 @@ import React, { useCallback } from 'react';
 import useValidation from '@hooks/utils/useValidation';
 import { WTextFieldModulesType } from '../type';
 import WTextField from '../index';
+import { commaRemove, mobileFormatOff } from '@utils/formatNumber';
 
 const WBusinessNumTextField = (props: WTextFieldModulesType) => {
   const { state, setState, keyId, err, setErr, disabled } = props;
   const stateTxt = state as string;
   const valid = useValidation();
 
-  const onFocusInInfo = useCallback(() => {
-    const errMsg = {
-      msg: '',
-      boo: false,
-    };
-    setErr(errMsg, keyId);
-  }, [keyId, setErr]);
-
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '사업자 등록번호를 다시 확인해 주세요.',
+        msg: '10자리 사업자 등록 번호를 입력해 주세요.',
         boo: true,
       },
       keyId,
@@ -38,19 +31,21 @@ const WBusinessNumTextField = (props: WTextFieldModulesType) => {
   const onChangeInfo = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const txt = e.target.value;
-      if (txt.length <= 20) {
-        if (txt.length !== 0 && !valid.regExNumberOnly.test(txt)) {
-          errMsg();
+      if (txt.length <= 12) {
+        if (valid.regBusinessNumber.test(txt)) {
+          const hyphen = txt
+            .replace(/[^0-9]/g, '')
+            .replace(valid.regExpBusinessNum, `$1-$2-$3`);
+          const unHyphen = mobileFormatOff(txt);
+          setState(hyphen, keyId);
+          if (unHyphen.length === 10) {
+            passMsg();
+          } else {
+            errMsg();
+          }
           return;
-        }
-        if (txt.length <= 12) {
-          setState(
-            txt
-              .replace(/[^0-9]/g, '')
-              .replace(valid.regExpBusinessNum, `$1-$2-$3`),
-            keyId,
-          );
-          passMsg();
+        } else {
+          errMsg();
         }
       }
     },
@@ -59,7 +54,7 @@ const WBusinessNumTextField = (props: WTextFieldModulesType) => {
       keyId,
       passMsg,
       setState,
-      valid.regExNumberOnly,
+      valid.regBusinessNumber,
       valid.regExpBusinessNum,
     ],
   );
@@ -68,8 +63,6 @@ const WBusinessNumTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      focusInEvent={onFocusInInfo}
-      helper={'숫자만 입력이 가능합니다.'}
       placeholder={'사업자 등록번호를 입력해 주세요.'}
       disabled={disabled}
       error={err}
