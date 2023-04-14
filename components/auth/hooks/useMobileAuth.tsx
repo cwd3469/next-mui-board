@@ -59,7 +59,6 @@ export default function useMobileAuth() {
             const unHyphen = mobileFormatOff(txt);
             setMobile(hyphen);
             if (unHyphen.length == 11) {
-              console.log(unHyphen);
               passMsg();
             } else {
               errMsg();
