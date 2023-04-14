@@ -102,6 +102,10 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
               } else {
                 setCookie('accessToken', info.accessToken);
                 setCookie('refreshToken', info.refreshToken);
+                const userinfo: UserInfoInterface = jwtDecode(
+                  info.accessToken as string,
+                );
+                setInUserInfo(userinfo);
               }
             }
           })
@@ -115,7 +119,7 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
           });
       }
     }
-  }, [msg, signOut, toast]);
+  }, [msg, setInUserInfo, signOut, toast]);
 
   useEffect(() => {
     if (router.pathname !== '/signin') {
@@ -135,7 +139,8 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
         }
       }
     }
-  }, [router.pathname, signinPageRoute, toast]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value = {
     userInfo,

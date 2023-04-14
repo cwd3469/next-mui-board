@@ -19,6 +19,7 @@ export interface UserInfoInterface {
   service: string;
   sub: string;
   ulid: string;
+  hasExpiredTime:boolean
 }
 
 export interface AuthMobileViewType {
