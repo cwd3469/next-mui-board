@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect } from 'react';
 import { useToastContext } from '@hooks/utils/useToastContext';
 import useValidation from '@hooks/utils/useValidation';
 import { ErrorType } from '@components/common/inputs/type';
+import { mobileFormat, mobileFormatOff } from '@utils/formatNumber';
 
 export default function useMobileAuth() {
   const toast = useToastContext();
@@ -38,11 +39,37 @@ export default function useMobileAuth() {
   /**휴대폰번호 입력 액션*/
   const onChangeMobile = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      validation.mobileCheck({
-        txt: e.target.value,
-        pass: setMobile,
-        error: setMobileError,
-      });
+      const passMsg = () => setMobileError({ msg: '', boo: false });
+      const errMsg = () =>
+        setMobileError({
+          msg: '조건에 맞는 휴대폰 번호를 입력해 주세요.',
+          boo: true,
+        });
+      const txt = e.target.value;
+      if (txt.length <= 13) {
+        if (txt.length > 3 && txt.substring(0, 3) !== '010') {
+          setMobileError({
+            msg: '앞에 3자리는 010이 들어가야합니다.',
+            boo: true,
+          });
+          return;
+        } else {
+          if (validation.regExpMobileNumber.test(txt)) {
+            const hyphen = mobileFormat(txt);
+            const unHyphen = mobileFormatOff(txt);
+            setMobile(hyphen);
+            if (unHyphen.length == 11) {
+              console.log(unHyphen);
+              passMsg();
+            } else {
+              errMsg();
+            }
+            return;
+          } else {
+            errMsg();
+          }
+        }
+      }
     },
     [setMobile, validation],
   );
@@ -93,16 +120,18 @@ export default function useMobileAuth() {
   }, [reset]);
 
   /** 타이머 인증 번호 초기화 액션*/
-  const onTimerDisabled = () => {
+  const onTimerDisabled = useCallback(() => {
     setAuthDisabled(true);
     setAuthRequestDisabled(false);
+    setMobileError(errMsg);
+    setAuthError(errMsg);
     setAuth('');
-  };
+  }, [errMsg]);
   /** 타이머 인증 번호 유효시간 아웃 액션*/
   const onAuthTimeOut = useCallback(() => {
     toast?.on('인증번호 입력 유효 시간이 만료되었습니다', 'error');
     onTimerDisabled();
-  }, [toast]);
+  }, [onTimerDisabled, toast]);
 
   useEffect(() => {
     if (mobileValue.length < 12) {

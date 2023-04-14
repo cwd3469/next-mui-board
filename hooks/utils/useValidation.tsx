@@ -21,6 +21,7 @@ export class Validation {
   regExNumberOnly: RegExp;
   regExpNum: RegExp;
   regExpEmail: RegExp;
+  regExpMobileNumber: RegExp;
   regExpMobile: RegExp;
   regExpPhone: RegExp;
   regExpPhoneEight: RegExp;
@@ -49,6 +50,7 @@ export class Validation {
 
     // 일반 전화번호 유효성 정규식 입력
     this.regExpPhoneNumber = /^[0-9-]{0,15}$/;
+    this.regExpMobileNumber = /^[0-9-]{0,13}$/;
 
     /** 일반 전화번호 정규식 */
     this.regExpPhone = /^(\d{2,4})(\d{3,4})(\d{4})$/;
@@ -120,44 +122,24 @@ export class Validation {
     /**상세 주소 받기*/
     this.regAddressDetail = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,15}$/;
   }
-  /**모바일 번호 입력 형태 변경 및 체크 메소드*/
-  mobileCheck(param: ValidInterface): void {
+
+  authNumder(param: ValidInterface): void {
     const { txt, pass, error } = param;
-    if (txt.length < 14) {
-      if (txt.length > 3 && txt.substring(0, 3) !== '010') {
-        error({
-          msg: '앞에 3자리는 010이 들어가야합니다.',
-          boo: true,
-        });
-        return;
-      } else {
-        pass(
-          txt
-            .replace(this.regExpNum, '')
-            .replace(this.regExpMobile, `$1-$2-$3`),
-        );
+    if (this.regExAuthNumder.test(txt)) {
+      pass(txt);
+      if (txt.length === 6) {
         error({
           msg: '',
           boo: false,
         });
+      } else {
+        error({
+          msg: '조건에 맞는 휴대폰 번호를 입력해 주세요.',
+          boo: true,
+        });
       }
-    }
-  }
-
-  authNumder(param: ValidInterface): void {
-    const { txt, pass, error } = param;
-    if (txt.length !== 0 && !this.regExAuthNumder.test(txt)) {
-      error({
-        msg: '숫자만 입력 가능합니다.',
-        boo: true,
-      });
       return;
     }
-    pass(txt.replace(/[^0-9]/g, ''));
-    error({
-      msg: '',
-      boo: false,
-    });
   }
 }
 
