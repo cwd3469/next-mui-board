@@ -9,13 +9,46 @@ import {
   FlexStartR,
 } from '@styles/flexGrid';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SecurityDeleteCycleRodioGroup from './modules/SecurityDeleteCycleRodioGroup';
 import SecurityEffectiveTimeRodioGroup from './modules/SecurityEffectiveTimeRodioGroup';
+import {
+  useSecurityAuth,
+  useSecurityAuthUpdate,
+} from '@hooks/apis/auth/security/useSecurityAuth';
+import LoadingErrorFallback from '@components/common/api/LoadingErrorFallback';
+
+export interface SecurityDto {
+  accessTokenExpireTime: number;
+  privacyRetentionPeriod: number;
+}
 
 const SecurityPage = () => {
-  const [validTime, setValidTime] = useState<string>('disable');
-  const [validPeriod, setValidPeriod] = useState<string>('365');
+  const { data, isError, isLoading, isWarning } = useSecurityAuth();
+
+  return (
+    <LoadingErrorFallback
+      data={data}
+      isError={isError}
+      isLoading={isLoading}
+      isWarning={isWarning}
+      contexts={(info) => {
+        const data = info.data.data;
+        return <SecurityPageTemplate dto={data} />;
+      }}
+    ></LoadingErrorFallback>
+  );
+};
+
+const SecurityPageTemplate = (props: { dto: SecurityDto }) => {
+  const { dto } = props;
+  const [validTime, setValidTime] = useState<string>(
+    String(dto.accessTokenExpireTime),
+  );
+  const [validPeriod, setValidPeriod] = useState<string>(
+    String(dto.privacyRetentionPeriod),
+  );
+  const { securityUpdate } = useSecurityAuthUpdate();
 
   const onChengeTime = useCallback((value: string) => {
     setValidTime(value);
@@ -25,8 +58,19 @@ const SecurityPage = () => {
   }, []);
 
   const onClickFix = useCallback(() => {
-    // console.log('onClickFix');
-  }, []);
+    securityUpdate({
+      accessTokenExpireTime: Number(validTime),
+      privacyRetentionPeriod: Number(validPeriod),
+    });
+  }, [securityUpdate, validPeriod, validTime]);
+
+  const onDisabled =
+    JSON.stringify(dto) ===
+    JSON.stringify({
+      accessTokenExpireTime: Number(validTime),
+      privacyRetentionPeriod: Number(validPeriod),
+    });
+
   return (
     <FlexCenterC gap="26px">
       <WBoxLayout padding="38px" width="100%">
@@ -46,6 +90,7 @@ const SecurityPage = () => {
         </FlexStartR>
       </WBoxLayout>
       <WButton
+        disabled={onDisabled}
         onClick={onClickFix}
         variant="contained"
         sx={{
