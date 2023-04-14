@@ -79,7 +79,6 @@ const WPaymentsTextField = (props: WTextFieldModulesType) => {
       error={err}
       disabled={disabled}
       placeholder="조제비를 입력해 주세요."
-      helper={'199만 원 미만까지만 입력 가능합니다.'}
       onKeyDown={props.onKeyDown}
       sx={{
         '& .MuiOutlinedInput-input': {
