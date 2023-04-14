@@ -52,7 +52,6 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
       error={err}
       disabled={disabled}
       placeholder="담당자 이름을 입력 해주세요."
-      helper={'한글만 2~5자 입력이 가능합니다.'}
       onKeyDown={props.onKeyDown}
     />
   );

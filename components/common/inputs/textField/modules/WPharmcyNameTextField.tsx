@@ -32,7 +32,11 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
       if (value.length <= 15) {
         if (valid.regPharmacyName.test(value)) {
           setState(value, keyId);
-          passMsg();
+          if (value.length > 3 && value.length <= 15) {
+            passMsg();
+          } else {
+            errMsg();
+          }
         } else {
           errMsg();
         }
@@ -49,7 +53,6 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
       error={err}
       disabled={disabled}
       placeholder="약국명를 입력해 주세요."
-      helper={'최대 15자리까지 입력 가능합니다.'}
       onKeyDown={props.onKeyDown}
     />
   );

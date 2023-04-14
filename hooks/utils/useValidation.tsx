@@ -17,11 +17,13 @@ export interface ValidInterface extends ValidOnlyErr {
 export class Validation {
   regExAuthNumder: RegExp;
   regExpPhoneNumber: RegExp;
+  regBusinessNumber: RegExp;
   regExNumberOnly: RegExp;
   regExpNum: RegExp;
   regExpEmail: RegExp;
   regExpMobile: RegExp;
   regExpPhone: RegExp;
+  regExpPhoneEight: RegExp;
   regExpBusinessNum: RegExp;
   regExpId: RegExp;
   regExpIdEnglishOnly: RegExp;
@@ -49,7 +51,8 @@ export class Validation {
     this.regExpPhoneNumber = /^[0-9-]{0,15}$/;
 
     /** 일반 전화번호 정규식 */
-    this.regExpPhone = /^(\d{2,3})(\d{3,4})(\d{4})$/;
+    this.regExpPhone = /^(\d{2,4})(\d{3,4})(\d{4})$/;
+    this.regExpPhoneEight = /^(\d{4})(\d{4})$/;
 
     /**한글만 입력 받기 */
     this.regNameKo = /^[ㄱ-ㅎ|가-힣]{0,5}$/;
@@ -92,6 +95,9 @@ export class Validation {
 
     /** 슷자만 확인 */
     this.regExNumberOnly = /^[0-9-]{0,15}$/;
+
+    /** 슷자만 확인 */
+    this.regBusinessNumber = /^[0-9-]{0,12}$/;
 
     /**팩스 유효성 정규식 */
     this.regExFaxNumber = /^[0-9]{0,11}$/;
