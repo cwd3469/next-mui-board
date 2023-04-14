@@ -1,5 +1,6 @@
 import { getCookie } from 'cookies-next';
 import instance from '../../instance';
+import { SecurityDto } from '@components/setting/security/SecurityPage';
 
 /**보안 설정 조회 api */
 export const securityGet = () => {
@@ -14,7 +15,7 @@ export const securityGet = () => {
   });
 };
 /**보안 설정 조회 api */
-export const securityPut = () => {
+export const securityPut = (dto: SecurityDto) => {
   const token = getCookie('accessToken');
   const accessToken = typeof token === 'string' ? token : '';
   return instance({
@@ -23,5 +24,6 @@ export const securityPut = () => {
     headers: {
       Authorization: accessToken,
     },
+    data:dto
   });
 };
