@@ -139,8 +139,7 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router.pathname, signinPageRoute, toast]);
 
   const value = {
     userInfo,
