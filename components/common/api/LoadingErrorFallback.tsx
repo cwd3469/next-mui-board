@@ -32,7 +32,7 @@ const LoadingErrorFallback = (props: LoadingErrorFallbackProps) => {
     if (data.data.code === '0000') {
       return <>{contexts(data)}</>;
     }
-    return <>{skeleton ? skeleton : <></>}</>;
+    return <>{skeleton ? skeleton : <>isWarning...</>}</>;
   }
   return <>{skeleton ? skeleton : <></>}</>;
 };
