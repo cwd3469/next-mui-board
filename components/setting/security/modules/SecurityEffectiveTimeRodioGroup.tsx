@@ -26,7 +26,7 @@ const SecurityEffectiveTimeRodioGroup = (props: SecurityRodioGroupType) => {
       name: '60분',
     },
     {
-      data: 'disable',
+      data: '0',
       name: '사용하지 않음',
       notRecommended: true,
     },
