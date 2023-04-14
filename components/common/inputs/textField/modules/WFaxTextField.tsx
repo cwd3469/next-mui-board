@@ -51,7 +51,6 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      helper={'팩스번호 8~11자리를 입력해 주세요.'}
       placeholder={'약국 팩스번호를 입력해 주세요.'}
       disabled={disabled}
       error={err}

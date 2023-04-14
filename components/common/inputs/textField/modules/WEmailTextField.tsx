@@ -44,7 +44,6 @@ const WEmailTextField = (props: WTextFieldModulesType) => {
     <WTextField
       name="email"
       placeholder="정산 내역을 전달받을 이메일을 입력해 주세요."
-      helper="정산 내역을 전달받을 이메일을 입력해 주세요."
       onChange={onChangeInfo}
       value={props.state}
       error={props.err}
