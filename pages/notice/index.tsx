@@ -13,10 +13,10 @@ const Notice = () => {
   return (
     <NoticeFilterProvider>
       <div>
-        <Gnb />
+        {/* <Gnb />
         <WLayout>
           <NoticePage />
-        </WLayout>
+        </WLayout> */}
       </div>
     </NoticeFilterProvider>
   );
