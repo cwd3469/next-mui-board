@@ -134,7 +134,7 @@ export class Validation {
         });
       } else {
         error({
-          msg: '조건에 맞는 휴대폰 번호를 입력해 주세요.',
+          msg: '6자리의 인증 번호를 입력해 주세요.',
           boo: true,
         });
       }
