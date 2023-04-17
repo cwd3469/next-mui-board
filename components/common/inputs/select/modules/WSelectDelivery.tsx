@@ -8,7 +8,7 @@ const WSelectDelivery = (props: {
 }) => {
   const option: OptionType[] = [
     { id: 'DEFULT', name: '배송 상태 전체' },
-    { id: 'IN_PREPARE', name: '조제약 준비중' },
+    { id: 'IN_PREPARE', name: '배송 준비중' },
     { id: 'WAITING', name: '배송 대기' },
     { id: 'IN_DELIVERY', name: '배송 중' },
     { id: 'COMPLETED', name: '배송 완료' },
