@@ -7,7 +7,7 @@ const WSelectPreparation = (props: {
   callBack: (id: string, keyId: string) => void;
 }) => {
   const option: OptionType[] = [
-    { id: 'COMPLETED', name: '상태 완료' },
+    { id: 'COMPLETED', name: '조제 완료' },
     { id: 'REFUSE', name: '취소' },
   ];
   const [state, setState] = useState<string>(option[0].id);

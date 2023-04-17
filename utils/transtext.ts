@@ -23,7 +23,7 @@ export const transMedicineStatus = (state: string) => {
     case 'OUTSTANDING':
       return '결제 대기';
     case 'COMPLETED':
-      return '완료';
+      return '조제 완료';
     case 'REFUSE':
       return '취소';
     default:
