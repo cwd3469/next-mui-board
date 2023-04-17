@@ -45,13 +45,13 @@ export const Gnb = (props: { disabled?: boolean }) => {
         >
           보안 설정
         </GnbLink>
-        <GnbLink
+        {/* <GnbLink
           href="/notice"
           style={itmeMenuActive('notice')}
           disabled={disabled}
         >
           공지사항
-        </GnbLink>
+        </GnbLink> */}
       </>
     </GnbBody>
   );

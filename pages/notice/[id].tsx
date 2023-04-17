@@ -10,8 +10,8 @@ const NoticeDetail = () => {
   return (
     <NoticeFilterProvider>
       <div>
-        <Gnb />
-        <WLayout>{id ? <NoticeDetailPage id={id as string} /> : ''}</WLayout>
+        {/* <Gnb />
+        <WLayout>{id ? <NoticeDetailPage id={id as string} /> : ''}</WLayout> */}
       </div>
     </NoticeFilterProvider>
   );
