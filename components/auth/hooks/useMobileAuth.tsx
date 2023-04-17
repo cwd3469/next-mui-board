@@ -42,16 +42,14 @@ export default function useMobileAuth() {
       const passMsg = () => setMobileError({ msg: '', boo: false });
       const errMsg = () =>
         setMobileError({
-          msg: '조건에 맞는 휴대폰 번호를 입력해 주세요.',
+          msg: ' 11자리의 휴대폰 번호를 입력해 주세요',
           boo: true,
         });
+
       const txt = e.target.value;
       if (txt.length <= 13) {
         if (txt.length > 3 && txt.substring(0, 3) !== '010') {
-          setMobileError({
-            msg: '앞에 3자리는 010이 들어가야합니다.',
-            boo: true,
-          });
+          errMsg();
           return;
         } else {
           if (validation.regExpMobileNumber.test(txt)) {
