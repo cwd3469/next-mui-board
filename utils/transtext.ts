@@ -34,14 +34,14 @@ export const transDeliveryStatus = (state: string) => {
   switch (state) {
     case 'WAITING':
       return '배송 대기';
+    case 'OUTSTANDING':
+      return '배송 대기';
     case 'IN_PREPARE':
       return '배송 준비 중';
     case 'IN_DELIVERY':
       return '배송 중';
     case 'COMPLETED':
       return '배송 완료';
-    case 'OUTSTANDING':
-      return '배송 준비 중';
     default:
       return '-';
   }
