@@ -136,12 +136,20 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 상태',
       width: 130,
       renderCell: (prams) => {
-        const { deliveryStatus, medicineStatus } = prams.row;
+        const { deliveryStatus, medicineStatus, deliveryPayment } = prams.row;
         return (
           <>
             {medicineStatus !== 'REFUSE' ? (
               <div style={{ textAlign: 'center' }}>
                 <p>{transDeliveryStatus(deliveryStatus)}</p>
+                <span style={{ color: '#000' }}>
+                  {deliveryStatus === 'WAITING' ||
+                  deliveryStatus === 'OUTSTANDING'
+                    ? deliveryPayment.paymentStatus === 'FAIL'
+                      ? '(결제 실패)'
+                      : '(결제 성공)'
+                    : ''}
+                </span>
               </div>
             ) : (
               '-'
@@ -215,7 +223,8 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
             disabled={
               medicineStatus === 'REFUSE'
                 ? true
-                : deliveryStatus === 'IN_DELIVERY'
+                : deliveryStatus === 'IN_DELIVERY' ||
+                  deliveryStatus === 'COMPLETED'
                 ? true
                 : false
             }
@@ -231,15 +240,25 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '배송 요청',
       width: 120,
       renderCell: (prams) => {
-        const { deliveryStatus, medicineOrderUlid, deliveryMethod } = prams.row;
-        // console.log(medicineStatus);
+        const {
+          deliveryStatus,
+          medicineStatus,
+          medicineOrderUlid,
+          deliveryMethod,
+        } = prams.row;
         return (
           <GridButton
             onClick={() =>
               deliveryIdOnOff(medicineOrderUlid, true, deliveryMethod)
             }
             startIcon={<TruckIcon />}
-            disabled={deliveryStatus === 'IN_PREPARE' ? false : true}
+            disabled={
+              medicineStatus === 'REFUSE'
+                ? true
+                : deliveryStatus === 'IN_PREPARE'
+                ? false
+                : true
+            }
           >
             배송 요청
           </GridButton>

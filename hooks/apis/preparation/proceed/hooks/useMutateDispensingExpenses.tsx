@@ -2,7 +2,7 @@ import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
 import { useToastContext } from '@hooks/utils/useToastContext';
 import { useCallback } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { apiDispensingExpenses, apiPrepared, apiQuickPayment } from '..';
+import { apiDispensingExpenses, apiPrepared } from '..';
 import { commaRemove } from '@utils/formatNumber';
 import { useRouter } from 'next/router';
 import { PROCEED_LIST } from '../queryKey';
