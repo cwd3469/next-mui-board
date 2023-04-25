@@ -1,12 +1,19 @@
 import {
   FormControl,
-  makeStyles,
   MenuItem,
   Select,
   SelectChangeEvent,
   styled,
   SvgIcon,
+  SxProps,
+  Theme,
 } from '@mui/material';
+import { CSSProperties } from 'react';
+
+export interface OptionType {
+  id: string;
+  name: string;
+}
 
 const UnfoldMoreTwoToneIcon = () => (
   <SvgIcon>
@@ -35,42 +42,11 @@ const UnfoldMoreTwoToneIcon = () => (
   </SvgIcon>
 );
 
-const styles = () => ({
-  root: {
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#E0E1E2',
-    },
-  },
-  wselect: {
-    color: '#666',
-  },
-  wselectMenu: {
-    '& .MuiPaper-root': {
-      marginTop: '4px',
-      marginLeft: '20px',
-      minWidth: '138px !important',
-      borderRadius: '6px',
-      borderColor: '#E0E1E2',
-      boxShadow: '0px 2px 10px 0px #00000014',
-    },
-    '& .MuiList-root': {
-      padding: '8px',
-    },
-    '& .MuiButtonBase-root': {
-      padding: '8px',
-      borderRadius: '6px',
-      color: '#666',
-      '&.Mui-selected': {
-        backgroundColor: '#F5F5F5',
-      },
-    },
-  },
-});
-
 const SelectControl = styled(FormControl)(({ theme }) => ({
   backgroundColor: '#fff',
   maring: 0,
   borderRadius: '6px',
+
   '& .MuiInputBase-root': {
     borderRadius: '6px',
   },
@@ -85,7 +61,6 @@ const SelectControl = styled(FormControl)(({ theme }) => ({
     },
   },
 }));
-
 export interface OptionType {
   id: string;
   name: string;
@@ -104,10 +79,20 @@ interface WSelectType {
   width: string;
   onChange: (event: SelectChangeEvent) => void;
   options: OptionType[];
+  MenuProps?: SxProps<Theme>;
+  SelectDisplayProps?: CSSProperties;
 }
 
 const WSelect = (props: WSelectType) => {
-  const { name, value, onChange, options, width } = props;
+  const {
+    name,
+    value,
+    onChange,
+    options,
+    width,
+    MenuProps,
+    SelectDisplayProps,
+  } = props;
 
   return (
     <SelectControl size="small" sx={{ width: width }}>
@@ -116,10 +101,37 @@ const WSelect = (props: WSelectType) => {
         id={name}
         value={value}
         onChange={onChange}
-        SelectDisplayProps={{ style: styles().wselect }}
-        MenuProps={{ sx: styles().wselectMenu }}
+        SelectDisplayProps={{
+          style: { color: '#666', ...SelectDisplayProps },
+        }}
+        MenuProps={{
+          sx: {
+            '& .MuiPaper-root': {
+              borderRadius: '6px',
+              borderColor: '#E0E1E2',
+              boxShadow: '0px 2px 10px 0px #00000014',
+              marginLeft: '0px',
+              marginTop: '5px',
+              '& .MuiList-root': {
+                padding: '8px',
+                width: `${width}`,
+              },
+            },
+
+            '& .MuiButtonBase-root': {
+              padding: '8px',
+              borderRadius: '6px',
+              color: '#666',
+
+              '&.Mui-selected': {
+                backgroundColor: '#F5F5F5',
+              },
+            },
+            ...MenuProps,
+          },
+        }}
         IconComponent={UnfoldMoreTwoToneIcon}
-        // className={styles().root}
+        autoWidth
       >
         {options.map((option, index) => {
           return (
