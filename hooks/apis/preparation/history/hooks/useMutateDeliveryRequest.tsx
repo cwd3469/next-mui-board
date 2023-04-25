@@ -6,7 +6,6 @@ import { apiDeliveryRequest } from '..';
 import { HISTORY_LIST } from '../queryKey';
 import { useRouter } from 'next/router';
 import { OnEvent } from '../../proceed/hooks/useMutateDispensingExpenses';
-import { apiQuickPayment } from '../../proceed';
 
 interface UseDeliveryRequestType {
   id: string;
@@ -20,11 +19,12 @@ const useMutateDeliveryRequest = (props: UseDeliveryRequestType) => {
   const queryClient = useQueryClient();
   /**useMutateDispensingExpenses 배송 요청 useMutation*/
   const { mutate: mutateDeliveryRequest } = useMutation(apiDeliveryRequest);
-  /**useMutateDispensingExpenses 배송비 결제 요청  useMutation*/
-  const { mutate: mutationQuickPayment } = useMutation(apiQuickPayment);
 
   /**useMutateDeliveryRequest 택배 요청*/
   const onClickDeliveryRequest = useCallback(() => {
+    if (dayRequest && dayRequest.onSuccess) {
+      dayRequest.onSuccess();
+    }
     if (medicineOrderUlid) {
       mutateDeliveryRequest(medicineOrderUlid, {
         onSuccess: (res) => {
@@ -32,17 +32,24 @@ const useMutateDeliveryRequest = (props: UseDeliveryRequestType) => {
           if (code !== '0000') {
             toast?.on(msg.errMsg(code), 'info');
           } else {
-            if (dayRequest && dayRequest.onSuccess) {
-              dayRequest.onSuccess();
+            const result = res.data.data.result;
+            if (!result) {
+              toast?.on(
+                '해당 조제 건의 배송비 결제에 실패하였습니다..',
+                'error',
+              );
+            } else {
+              toast?.on(
+                '해당 조제 건의 배송비 결제에 성공하였습니다.',
+                'success',
+              );
             }
+
             queryClient.invalidateQueries(HISTORY_LIST(router.query));
             return;
           }
         },
         onError: (errMsg) => {
-          if (dayRequest && dayRequest.onError) {
-            dayRequest.onError();
-          }
           toast?.on(
             `기사 호출 요청에 실패하였습니다 잠시 후, 다시 시도해 주세요.`,
             'error',
@@ -60,42 +67,7 @@ const useMutateDeliveryRequest = (props: UseDeliveryRequestType) => {
     toast,
   ]);
 
-  /**useMutateDeliveryRequest 당일 배송 요청*/
-  const onClicksameDayRequest = useCallback(() => {
-    if (medicineOrderUlid) {
-      const dto = {
-        medicineOrderUlid: medicineOrderUlid,
-      };
-      //배송비 결제 요청
-      mutationQuickPayment(dto, {
-        onSuccess: (res) => {
-          const code = res.data.code;
-          if (code !== '0000') {
-            //배송비 결제 요청 실패
-            toast?.on(msg.errMsg(code), 'info');
-          } else {
-            onClickDeliveryRequest();
-            return;
-          }
-        },
-        onError: (errMsg) => {
-          //배송비 결제 요청 실패
-          toast?.on(
-            `조제비 결제 실패하였습니다 \n잠시 후, 다시 시도해 주세요`,
-            'error',
-          );
-        },
-      });
-    }
-  }, [
-    medicineOrderUlid,
-    msg,
-    mutationQuickPayment,
-    onClickDeliveryRequest,
-    toast,
-  ]);
-
-  return { onClicksameDayRequest, onClickDeliveryRequest };
+  return { onClickDeliveryRequest };
 };
 
 export default useMutateDeliveryRequest;

@@ -15,7 +15,7 @@ interface DeliveryRequestModalType extends ModalType {
 
 const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
   const { open, handleClose, id, mode } = props;
-  const { onClicksameDayRequest } = useMutateDeliveryRequest({
+  const { onClickDeliveryRequest } = useMutateDeliveryRequest({
     id,
     dayRequest: {
       onError: handleClose,
@@ -42,7 +42,7 @@ const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
     }
   }, [mode])();
 
-  const handleEventRequest = useDebounceFn(onClicksameDayRequest, {
+  const handleEventRequest = useDebounceFn(onClickDeliveryRequest, {
     wait: 300,
   });
   return (
