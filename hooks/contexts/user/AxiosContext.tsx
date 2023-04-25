@@ -79,14 +79,19 @@ export function AxiosProvider(props: { children: JSX.Element }) {
 
     const interceptor = instance.interceptors.response.use(
       (response) => {
-        setProgressBarOn(false);
-        setProgressBarDisabled(false);
+        setTimeout(() => {
+          setProgressBarOn(false);
+          setProgressBarDisabled(false);
+        }, 200);
+
         const res = response;
         return res;
       },
       async (error) => {
-        setProgressBarOn(false);
-        setProgressBarDisabled(false);
+        setTimeout(() => {
+          setProgressBarOn(false);
+          setProgressBarDisabled(false);
+        }, 200);
         const status = error.response.status;
         // if (status === 498) {
         //   router.replace('/signin');
