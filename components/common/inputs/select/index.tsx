@@ -91,6 +91,13 @@ export interface OptionType {
   name: string;
 }
 
+export type WSelectCustomizeType = {
+  value?: string;
+  callBack: (id: string) => void;
+  width?: string;
+  disabled?: boolean;
+};
+
 interface WSelectType {
   name: string;
   value: string;
