@@ -36,13 +36,15 @@ export const timeListFn = (param: {
   start: string;
   end: string;
   Interval: number;
+  startEndInterval?: number;
   viewFormat?: string;
   ListFormat?: string;
 }): WTimeListOption[] => {
-  const { start, end, Interval, viewFormat, ListFormat } = param;
+  const { start, end, Interval, viewFormat, ListFormat, startEndInterval } =
+    param;
   const startDate = dayjs(`2023-04-12T${start}:00:00`);
   const endDate = dayjs(`2023-04-12T${end}:00:00`);
-  const intervalMinutes = 10;
+  const intervalMinutes = Interval;
   const timeList: WTimeListOption[] = [];
   let index = 1;
   for (
@@ -50,14 +52,15 @@ export const timeListFn = (param: {
     currentTime.isBefore(endDate);
     currentTime = currentTime.add(intervalMinutes, 'minute')
   ) {
+    const endInterval = startEndInterval ? startEndInterval : 20;
     const startTime = currentTime.format(viewFormat ? viewFormat : 'HH:mm');
-    const endTime = currentTime.add(Interval, 'm').format('HH:mm');
+    const endTime = currentTime.add(endInterval, 'm').format('HH:mm');
     const itemName = `${startTime} ~ ${
       endTime === '00:00' ? '24:00' : endTime
     }`;
     const itemId = JSON.stringify({
       startTime: currentTime.format('HHmm'),
-      endTime: currentTime.add(Interval, 'm').format('HHmm'),
+      endTime: currentTime.add(endInterval, 'm').format('HHmm'),
     });
     const rangeItem: WTimeListOption = {
       index: index,

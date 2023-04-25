@@ -5,7 +5,12 @@ import useSelect from '@hooks/utils/useSelect';
 
 const WSelectLunchTimeList = (props: WSelectCustomizeType) => {
   const { value, callBack, disabled } = props;
-  const timeList = timeListFn({ start: '07', end: '24', Interval: 30 });
+  const timeList = timeListFn({
+    start: '07',
+    end: '24',
+    Interval: 30,
+    startEndInterval: 30,
+  });
 
   const options: OptionType[] = timeList.map((item) => {
     return { id: item.id, name: item.name };
