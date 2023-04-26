@@ -16,4 +16,7 @@ export interface WeekDataBundle {
 }
 export interface WeekDataBundlePharmacy extends WeekDataBundle {
   pharmacyUlid?: string;
+  pharmacistMobileNum1: string;
+  pharmacistMobileNum2: string;
+  pharmacistMobileNum3: string;
 }
