@@ -15,7 +15,7 @@ import Image from 'next/image';
 import banner from 'public/assets/images/banner.jpg';
 import WMobileTextField from '@components/common/inputs/textField/modules/WMobileTextField';
 import { ErrorType } from '@components/common/inputs/type';
-import { mobileFormat } from '@utils/formatNumber';
+import { mobileFormat, mobileFormatOff } from '@utils/formatNumber';
 
 const BusinessHourPageTitle = (props: { title: string; contents: string }) => {
   return (
@@ -64,11 +64,15 @@ const BusinessHourPage = () => {
     pharmacistMobileNum2: { msg: '', boo: false },
     pharmacistMobileNum3: { msg: '', boo: false },
   });
-
+  const dto = {
+    pharmacistMobileNum1: mobileFormatOff(mobiles.pharmacistMobileNum1),
+    pharmacistMobileNum2: mobileFormatOff(mobiles.pharmacistMobileNum2),
+    pharmacistMobileNum3: mobileFormatOff(mobiles.pharmacistMobileNum3),
+  };
   const { onClickPharmacyProflieModify } = useMutationPharmacyProflie({
     weekList,
     pharmacyUlid,
-    mobiles,
+    mobiles: dto,
   });
   const onClickPharmacyProflieModifynDebounce = useDebounceFn(
     onClickPharmacyProflieModify,
