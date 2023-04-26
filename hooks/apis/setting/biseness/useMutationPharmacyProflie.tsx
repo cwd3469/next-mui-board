@@ -34,16 +34,25 @@ const useMutationPharmacyProflie = (props: {
           const code = res.data.code;
           const data = res.data.data;
           if (code !== '0000') {
-            toast?.on(msg.errMsg(code), 'info');
+            toast?.on(
+              '영업시간 수정에 실패하였습니다. \n 잠시 후, 다시 시도해 주세요.',
+              'error',
+            );
           } else {
+            toast?.on('영업시간 수정이 완료되었습니다.', 'success');
             queryClient.invalidateQueries(BUSINESS());
           }
+        },
+        onError(error, variables, context) {
+          toast?.on(
+            '영업시간 수정에 실패하였습니다. \n 잠시 후, 다시 시도해 주세요.',
+            'error',
+          );
         },
       });
     }
   }, [
     mobiles,
-    msg,
     mutatePharmacyProflieModify,
     pharmacyUlid,
     queryClient,
