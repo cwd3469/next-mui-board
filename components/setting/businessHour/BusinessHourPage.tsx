@@ -228,7 +228,7 @@ const BusinessHourPage = () => {
     <FlexCenterC gap="26px">
       <Grid container justifyContent="space-between">
         {' '}
-        <WBoxLayout padding="40px" width="auto">
+        <WBoxLayout padding="40px" width="830px">
           {weekList ? (
             <>
               <BusinessHourPageTitle
@@ -281,7 +281,7 @@ const BusinessHourPage = () => {
           <Box height="40px" />
           <Image src={banner} alt="배너" width={750} height={235} />
         </WBoxLayout>
-        <WBoxLayout padding="38px" width="auto">
+        <WBoxLayout padding="38px" width="346px">
           <>
             <BusinessHourPageTitle
               title="알림 톡 발송 대상 휴대폰 번호"
