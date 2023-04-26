@@ -7,12 +7,14 @@ import { useToastContext } from '@hooks/utils/useToastContext';
 import { useCallback } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { apiPharmacyProflieModify, BUSINESS } from '.';
+import { PharmacistMobileNum } from '@components/setting/businessHour/BusinessHourPage';
 
 const useMutationPharmacyProflie = (props: {
   weekList?: WeekDataBundle;
   pharmacyUlid: string;
+  mobiles: PharmacistMobileNum;
 }) => {
-  const { weekList, pharmacyUlid } = props;
+  const { weekList, pharmacyUlid, mobiles } = props;
   const queryClient = useQueryClient();
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
@@ -24,7 +26,9 @@ const useMutationPharmacyProflie = (props: {
       const dto: WeekDataBundlePharmacy = {
         pharmacyUlid: pharmacyUlid,
         ...weekList,
+        ...mobiles,
       };
+
       mutatePharmacyProflieModify(dto, {
         onSuccess(res, variables, context) {
           const code = res.data.code;
@@ -38,6 +42,7 @@ const useMutationPharmacyProflie = (props: {
       });
     }
   }, [
+    mobiles,
     msg,
     mutatePharmacyProflieModify,
     pharmacyUlid,
