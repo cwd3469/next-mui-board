@@ -41,6 +41,10 @@ const WMobileTextField = (props: WTextFieldModulesType) => {
             if (unHyphen.length == 11) {
               passMsg();
             } else {
+              if (unHyphen.length === 0) {
+                passMsg();
+                return;
+              }
               errMsg();
             }
             return;
