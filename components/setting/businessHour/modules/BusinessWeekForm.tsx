@@ -81,7 +81,7 @@ const BusinessWeekForm = (props: WeekFormType) => {
     <Grid container alignItems={'center'} gap="8px" justifyContent={'start'}>
       <Typography
         variant="body2"
-        fontWeight="500"
+        fontWeight="600"
         color={
           week === 'sundayOperation' || week === 'holidayOperation'
             ? '#f11919'
