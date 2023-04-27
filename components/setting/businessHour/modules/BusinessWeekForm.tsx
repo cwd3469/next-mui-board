@@ -1,24 +1,23 @@
-import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { useCallback, useState } from 'react';
+import { Grid, Typography } from '@mui/material';
 import { WeekendDto } from '../type';
-import { getFormatTime } from '@utils/date';
 import BusinessTimePicker from '@components/common/inputs/timepicker/modules/BusinessTimePicker';
 import WSwitch from '@components/common/inputs/WSwitch';
+import dayjs from 'dayjs';
 
 interface WeekFormType {
   week: string;
   name: string;
   open: boolean;
-  openTime: Date;
-  closeTime: Date;
+  openTime: string;
+  closeTime: string;
   setWeekOnChange: (value: WeekendDto, keyId: string) => void;
 }
 
 const BusinessWeekForm = (props: WeekFormType) => {
   const { week, name, open, setWeekOnChange, openTime, closeTime } = props;
-  const [startTime, setStart] = useState<Date>(openTime);
-  const [endTime, setEnd] = useState<Date>(closeTime);
+  const [startState, setStart] = useState<string>(openTime);
+  const [endState, setEnd] = useState<string>(closeTime);
   const [hospitalOpen, setHospitalOpen] = useState<boolean>(open);
 
   const info = {
@@ -32,10 +31,10 @@ const BusinessWeekForm = (props: WeekFormType) => {
   };
   // 약국 오픈 시간
   const setStartime = useCallback(
-    (time: Date) => {
+    (time: string) => {
       setStart(time);
-      const startDate = getFormatTime(time);
-      const endDate = getFormatTime(endTime);
+      const startDate = time;
+      const endDate = endState;
       const res = {
         openTime: startDate,
         closeTime: endDate,
@@ -43,14 +42,14 @@ const BusinessWeekForm = (props: WeekFormType) => {
       };
       setWeekOnChange(res, week);
     },
-    [endTime, hospitalOpen, setWeekOnChange, week],
+    [endState, hospitalOpen, setWeekOnChange, week],
   );
   // 약국 닫는 시간
   const setEndTime = useCallback(
-    (time: Date) => {
+    (time: string) => {
       setEnd(time);
-      const startDate = getFormatTime(startTime);
-      const endDate = getFormatTime(time);
+      const startDate = startState;
+      const endDate = time;
       const res = {
         openTime: startDate,
         closeTime: endDate,
@@ -58,15 +57,15 @@ const BusinessWeekForm = (props: WeekFormType) => {
       };
       setWeekOnChange(res, week);
     },
-    [hospitalOpen, setWeekOnChange, startTime, week],
+    [hospitalOpen, setWeekOnChange, startState, week],
   );
 
   // 약국 당일 오픈 유무
   const setOpenSwich = useCallback(
     (boo: boolean) => {
       setHospitalOpen(boo);
-      const startDate = getFormatTime(startTime);
-      const endDate = getFormatTime(endTime);
+      const startDate = startState;
+      const endDate = endState;
       const res = {
         openTime: startDate,
         closeTime: endDate,
@@ -74,7 +73,7 @@ const BusinessWeekForm = (props: WeekFormType) => {
       };
       setWeekOnChange(res, week);
     },
-    [endTime, setWeekOnChange, startTime, week],
+    [endState, setWeekOnChange, startState, week],
   );
 
   return (
@@ -94,8 +93,8 @@ const BusinessWeekForm = (props: WeekFormType) => {
       <BusinessTimePicker
         startTime={setStartime}
         endTime={setEndTime}
-        startState={startTime}
-        endState={endTime}
+        startState={startState}
+        endState={endState}
         active={hospitalOpen}
         disabled={!hospitalOpen}
       />
