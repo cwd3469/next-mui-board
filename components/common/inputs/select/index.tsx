@@ -51,8 +51,9 @@ const SelectControl = styled(FormControl)(({ theme }) => ({
     borderRadius: '6px',
   },
   '& .MuiSelect-select': {
-    padding: '10px 2px 10px 14px',
+    padding: '10px 0px 10px 14px',
     paddingRight: '0px !important',
+    color: '#666',
   },
   // Mui-focused
   '& .Mui-focused': {
@@ -61,14 +62,29 @@ const SelectControl = styled(FormControl)(({ theme }) => ({
     },
   },
 }));
+export interface OptionType {
+  id: string;
+  name: string;
+}
+
+export type WSelectCustomizeType = {
+  value?: string;
+  callBack: (id: string) => void;
+  width?: string;
+  disabled?: boolean;
+  name?: string;
+};
 
 interface WSelectType {
-  name: string;
+  name?: string;
   value: string;
   width: string;
+  height?: string;
+  disabled?: boolean;
   onChange: (event: SelectChangeEvent) => void;
   options: OptionType[];
   MenuProps?: SxProps<Theme>;
+  sx?: SxProps<Theme>;
   SelectDisplayProps?: CSSProperties;
 }
 
@@ -81,6 +97,9 @@ const WSelect = (props: WSelectType) => {
     width,
     MenuProps,
     SelectDisplayProps,
+    height,
+    disabled,
+    sx,
   } = props;
 
   return (
@@ -88,11 +107,14 @@ const WSelect = (props: WSelectType) => {
       <Select
         labelId={name}
         id={name}
+        name={name}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         SelectDisplayProps={{
-          style: { color: '#666', ...SelectDisplayProps },
+          style: { ...SelectDisplayProps },
         }}
+        sx={sx}
         MenuProps={{
           sx: {
             '& .MuiPaper-root': {
@@ -101,6 +123,7 @@ const WSelect = (props: WSelectType) => {
               boxShadow: '0px 2px 10px 0px #00000014',
               marginLeft: '0px',
               marginTop: '5px',
+              height: height,
               '& .MuiList-root': {
                 padding: '8px',
                 width: `${width}`,

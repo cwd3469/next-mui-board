@@ -1,13 +1,6 @@
-import { NoticeInterface } from '@components/notice/type';
-import {
-  WeekDataBundle,
-  WeekDataBundlePharmacy,
-  WeekendDto,
-} from '@components/setting/businessHour/type';
-import { FilterNoticeType } from '@hooks/contexts/filters/type';
+import { WeekDataBundlePharmacy } from '@components/setting/businessHour/type';
 import useCodeMsgBundle from '@hooks/utils/useCodeMsgBundle';
 import { useToastContext } from '@hooks/utils/useToastContext';
-import { getFormatTime } from '@utils/date';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { apiBusinesssSet, BUSINESS } from '.';
