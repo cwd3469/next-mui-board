@@ -5,15 +5,7 @@ export const stringToDate = (txt: string) => {
   const h = txt.substring(0, 2);
   const m = txt.substring(2, 4);
   const now = '2022-12-06';
-  return new Date(`${now} ${h}:${m}`);
-};
-
-export const getFormatTime = (date: Date) => {
-  let hh = String(date.getHours());
-  hh = Number(hh) >= 10 ? hh : '0' + hh;
-  let mm = String(date.getMinutes());
-  mm = Number(mm) >= 10 ? mm : '0' + mm;
-  return `${hh}${mm}`;
+  return dayjs(`${now} ${h}:${m}`);
 };
 
 export const dateFormat = (date: string) => {
@@ -32,16 +24,24 @@ export interface WTimeListOption extends OptionType {
   index: number;
 }
 
-export const timeListFn = (param: {
+/**dayToTimeListUp
+ * 하루를 24시간 리스트로 반환 기능
+ * 1. id 값은 json form으로 변환
+ * 2. Interval 시간 간격
+ * 3. startEndInterval rang list일때 시작하는 시간과 끝나는 시간 간격
+ * 4. viewFormat name값에 들어갈 time format
+ * 5. IdFormat id값에 들어갈 time format
+ * 6. ListFormat 리스트 format 'range' | 'single';
+ */
+export const dayToTimeListUp = (param: {
   start: string;
   end: string;
   Interval: number;
-  startEndInterval?: number;
   viewFormat?: string;
-  ListFormat?: string;
+  IdFormat?: string;
+  ListFormat?: 'range' | 'single';
 }): WTimeListOption[] => {
-  const { start, end, Interval, viewFormat, ListFormat, startEndInterval } =
-    param;
+  const { start, end, Interval, viewFormat, ListFormat } = param;
   const startDate = dayjs(`2023-04-12T${start}:00:00`);
   const endDate = dayjs(`2023-04-12T${end}:00:00`);
   const intervalMinutes = Interval;
@@ -52,15 +52,21 @@ export const timeListFn = (param: {
     currentTime.isBefore(endDate);
     currentTime = currentTime.add(intervalMinutes, 'minute')
   ) {
-    const endInterval = startEndInterval ? startEndInterval : 20;
-    const startTime = currentTime.format(viewFormat ? viewFormat : 'HH:mm');
-    const endTime = currentTime.add(endInterval, 'm').format('HH:mm');
-    const itemName = `${startTime} ~ ${
-      endTime === '00:00' ? '24:00' : endTime
+    const endInterval = intervalMinutes ? intervalMinutes : 1;
+    const currentTimeEnd = currentTime.add(endInterval, 'm');
+    const startName = currentTime.format(viewFormat ? viewFormat : 'HH:mm');
+    const endName = currentTimeEnd.format(viewFormat ? viewFormat : 'HH:mm');
+    const startTime = viewFormat ? currentTime.format(viewFormat) : currentTime;
+    const endTime = viewFormat
+      ? currentTimeEnd.format(viewFormat)
+      : currentTimeEnd;
+
+    const itemName = `${startName} ~ ${
+      currentTimeEnd.format('HH:mm') === '00:00' ? '24:00' : endName
     }`;
     const itemId = JSON.stringify({
-      startTime: currentTime.format('HHmm'),
-      endTime: currentTime.add(endInterval, 'm').format('HHmm'),
+      startTime: startTime,
+      endTime: endTime,
     });
     const rangeItem: WTimeListOption = {
       index: index,
@@ -69,8 +75,8 @@ export const timeListFn = (param: {
     };
     const singleItem: WTimeListOption = {
       index: index,
-      name: startTime,
-      id: currentTime.format('HHmm'),
+      name: startName,
+      id: JSON.stringify(startTime),
     };
     index++;
     const item = () => {
