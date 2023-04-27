@@ -1,15 +1,15 @@
-import { timeListFn } from '@utils/date';
-import { useEffect } from 'react';
+import { dayToTimeListUp } from '@utils/date';
 import WSelect, { OptionType, WSelectCustomizeType } from '..';
 import useSelect from '@hooks/utils/useSelect';
 
-const WSelectLunchTimeList = (props: WSelectCustomizeType) => {
-  const { value, callBack, disabled } = props;
-  const timeList = timeListFn({
+const WSelecOpenTimeList = (props: WSelectCustomizeType) => {
+  const { value, callBack, disabled, name } = props;
+  const timeList = dayToTimeListUp({
     start: '07',
     end: '24',
     Interval: 30,
-    startEndInterval: 30,
+    viewFormat: 'hhmm',
+    ListFormat: 'single',
   });
 
   const options: OptionType[] = timeList.map((item) => {
@@ -20,20 +20,24 @@ const WSelectLunchTimeList = (props: WSelectCustomizeType) => {
     value: value,
     callBack: callBack,
   });
-  useEffect(() => {
-    console.log(value);
-  }, [value]);
+
   return (
     <WSelect
-      name={'WSelectLunchTimeList'}
+      name={name}
       value={option}
-      width={'120px !important'}
+      width={'100% !important'}
       height={'200px'}
       onChange={onSelectOption}
       options={options}
       disabled={disabled}
       sx={{
         color: '#000',
+        padding: '0px',
+        '&.Mui-focused': {
+          '& .MuiOutlinedInput-notchedOutline': {
+            border: 0,
+          },
+        },
         '&.Mui-disabled': {
           backgroundColor: '#ebeced',
           color: '#ddd',
@@ -45,32 +49,28 @@ const WSelectLunchTimeList = (props: WSelectCustomizeType) => {
           },
         },
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#4ac6ff',
+          border: 0,
           '&:hover': {
-            borderColor: '#4ac6ff',
+            border: 0,
           },
         },
         '& .MuiSvgIcon-root': {
           display: 'none',
         },
         '& .MuiSelect-select': {
-          padding: '8px 0',
+          padding: '0px 0',
           textAlign: 'center',
           color: '#000',
         },
         '&:hover': {
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#4ac6ff',
+            border: 0,
           },
-        },
-      }}
-      MenuProps={{
-        '& .MuiPaper-root .MuiList-root': {
-          width: '140px !important',
         },
       }}
     />
   );
 };
 
-export default WSelectLunchTimeList;
+export default WSelecOpenTimeList;
