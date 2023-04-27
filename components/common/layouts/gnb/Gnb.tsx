@@ -36,7 +36,7 @@ export const Gnb = (props: { disabled?: boolean }) => {
           style={itmeMenuActive('business-hours')}
           disabled={disabled}
         >
-          영업시간 설정
+          설정
         </GnbLink>
         <GnbLink
           href="/setting/security"
