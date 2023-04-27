@@ -72,10 +72,11 @@ export type WSelectCustomizeType = {
   callBack: (id: string) => void;
   width?: string;
   disabled?: boolean;
+  name?: string;
 };
 
 interface WSelectType {
-  name: string;
+  name?: string;
   value: string;
   width: string;
   height?: string;
@@ -106,6 +107,7 @@ const WSelect = (props: WSelectType) => {
       <Select
         labelId={name}
         id={name}
+        name={name}
         value={value}
         onChange={onChange}
         disabled={disabled}
