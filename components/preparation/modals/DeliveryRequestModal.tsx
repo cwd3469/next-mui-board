@@ -1,11 +1,12 @@
 import { ModalType } from '@components/common/layouts/gnb/types';
 import WConfirm from '@components/common/modals/WConfirm';
-import { Stack, Typography } from '@mui/material';
+import { Backdrop, Stack, Typography } from '@mui/material';
 import processStatus from 'public/assets/icon/processStatus.svg';
 import Image from 'next/image';
 import useMutateDeliveryRequest from '@hooks/apis/preparation/history/hooks/useMutateDeliveryRequest';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDebounceFn } from 'ahooks';
+import WProgressBarCircular from '@components/common/modals/WProgressBarCircular';
 
 export type DeliveryState = 'QUICK' | 'PARCEL' | string;
 interface DeliveryRequestModalType extends ModalType {
@@ -15,11 +16,16 @@ interface DeliveryRequestModalType extends ModalType {
 
 const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
   const { open, handleClose, id, mode } = props;
+  const [progressBarOn, setProgressBarOn] = useState<boolean>(false);
+  const onEvent = useCallback(() => {
+    handleClose();
+    setProgressBarOn(false);
+  }, [handleClose]);
   const { onClickDeliveryRequest } = useMutateDeliveryRequest({
     id,
     dayRequest: {
-      onError: handleClose,
-      onSuccess: handleClose,
+      onError: onEvent,
+      onSuccess: onEvent,
     },
   });
   const info = useCallback(() => {
@@ -42,9 +48,15 @@ const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
     }
   }, [mode])();
 
-  const handleEventRequest = useDebounceFn(onClickDeliveryRequest, {
-    wait: 300,
-  });
+  const handleEventRequest = useDebounceFn(
+    () => {
+      onClickDeliveryRequest();
+      setProgressBarOn(true);
+    },
+    {
+      wait: 300,
+    },
+  );
   return (
     <WConfirm
       activeOn
@@ -103,6 +115,20 @@ const DeliveryRequestModal = (props: DeliveryRequestModalType) => {
               </Typography>
             </Stack>
           </>
+        ) : (
+          <></>
+        )}
+        {progressBarOn ? (
+          <Backdrop
+            sx={{
+              color: '#fff',
+              zIndex: 99999,
+              backgroundColor: 'rgba(255, 255, 255, 0.6)',
+            }}
+            open={progressBarOn}
+          >
+            <WProgressBarCircular />
+          </Backdrop>
         ) : (
           <></>
         )}
