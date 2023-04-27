@@ -5,7 +5,7 @@ import useSelect from '@hooks/utils/useSelect';
 const WSelecOpenTimeList = (props: WSelectCustomizeType) => {
   const { value, callBack, disabled, name } = props;
   const timeList = dayToTimeListUp({
-    start: '07',
+    start: '00',
     end: '24',
     Interval: 30,
     viewFormat: 'HH:mm',
@@ -22,6 +22,12 @@ const WSelecOpenTimeList = (props: WSelectCustomizeType) => {
     callBack: callBack,
   });
 
+  const timeLast: OptionType = {
+    name: '24:00',
+    id: JSON.stringify('2400'),
+  };
+  const singleTimeList = [...options, timeLast];
+
   return (
     <WSelect
       name={name}
@@ -29,17 +35,8 @@ const WSelecOpenTimeList = (props: WSelectCustomizeType) => {
       width={'100% !important'}
       height={'200px'}
       onChange={onSelectOption}
-      options={options}
+      options={singleTimeList}
       disabled={disabled}
-      MenuProps={{
-        '& .MuiList-root': {
-          '& .MuiButtonBase-root': {
-            '&:first-of-type': {
-              display: 'none',
-            },
-          },
-        },
-      }}
       sx={{
         color: '#000',
         padding: '0px',

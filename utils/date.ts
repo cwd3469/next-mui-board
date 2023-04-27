@@ -45,12 +45,8 @@ export const dayToTimeListUp = (param: {
   const startDate = dayjs(`2023-04-12T${start}:00:00`);
   const endDate = dayjs(`2023-04-12T${end}:00:00`);
   const intervalMinutes = Interval;
-  const timeZero: WTimeListOption = {
-    index: 0,
-    name: '-',
-    id: JSON.stringify('0000'),
-  };
-  let timeList: WTimeListOption[] = [timeZero];
+
+  let timeList: WTimeListOption[] = [];
   let index = 1;
   for (
     let currentTime = startDate;
@@ -110,5 +106,5 @@ export const dayToTimeListUp = (param: {
   };
   const singleTimeList = [...timeList, timeLast];
 
-  return ListFormat === 'range' ? timeList : singleTimeList;
+  return timeList;
 };
