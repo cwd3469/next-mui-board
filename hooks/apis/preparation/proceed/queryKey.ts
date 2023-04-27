@@ -1,7 +1,7 @@
 import { ParsedUrlQuery } from 'querystring';
 
 export const PROCEED_LIST = (props: ParsedUrlQuery) => [
-  'ROCEED',
+  'PROCEED',
   'LIST',
   props,
 ];
