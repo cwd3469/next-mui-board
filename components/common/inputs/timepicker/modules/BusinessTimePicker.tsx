@@ -1,5 +1,13 @@
 import WTimepicker from '..';
-import { Grid, styled, Box, Typography } from '@mui/material';
+import {
+  Grid,
+  styled,
+  Box,
+  Typography,
+  SelectChangeEvent,
+} from '@mui/material';
+import WSelecOpenTimeList from '../../select/modules/WSelecOpenTimeList';
+import dayjs from 'dayjs';
 
 export const TimeBox = styled(Grid)((GridTypeMap) => ({
   border: '1px solid #ddd',
@@ -11,11 +19,11 @@ export const TimeBox = styled(Grid)((GridTypeMap) => ({
 }));
 
 interface TimepickerType {
-  startTime: (time: Date) => void;
-  endTime: (time: Date) => void;
+  startTime: (time: string) => void;
+  endTime: (time: string) => void;
   active: boolean;
-  startState: Date;
-  endState: Date;
+  startState: string;
+  endState: string;
   disabled?: boolean;
 }
 
@@ -23,43 +31,40 @@ const BusinessTimePicker = (props: TimepickerType) => {
   const { startTime, endTime, startState, endState, active, disabled } = props;
 
   return (
-    <TimeBox
-      container
-      sx={{
-        borderColor: active ? '#4ac6ff' : '#ddd',
-        backgroundColor: disabled ? '#ebeced' : '#fff',
-      }}
-    >
-      <Box sx={{ width: '45%' }}>
-        <WTimepicker
-          disabled={disabled}
-          selected={startState}
-          onChange={(date) => {
-            if (date) startTime(date);
-          }}
-          sx={{
-            '& .MuiInputBase-input': {
-              padding: '7px 0px 7px 5px',
-            },
-          }}
-        />
-      </Box>
-      <Typography color="#999">~</Typography>
-      <Box sx={{ width: '45%' }}>
-        <WTimepicker
-          disabled={disabled}
-          selected={endState}
-          onChange={(date) => {
-            if (date) endTime(date);
-          }}
-          sx={{
-            '& .MuiInputBase-input': {
-              padding: '7px 5px 7px 0px',
-            },
-          }}
-        />
-      </Box>
-    </TimeBox>
+    <>
+      <TimeBox
+        container
+        sx={{
+          borderColor: active ? '#4ac6ff' : '#ddd',
+          backgroundColor: disabled ? '#ebeced' : '#fff',
+          justifyContent: 'center',
+        }}
+      >
+        <Box sx={{ width: '45%' }}>
+          <WSelecOpenTimeList
+            name="ssn-1"
+            disabled={disabled}
+            value={JSON.stringify(startState)}
+            callBack={(id: string) => {
+              const date = JSON.parse(id);
+              startTime(date);
+            }}
+          />
+        </Box>
+        <Typography color="#999">~</Typography>
+        <Box sx={{ width: '45%' }}>
+          <WSelecOpenTimeList
+            name="ssn-2"
+            disabled={disabled}
+            value={JSON.stringify(endState)}
+            callBack={(id: string) => {
+              const date = JSON.parse(id);
+              endTime(date);
+            }}
+          />
+        </Box>
+      </TimeBox>
+    </>
   );
 };
 

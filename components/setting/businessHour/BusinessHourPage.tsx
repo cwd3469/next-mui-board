@@ -148,8 +148,8 @@ const BusinessHourPage = () => {
                           week={week.en}
                           name={week.ko}
                           open={item.hasOperation}
-                          openTime={stringToDate(item.openTime)}
-                          closeTime={stringToDate(item.closeTime)}
+                          openTime={item.openTime}
+                          closeTime={item.closeTime}
                           setWeekOnChange={onChangeWeekList}
                         />
                       );
@@ -166,8 +166,8 @@ const BusinessHourPage = () => {
                           week={week.en}
                           name={week.ko}
                           open={item.hasOperation}
-                          openTime={stringToDate(item.openTime)}
-                          closeTime={stringToDate(item.closeTime)}
+                          openTime={item.openTime}
+                          closeTime={item.closeTime}
                           setWeekOnChange={onChangeWeekList}
                         />
                       );
