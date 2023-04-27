@@ -1,13 +1,5 @@
-import WTimepicker from '..';
-import {
-  Grid,
-  styled,
-  Box,
-  Typography,
-  SelectChangeEvent,
-} from '@mui/material';
+import { Grid, styled, Box, Typography } from '@mui/material';
 import WSelecOpenTimeList from '../../select/modules/WSelecOpenTimeList';
-import dayjs from 'dayjs';
 
 export const TimeBox = styled(Grid)((GridTypeMap) => ({
   border: '1px solid #ddd',

@@ -8,7 +8,8 @@ const WSelecOpenTimeList = (props: WSelectCustomizeType) => {
     start: '07',
     end: '24',
     Interval: 30,
-    viewFormat: 'hhmm',
+    viewFormat: 'HH:mm',
+    IdFormat: 'HHmm',
     ListFormat: 'single',
   });
 
@@ -30,6 +31,15 @@ const WSelecOpenTimeList = (props: WSelectCustomizeType) => {
       onChange={onSelectOption}
       options={options}
       disabled={disabled}
+      MenuProps={{
+        '& .MuiList-root': {
+          '& .MuiButtonBase-root': {
+            '&:first-of-type': {
+              display: 'none',
+            },
+          },
+        },
+      }}
       sx={{
         color: '#000',
         padding: '0px',

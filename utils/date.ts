@@ -41,11 +41,16 @@ export const dayToTimeListUp = (param: {
   IdFormat?: string;
   ListFormat?: 'range' | 'single';
 }): WTimeListOption[] => {
-  const { start, end, Interval, viewFormat, ListFormat } = param;
+  const { start, end, Interval, viewFormat, ListFormat, IdFormat } = param;
   const startDate = dayjs(`2023-04-12T${start}:00:00`);
   const endDate = dayjs(`2023-04-12T${end}:00:00`);
   const intervalMinutes = Interval;
-  const timeList: WTimeListOption[] = [];
+  const timeZero: WTimeListOption = {
+    index: 0,
+    name: '-',
+    id: JSON.stringify('0000'),
+  };
+  let timeList: WTimeListOption[] = [timeZero];
   let index = 1;
   for (
     let currentTime = startDate;
@@ -56,17 +61,16 @@ export const dayToTimeListUp = (param: {
     const currentTimeEnd = currentTime.add(endInterval, 'm');
     const startName = currentTime.format(viewFormat ? viewFormat : 'HH:mm');
     const endName = currentTimeEnd.format(viewFormat ? viewFormat : 'HH:mm');
-    const startTime = viewFormat ? currentTime.format(viewFormat) : currentTime;
-    const endTime = viewFormat
-      ? currentTimeEnd.format(viewFormat)
-      : currentTimeEnd;
+
+    const startId = IdFormat ? currentTime.format(IdFormat) : currentTime;
+    const endId = IdFormat ? currentTimeEnd.format(IdFormat) : currentTimeEnd;
 
     const itemName = `${startName} ~ ${
       currentTimeEnd.format('HH:mm') === '00:00' ? '24:00' : endName
     }`;
     const itemId = JSON.stringify({
-      startTime: startTime,
-      endTime: endTime,
+      startTime: startId,
+      endTime: endId,
     });
     const rangeItem: WTimeListOption = {
       index: index,
@@ -76,7 +80,7 @@ export const dayToTimeListUp = (param: {
     const singleItem: WTimeListOption = {
       index: index,
       name: startName,
-      id: JSON.stringify(startTime),
+      id: JSON.stringify(startId),
     };
     index++;
     const item = () => {
@@ -89,5 +93,22 @@ export const dayToTimeListUp = (param: {
     };
     timeList.push(item());
   }
-  return timeList;
+
+  const timeLast: WTimeListOption = {
+    index: timeList.length + 1,
+    name:
+      endDate.format(viewFormat ? viewFormat : 'HH:mm') === '00:00'
+        ? '24:00'
+        : endDate.format(viewFormat ? viewFormat : 'HH:mm'),
+    id: JSON.stringify(
+      IdFormat
+        ? endDate.format(IdFormat) === '0000'
+          ? '2400'
+          : endDate.format(IdFormat)
+        : endDate,
+    ),
+  };
+  const singleTimeList = [...timeList, timeLast];
+
+  return ListFormat === 'range' ? timeList : singleTimeList;
 };
