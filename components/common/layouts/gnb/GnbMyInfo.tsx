@@ -9,7 +9,8 @@ import { UserInfoContext } from '@hooks/contexts/user/UserInfoContext';
 
 export default function GnbMyInfo(props: { disabled?: boolean }) {
   const { disabled } = props;
-  const { userInfo } = React.useContext(UserInfoContext);
+  const { userInfo, signOut, handleTokenInfo } =
+    React.useContext(UserInfoContext);
   const router = useRouter();
 
   const gnbInfo = React.useCallback(() => {
@@ -33,15 +34,14 @@ export default function GnbMyInfo(props: { disabled?: boolean }) {
   const id = open ? 'simple-popover' : undefined;
 
   const mypageOpen = () => {
+    handleTokenInfo();
     router.push({
       pathname: `/myinfo`,
     });
   };
 
   const signoutOn = () => {
-    router.push('/signin');
-    removeCookies('refreshToken');
-    removeCookies('accessToken');
+    if (signOut) signOut();
   };
 
   return (
