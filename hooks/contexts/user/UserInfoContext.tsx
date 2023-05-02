@@ -75,6 +75,8 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
     deleteCookie('accessToken');
     deleteCookie('refreshToken');
     deleteCookie('permission');
+    deleteCookie('refreshCount');
+    deleteCookie('patients-list');
     setCookie('authorized', false);
   }, []);
 
@@ -96,6 +98,7 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
   /**UserInfoContext 토큰 리프레쉬 */
   const handleTokenInfo = useCallback(async () => {
     const token = getCookie('refreshToken');
+    deleteCookie('refreshCount');
     if (typeof document !== 'undefined') {
       const refreshToken = typeof token === 'string' ? token : '';
       if (refreshToken) {
