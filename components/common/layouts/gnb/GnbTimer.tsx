@@ -8,6 +8,7 @@ import clock from 'public/assets/icon/clock.svg';
 import colors from '@styles/colors';
 import GnbModal from './modals/GnbModal';
 import { UserInfoContext } from '@hooks/contexts/user/UserInfoContext';
+import { getCookie, setCookie } from 'cookies-next';
 
 const fontStyle = {
   fontSize: '12px',
@@ -26,8 +27,8 @@ export const Extension = styled(Button)(({ theme }) => ({
 export default function GnbTimer() {
   const { validTime, signOut, handleTokenInfo } = useContext(UserInfoContext);
   const [open, setOpen] = useState<boolean>(false);
-  const [minutes, setMinutes] = useState<number>(0);
-  const [seconds, setSeconds] = useState<number>(0);
+  const [minutes, setMinutes] = useState<number>(1000);
+  const [seconds, setSeconds] = useState<number>(1000);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const toast = useToastContext();
@@ -78,8 +79,15 @@ export default function GnbTimer() {
   let timer = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
   useEffect(() => {
-    if (minutes === 2 && seconds === 0) {
-      handleOpen();
+    if (minutes <= 1) {
+      if (seconds <= 59) {
+        const refreshToken = getCookie('refreshToken');
+        const refreshCount = getCookie('refreshCount');
+        if (refreshToken !== refreshCount) {
+          handleOpen();
+          setCookie('refreshCount', refreshToken);
+        }
+      }
     }
   }, [minutes, seconds]);
 
