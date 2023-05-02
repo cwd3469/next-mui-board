@@ -24,52 +24,64 @@ export const Extension = styled(Button)(({ theme }) => ({
 }));
 
 export default function GnbTimer() {
-  const { userInfo, time } = useContext(UserInfoContext);
-  const [expTime, setExpTime] = useState<{ minute: number; seconds: number }>();
+  const { validTime, signOut, handleTokenInfo } = useContext(UserInfoContext);
   const [open, setOpen] = useState<boolean>(false);
+  const [minutes, setMinutes] = useState<number>(0);
+  const [seconds, setSeconds] = useState<number>(0);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const router = useRouter();
   const toast = useToastContext();
   const action = useCallback(() => {
     //TODO: 작업을 위해 임시 기능 폐쇄
-    // toast?.on('로그인 유효 시간 만료', 'error');
-    // router.push('/signin');
-  }, []);
+    handleClose();
+    toast?.on('로그인 유효 시간이 만료되어 \n 로그아웃 되었습니다.', 'info');
+    if (signOut) signOut();
+  }, [signOut, toast]);
 
   const resend = useCallback(() => {
     //TODO: 작업을 위해 임시 기능 폐쇄
-    // setOpen(false);
-    // alert('시간 연장 합니다.');
-  }, []);
+    handleClose();
+    handleTokenInfo();
+  }, [handleTokenInfo]);
 
-  const { timer, reStart, minutes, seconds } = useTimer({
-    time: expTime ? expTime.minute : 0,
-    action: action,
-    seconds: expTime ? expTime.seconds : 0,
-  });
+  const reStart = () => {
+    const { minute, seconds } = validTime;
+    setMinutes(minute);
+    setSeconds(seconds);
+  };
 
   useEffect(() => {
-    if (userInfo) {
-      if (time) {
-        const t = time(userInfo.exp);
-        setExpTime(t);
+    const { minute, seconds } = validTime;
+    setMinutes(minute);
+    setSeconds(seconds);
+  }, [validTime]);
+
+  useEffect(() => {
+    const countdown = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
       }
-    }
-  }, [time, userInfo]);
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(countdown);
+          action();
+        } else {
+          setMinutes(minutes - 1);
+          setSeconds(59);
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(countdown);
+  }, [minutes, seconds, action]);
+
+  let timer = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
   useEffect(() => {
-    if (minutes === 0 && seconds === 59) {
-      //TODO: 작업을 위해 임시 기능 폐쇄
-      // handleOpen();
+    if (minutes === 2 && seconds === 0) {
+      handleOpen();
     }
   }, [minutes, seconds]);
-
-  useEffect(() => {
-    return () => {
-      setOpen(false);
-    };
-  }, []);
 
   return (
     <Grid container justifyContent={'center'} alignItems="center" width="auto">
