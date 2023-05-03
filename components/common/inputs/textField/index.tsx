@@ -29,6 +29,7 @@ interface WTextFieldProps {
 }
 
 const TextInput = styled(TextField)({
+  backgroundColor: '#fff',
   '& .MuiInputBase-input': {
     padding: '14px 12px',
     '&::placeholder': {
@@ -50,6 +51,8 @@ const TextInput = styled(TextField)({
   '& .Mui-disabled': {
     backgroundColor: '#f5f5f5',
     color: '#000',
+    borderRadius: '4px',
+    overflow: 'hidden',
     '& .MuiOutlinedInput-notchedOutline': {
       borderColor: '#f5f5f5 !important',
     },
@@ -112,9 +115,6 @@ const WTextField = (props: WTextFieldProps) => {
           readOnly: readOnly ? readOnly : false,
         }}
         placeholder={placeholder ? placeholder : ''}
-        sx={{
-          backgroundColor: disabled ? '#eee' : '#fff',
-        }}
       />
       {helper || error ? (
         <Typography
