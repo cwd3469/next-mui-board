@@ -11,7 +11,7 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '팩스번호를 다시 확인해 주세요.',
+        msg: '약국 팩스번호는 숫자 8~12자리 입니다.',
         boo: true,
       },
       keyId,
@@ -30,10 +30,10 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
   const onChangeInfo = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const txt = e.target.value;
-      if (txt.length <= 11) {
+      if (txt.length <= 12) {
         if (valid.regExFaxNumber.test(txt)) {
           setState(txt, keyId);
-          if (txt.length <= 11 && txt.length >= 8) {
+          if (txt.length <= 12 && txt.length >= 8) {
             passMsg();
           } else {
             errMsg();
@@ -51,7 +51,7 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      placeholder={'약국 팩스번호를 입력해 주세요.'}
+      placeholder={'숫자 8~12자리'}
       disabled={disabled}
       error={err}
       onKeyDown={props.onKeyDown}
