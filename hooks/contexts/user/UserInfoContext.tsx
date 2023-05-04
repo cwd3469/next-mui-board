@@ -8,6 +8,11 @@ import jwtDecode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { createContext, useCallback, useEffect, useState } from 'react';
 
+interface UserTimer {
+  minute: number;
+  seconds: number;
+}
+
 interface UserInfoContext {
   userInfo?: UserInfoInterface;
   setInUserInfo?: (info: UserInfoInterface) => void;
@@ -18,11 +23,16 @@ interface UserInfoContext {
     minute: number;
     seconds: number;
   };
+  validTime: UserTimer;
 }
 
 const UserInfoContext = createContext<UserInfoContext>({
   handleTokenInfo: () => {
     return;
+  },
+  validTime: {
+    minute: 0,
+    seconds: 0,
   },
 });
 
@@ -35,7 +45,10 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
   const toast = useToastContext();
   const msg = useCodeMsgBundle();
   const [userInfo, setUserInfo] = useState<UserInfoInterface>();
-
+  const [validTime, setValidTime] = useState<UserTimer>({
+    minute: 0,
+    seconds: 0,
+  });
   /**UserInfoContext 유효 시간 계산 */
   const time = useCallback((expTime: number) => {
     const now = dayjs();
@@ -62,6 +75,8 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
     deleteCookie('accessToken');
     deleteCookie('refreshToken');
     deleteCookie('permission');
+    deleteCookie('refreshCount');
+    deleteCookie('patients-list');
     setCookie('authorized', false);
   }, []);
 
@@ -72,13 +87,18 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
   }, [deleteToken, signinPageRoute]);
 
   /**UserInfoContext 토큰 정보 업데이트 */
-  const setInUserInfo = useCallback((info: UserInfoInterface) => {
-    setUserInfo(info);
-  }, []);
+  const setInUserInfo = useCallback(
+    (info: UserInfoInterface) => {
+      setValidTime(time(info.exp));
+      setUserInfo(info);
+    },
+    [time],
+  );
 
   /**UserInfoContext 토큰 리프레쉬 */
   const handleTokenInfo = useCallback(async () => {
     const token = getCookie('refreshToken');
+    deleteCookie('refreshCount');
     if (typeof document !== 'undefined') {
       const refreshToken = typeof token === 'string' ? token : '';
       if (refreshToken) {
@@ -121,25 +141,26 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
     }
   }, [msg, setInUserInfo, signOut, toast]);
 
+  const onMountCookieCheck = useCallback(() => {
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      const userinfo: UserInfoInterface = jwtDecode(accessToken as string);
+      setInUserInfo(userinfo);
+      return;
+    }
+    signinPageRoute();
+    toast?.on('로그인 상태가 아닙니다 \n 로그인 페이지로 이동합니다.', 'error');
+  }, [setInUserInfo, signinPageRoute, toast]);
+
   useEffect(() => {
     if (router.pathname !== '/signin') {
       if (router.pathname !== '/404') {
         if (router.pathname !== '/error') {
-          const cookie = getCookie('accessToken');
-          if (cookie) {
-            const userinfo: UserInfoInterface = jwtDecode(cookie as string);
-            setUserInfo(userinfo);
-            return;
-          }
-          signinPageRoute();
-          toast?.on(
-            '로그인 상태가 아닙니다 \n 로그인 페이지로 이동합니다.',
-            'error',
-          );
+          onMountCookieCheck();
         }
       }
     }
-  }, [router.pathname, signinPageRoute, toast]);
+  }, [onMountCookieCheck, router.pathname, signinPageRoute, toast]);
 
   const value = {
     userInfo,
@@ -147,6 +168,7 @@ const UserInfoProvider = ({ children }: Props): JSX.Element => {
     handleTokenInfo,
     deleteToken,
     signOut,
+    validTime,
     time,
   };
 
