@@ -78,13 +78,14 @@ const AuthMobileView = (props: AuthMobileViewType) => {
             <Box sx={{ height: '20px' }}>
               {!props.authDisabled ? (
                 <AuthTimer
+                  isReStart
                   showTime={{
                     minutes: 2,
                     seconds: 30,
                   }}
                   time={3}
                   action={props.timerActice}
-                  resend={props.timerResend}
+                  resend={onClickAuthNumSend.run}
                 />
               ) : (
                 ''
