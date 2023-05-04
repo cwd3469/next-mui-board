@@ -97,7 +97,7 @@ jobs:
         uses: 8398a7/action-slack@v3.8.0
         with:
           status: ${{ job.status }}
-          author_name: Build WhatAilsYou Pharmacy App - DEV
+          author_name: Build WhatAilsYou Pharmacy App - PRDO
           fields: repo,commit,message,author
           mention: here,U040ZD7MEEM
           if_mention: failure,cancelled

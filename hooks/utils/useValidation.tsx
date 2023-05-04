@@ -102,7 +102,7 @@ export class Validation {
     this.regBusinessNumber = /^[0-9-]{0,12}$/;
 
     /**팩스 유효성 정규식 */
-    this.regExFaxNumber = /^[0-9]{0,11}$/;
+    this.regExFaxNumber = /^[0-9]{0,12}$/;
 
     /**생년월일 포멧 확인 */
     this.regExpBirthDate =
