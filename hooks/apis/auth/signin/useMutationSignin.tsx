@@ -27,7 +27,7 @@ const useMutationSignin = (props: UseMutationSignin) => {
           const code = res.data.code;
           const data = res.data.data;
           if (code !== '0000') {
-            toast?.on(msg.errMsg(code), 'info');
+            toast?.on(`로그인 정보를 확인해 주세요.`, 'error');
           } else {
             onOpenModal('success');
             setCookie('accountId', siginInfo.accountId);
@@ -36,11 +36,11 @@ const useMutationSignin = (props: UseMutationSignin) => {
           }
         },
         onError: (errMsg) => {
-          toast?.on(`아이디 또는 비밀번호를 확인해 주세요.`, 'error');
+          toast?.on(`로그인 정보를 확인해 주세요.`, 'error');
         },
       });
     }
-  }, [msg, mutateSignin, onOpenModal, setInInfo, siginInfo, toast]);
+  }, [mutateSignin, onOpenModal, setInInfo, siginInfo, toast]);
   /**회원가입 신청 이벤트 */
 
   useEffect(() => {
