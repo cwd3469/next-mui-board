@@ -2,7 +2,7 @@
 import useFileUpload from '@hooks/utils/fileUpload/useFileUpload';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { blobToFile, forinArr, resizeFileCompression } from '@utils/file';
-import { ChangeEvent, useCallback, useEffect } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 import { DefaltInfo, SignupFileLadel, ImageView } from './styled';
 
 export interface HospitalImgPickerType {
@@ -13,6 +13,7 @@ export interface HospitalImgPickerType {
 
 const SignupFileUpload = (props: HospitalImgPickerType) => {
   const { onDeleteLogoUid, onUploadFile, name } = props;
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onChangeFileLoad = useCallback(
     async (
@@ -43,6 +44,17 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
     onfileUpload: onChangeFileLoad,
   });
 
+  const onDeleteFile = useCallback(
+    (index: number) => {
+      fileUploadHook.onDeleteuidList(index);
+      onDeleteLogoUid();
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    },
+    [fileUploadHook, onDeleteLogoUid],
+  );
+
   return (
     <Grid container flexDirection="column">
       <input
@@ -52,6 +64,7 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
         style={{ display: 'none' }}
         accept=".jpg,.png,.jpeg,.pdf"
         multiple={false}
+        ref={fileInputRef}
       />
 
       <Grid container gap="10px" justifyContent={'flex-start'}>
@@ -78,10 +91,7 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
                   inx={inx}
                   img={img}
                   file={fileUploadHook.files[0]}
-                  deleteImg={(index: number) => {
-                    fileUploadHook.onDeleteuidList(index);
-                    onDeleteLogoUid();
-                  }}
+                  deleteImg={onDeleteFile}
                   sx={{
                     height: '300px',
                     width: '200px',
