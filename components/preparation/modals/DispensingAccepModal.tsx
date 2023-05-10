@@ -99,28 +99,32 @@ const DispensingAccepModal = (props: DispensingAccepModalType) => {
   }, []);
   /**DispensingAccepModal 조제 수락 비활성화 변경 기능 */
   const acceptInvigorator = useCallback(() => {
-    if (info.payment) {
-      if (!infoErr.payment.boo) {
-        setDisabledAccept(false);
-      } else {
-        setDisabledAccept(true);
-      }
-    } else {
+    if (info.payment === '') {
       setDisabledAccept(true);
+      return;
     }
+    if (info.payment === '원') {
+      setDisabledAccept(true);
+      return;
+    }
+    if (infoErr.payment.boo) {
+      setDisabledAccept(true);
+      return;
+    }
+    setDisabledAccept(false);
   }, [info.payment, infoErr.payment.boo]);
 
   /**DispensingAccepModal 조제 거절 비활성화 변경 기능 */
   const refusalInvigorator = useCallback(() => {
-    if (info.refusal) {
-      if (!infoErr.refusal.boo) {
-        setDisabledRefuse(false);
-      } else {
-        setDisabledRefuse(true);
-      }
-    } else {
+    if (info.refusal === '') {
       setDisabledRefuse(true);
+      return;
     }
+    if (infoErr.refusal.boo) {
+      setDisabledRefuse(true);
+      return;
+    }
+    setDisabledRefuse(false);
   }, [info.refusal, infoErr.refusal.boo]);
 
   /**DispensingAccepModal 조제 수락 비활성화 변경 기능 */
