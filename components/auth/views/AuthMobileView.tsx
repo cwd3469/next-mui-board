@@ -85,7 +85,8 @@ const AuthMobileView = (props: AuthMobileViewType) => {
                   }}
                   time={3}
                   action={props.timerActice}
-                  resend={props.timerResend}
+                  resend={onClickAuthNumSend.run}
+                
                 />
               ) : (
                 ''
