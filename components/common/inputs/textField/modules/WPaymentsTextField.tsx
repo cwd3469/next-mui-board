@@ -13,7 +13,6 @@ const WPaymentsTextField = (props: WTextFieldModulesType) => {
   const onFocusIn = useCallback(() => {
     if (state !== '') {
       const last = state.slice(0, -1);
-      console.log(last);
       setState(last, keyId);
     }
   }, [keyId, setState, state]);
