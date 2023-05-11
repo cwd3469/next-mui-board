@@ -7,7 +7,7 @@ import { ErrorType } from '@components/common/inputs/type';
 import WSubTitle from '@components/common/typography/WSubTitle';
 import useMutateDispensingExpenses from '@hooks/apis/preparation/proceed/hooks/useMutateDispensingExpenses';
 import { useDebounceFn } from 'ahooks';
-import { commaRemove } from '@utils/formatNumber';
+import { commaAdd, commaRemove } from '@utils/formatNumber';
 
 interface DispensingExpensesModalType extends ModalType {
   id: string;
@@ -70,7 +70,7 @@ const DispensingExpensesModal = (props: DispensingExpensesModalType) => {
   /**DispensingExpensesModal 라이브 사이클 업데이트 -> info payment */
   useEffect(() => {
     setInfo({
-      payment: medicineCost ? String(medicineCost) + '원' : '0원',
+      payment: medicineCost ? commaAdd(String(medicineCost)) + '원' : '0원',
     });
   }, [medicineCost]);
 
