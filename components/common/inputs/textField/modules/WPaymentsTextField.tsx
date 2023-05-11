@@ -11,13 +11,17 @@ const WPaymentsTextField = (props: WTextFieldModulesType) => {
   const valid = useValidation();
 
   const onFocusIn = useCallback(() => {
-    const last = state.slice(0, -1);
-    setState(last, keyId);
+    if (state !== '') {
+      const last = state.slice(0, -1);
+      setState(last, keyId);
+    }
   }, [keyId, setState, state]);
 
   const onFocusOut = useCallback(() => {
-    const value = state + prefix;
-    setState(value, keyId);
+    if (state !== '') {
+      const value = state + prefix;
+      setState(value, keyId);
+    }
   }, [keyId, setState, state]);
 
   const onValid = useCallback(
@@ -78,7 +82,7 @@ const WPaymentsTextField = (props: WTextFieldModulesType) => {
       focusOutEvent={onFocusOut}
       error={err}
       disabled={disabled}
-      placeholder="조제비를 입력해 주세요."
+      placeholder="0원"
       onKeyDown={props.onKeyDown}
       sx={{
         '& .MuiOutlinedInput-input': {
