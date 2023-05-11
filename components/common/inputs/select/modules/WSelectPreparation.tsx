@@ -8,7 +8,7 @@ const WSelectPreparation = (props: {
 }) => {
   const option: OptionType[] = [
     { id: 'COMPLETED', name: '조제 완료' },
-    { id: 'REFUSE', name: '취소' },
+    { id: 'REFUSE', name: '조제 거절' },
   ];
   const [state, setState] = useState<string>(option[0].id);
   const onSelectOption = (event: SelectChangeEvent) => {

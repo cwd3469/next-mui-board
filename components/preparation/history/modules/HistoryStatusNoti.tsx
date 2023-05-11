@@ -2,7 +2,6 @@ import WStatusNoti, {
   WNotiBox,
 } from '@components/common/typography/WStatusNoti';
 import { Grid } from '@mui/material';
-import { commaAdd } from '@utils/formatNumber';
 
 const HistoryStatusNoti = (props: {
   totalDeliveryPrepareCount: number;
@@ -12,7 +11,7 @@ const HistoryStatusNoti = (props: {
     <Grid container gap="16px" alignItems="center">
       <WStatusNoti
         counting={String(props.totalMedicineCompleteCount)}
-        title="오늘의 조제 완료 건수"
+        title="조제 완료 건수"
         units="건"
       />
       <WNotiBox />
