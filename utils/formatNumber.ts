@@ -9,9 +9,12 @@ const {
 
 /**  화폐 형식 변경 **/
 export const commaAdd = (value: string) => {
-  let num = Number(value.replaceAll(',', ''));
-  const formatValue = num.toLocaleString('ko-KR');
-  return formatValue;
+  if (value !== '') {
+    let num = Number(value.replaceAll(',', ''));
+    const formatValue = num.toLocaleString('ko-KR');
+    return formatValue;
+  }
+  return '';
 };
 
 /** 화폐 형식 변경 삭제*/
