@@ -164,13 +164,17 @@ const HistoryTable = (props: { data: HistoryInterface[] }): JSX.Element => {
       headerName: '요청자 정보',
       width: 120,
       renderCell: (prams) => {
-        const { medicineStatus, receiveData } = prams.row;
+        const { medicineStatus, receiveData, deliveryStatus } = prams.row;
 
         return (
           <GridButton
             onClick={() => requesterOnOff(true, receiveData)}
             startIcon={<UserIcon />}
-            disabled={medicineStatus === 'REFUSE' ? true : false}
+            disabled={
+              medicineStatus === 'REFUSE' || deliveryStatus === 'COMPLETED'
+                ? true
+                : false
+            }
           >
             요청자 정보
           </GridButton>
