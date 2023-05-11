@@ -12,6 +12,7 @@ import {
   useState,
 } from 'react';
 import { UserInfoContext } from './UserInfoContext';
+import ErrorModal from '@components/auth/signup/modal/ErrorModal';
 
 interface AxiosContextType {
   progressBarDisabled: boolean;
@@ -92,14 +93,16 @@ export function AxiosProvider(props: { children: JSX.Element }) {
           setProgressBarOn(false);
           setProgressBarDisabled(false);
         }, 200);
-        const status = error.response.status;
-        // if (status === 498) {
-        //   router.replace('/signin');
-        // } else if (status >= 500) {
-        //   router.replace('/signin');
-        // }
-        if (signOut) {
-          signOut();
+
+        if (router.pathname !== '/signin') {
+          const status = error.response.status;
+          if (status === 498) {
+            if (signOut) {
+              signOut();
+            }
+            return;
+          }
+          setOpen(true);
         }
 
         return Promise.reject(error);
@@ -129,17 +132,19 @@ export function AxiosProvider(props: { children: JSX.Element }) {
           <WProgressBarCircular />
         </Backdrop>
       )}
-      {/* {open ? (
+      {open ? (
         <ErrorModal
           open={open}
           handleClose={() => setOpen(false)}
           event={() => {
-            instance;
+            if (signOut) {
+              signOut();
+            }
           }}
         />
       ) : (
         <></>
-      )} */}
+      )}
     </AxiosContext.Provider>
   );
 }
