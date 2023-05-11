@@ -20,7 +20,6 @@ export const commaAdd = (value: string) => {
 /** 화폐 형식 변경 삭제*/
 export const commaRemove = (value: string) => {
   const txt = value.replace('원', '').replace(',', '').replace(',', '');
-
   return txt;
 };
 

@@ -11,13 +11,13 @@ const ProceedStatusNoti = (props: {
     <Grid container gap="16px" alignItems="center">
       <WStatusNoti
         counting={String(props.totalInPrepareCount)}
-        title="현제 조제 중 건수"
+        title="현재 조제 중 건수"
         units="건"
       />
       <WNotiBox />
       <WStatusNoti
         counting={String(props.totalOutstandingCount)}
-        title="현제 결제 대기 건수"
+        title="현재 결제 대기 건수"
         units="건"
       />
     </Grid>
