@@ -17,7 +17,7 @@ const HistoryStatusNoti = (props: {
       <WNotiBox />
       <WStatusNoti
         counting={String(props.totalDeliveryPrepareCount)}
-        title="현제 배송 접수 전"
+        title="현재 배송 접수 전"
         units="건"
       />
     </Grid>

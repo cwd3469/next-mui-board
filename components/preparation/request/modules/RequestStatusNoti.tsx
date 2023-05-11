@@ -8,7 +8,7 @@ const RequestStatusNoti = (props: { totalElements: number }) => {
     <Grid container gap="16px" alignItems="center">
       <WStatusNoti
         counting={String(props.totalElements)}
-        title="현제 조제 요청 건수"
+        title="현재 조제 요청 건수"
         units="건"
       />
       <WNotiBox />
