@@ -24,6 +24,13 @@ export const securityPut = (dto: SecurityDto) => {
     headers: {
       Authorization: accessToken,
     },
-    data:dto
+    data: dto,
+  });
+};
+
+export const errorTestUrl = () => {
+  return instance({
+    method: 'get',
+    url: `/auth/api/v2/errorTestUrl`,
   });
 };

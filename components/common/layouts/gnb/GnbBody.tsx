@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { WLayout, Logo } from '../WLayout';
 import GnbTimer from './GnbTimer';
 import GnbMyInfo from './GnbMyInfo';
@@ -12,6 +12,7 @@ import usePrepareReceptionChange, {
 } from '@hooks/apis/preparation/request/hooks/usePrepareReceptionChange';
 import GnbTreatStateModal from './modals/GnbTreatStateModal';
 import { UserInfoContext } from '@hooks/contexts/user/UserInfoContext';
+import { errorTestUrl } from '@hooks/apis/auth/security';
 
 interface GnbBodyType {
   children: JSX.Element | JSX.Element[] | React.ReactNode;
@@ -66,7 +67,14 @@ const GnbBody = (props: GnbBodyType) => {
             <>isError...</>
           )}
           {userInfo?.hasExpiredTime ? <GnbTimer /> : <></>}
-
+          {/* <Button
+            variant="contained"
+            onClick={async () => {
+              const data = await errorTestUrl();
+            }}
+          >
+            error
+          </Button> */}
           <GnbMyInfo disabled={disabled} />
         </GnbNavList>
       </FlexSpaceBetween>
