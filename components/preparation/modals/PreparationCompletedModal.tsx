@@ -1,7 +1,7 @@
 import { ModalType } from '@components/common/layouts/gnb/types';
 import WConfirm from '@components/common/modals/WConfirm';
 import useMutateDispensingExpenses from '@hooks/apis/preparation/proceed/hooks/useMutateDispensingExpenses';
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useDebounceFn } from 'ahooks';
 import FailedChangeModal from './FailedChangeModal';
 import { useState } from 'react';
@@ -42,21 +42,21 @@ const PreparationCompletedModal = (props: PreparationCompletedModalType) => {
         <Typography
           variant="h5"
           color="#666"
-          fontWeight="400"
+          fontWeight="500"
           textAlign="center"
           sx={{ wordBreak: 'keep-all' }}
         >
-          {`해당 조제 내용을 조제 완료로 상태를 변경하시겠습니까?. `}
+          {`조제비를 확인해 주세요. `}
         </Typography>
         <Typography
-          variant="h5"
           color="#666"
-          fontWeight="400"
           textAlign="center"
-          sx={{ wordBreak: 'keep-all' }}
+          sx={{ wordBreak: 'keep-all', fontSize: '22px' }}
+          width="230px"
         >
-          {`완료된 조제 내용은 조제 내역 페이지에서 확인이 가능합니다.`}
+          {`조제 완료상태가 되면 조제비 수정이 불가합니다.`}
         </Typography>
+        <Box height="25px" />
         <FailedChangeModal
           open={failedOpen}
           handleClose={() => setFailedOpen(false)}
