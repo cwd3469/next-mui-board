@@ -109,7 +109,7 @@ export class Validation {
     this.regExpFile = /pdf/i;
 
     /**약국 이름 받기*/
-    this.regPharmacyName = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,15}$/;
+    this.regPharmacyName = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{1,15}$/;
     /**상세 주소 받기*/
     this.regAddressDetail = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,15}$/;
   }
