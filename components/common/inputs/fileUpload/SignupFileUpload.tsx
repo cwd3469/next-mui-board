@@ -73,8 +73,9 @@ const SignupFileUpload = (props: SignupFileUploadProps) => {
           fileUploadHook.imageSrc.map((img, inx) => {
             return (
               <Stack key={inx}>
-                <Box height="22px" />
+                <Box height="12px" />
                 <FileName>{img.name}</FileName>
+                <Box height="8px" />
                 <ImageView
                   inx={inx}
                   img={img}
@@ -86,8 +87,9 @@ const SignupFileUpload = (props: SignupFileUploadProps) => {
           })
         ) : (
           <Stack>
-            <Box height="22px" />
+            <Box height="12px" />
             <FileName className="non-file">{placeholder}</FileName>
+            <Box height="8px" />
             <SignupFileLadel
               className={fileUploadHook.isDragging ? 'drag-in' : 'drag-out'}
               ref={fileUploadHook.dragRef}

@@ -60,7 +60,7 @@ export const FileName = styled(Typography)(({ theme }) => ({
   textOverflow: 'ellipsis',
   overflow: 'hidden',
   width: '200px',
-  height: '24px',
+  height: '20px',
   whiteSpace: 'nowrap',
   fontWeight: '100',
   color: '#333',
