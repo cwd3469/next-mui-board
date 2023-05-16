@@ -10,7 +10,7 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '조건에 맞는 이름을 입력해 주세요.',
+        msg: '이름을 정확히 입력해 주세요.',
         boo: true,
       },
       keyId,
@@ -32,8 +32,12 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
       if (value.length <= 5) {
         if (valid.regNameKo.test(value)) {
           setState(value, keyId);
-          if (value.length >= 2) {
-            passMsg();
+          if (valid.regExpAdminNameVerify.test(value)) {
+            if (value.length < 2) {
+              errMsg();
+            } else {
+              passMsg();
+            }
           } else {
             errMsg();
           }
@@ -42,7 +46,14 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
         }
       }
     },
-    [errMsg, keyId, passMsg, setState, valid.regNameKo],
+    [
+      errMsg,
+      keyId,
+      passMsg,
+      setState,
+      valid.regExpAdminNameVerify,
+      valid.regNameKo,
+    ],
   );
 
   return (
@@ -51,7 +62,7 @@ const WAdminNameTextField = (props: WTextFieldModulesType) => {
       onChange={onChangeInfo}
       error={err}
       disabled={disabled}
-      placeholder="담당자 이름을 입력 해주세요."
+      placeholder="한글 2~5자리"
       onKeyDown={props.onKeyDown}
     />
   );

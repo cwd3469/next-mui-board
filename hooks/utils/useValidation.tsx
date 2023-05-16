@@ -32,6 +32,7 @@ export class Validation {
   regExpFile: RegExp;
   regExFaxNumber: RegExp;
   regNameKo: RegExp;
+  regExpAdminNameVerify: RegExp;
   regPharmacyName: RegExp;
   regAddressDetail: RegExp;
   regRefusalDispensing: RegExp;
@@ -61,7 +62,7 @@ export class Validation {
 
     /**한글만 입력 받기 */
     this.regNameKo = /^[ㄱ-ㅎ|가-힣]{0,5}$/;
-
+    this.regExpAdminNameVerify = /^[가-힣]+$/;
     /**핸드폰 입력 확인 정규식*/
     this.regExpNum = /[^0-9]/g;
 
