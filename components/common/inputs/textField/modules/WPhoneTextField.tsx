@@ -10,7 +10,7 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '조건에 맞는 약국 전화번호를 입력해 주세요',
+        msg: '약국 전화번호는 숫자 8~12자리 입니다.',
         boo: true,
       },
       keyId,
@@ -33,7 +33,6 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
         if (valid.regExpPhoneNumber.test(txt)) {
           const hyphen = phoneFormat(txt);
           const unHyphen = mobileFormatOff(txt);
-
           setState(hyphen, keyId);
           if (unHyphen.length >= 8 && unHyphen.length <= 13) {
             passMsg();
@@ -41,8 +40,6 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
             errMsg();
           }
           return;
-        } else {
-          errMsg();
         }
       }
     },
@@ -53,7 +50,7 @@ const WPhoneTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={state}
       onChange={onChangeInfo}
-      placeholder={'약국 전화번호를 입력해주세요.'}
+      placeholder={'숫자 8~12자리'}
       disabled={disabled}
       error={err}
       onKeyDown={onKeyDown}
