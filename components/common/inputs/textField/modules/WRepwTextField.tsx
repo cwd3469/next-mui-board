@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { WTextFieldModulesType } from '../type';
 import useValidation from '@hooks/utils/useValidation';
 import WTextField from '../index';
@@ -14,7 +14,7 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '비밀번호가 일치 하지 않습니다.',
+        msg: '비밀번호가 일치하지 않아 다시 확인해 주세요.',
         boo: true,
       },
       keyId,
@@ -47,15 +47,15 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 16) {
-        if (valid.regExpPassword.test(value)) {
-          setState(value, keyId);
+        setState(value, keyId);
+        if (valid.regPwFormChack.test(value)) {
           onFocusOut(value);
         } else {
           errMsg();
         }
       }
     },
-    [errMsg, keyId, onFocusOut, setState, valid.regExpPassword],
+    [errMsg, keyId, onFocusOut, setState, valid.regPwFormChack],
   );
 
   return (
@@ -64,11 +64,10 @@ const WRepwTextField = (props: WRepwTextFieldType) => {
       value={stateTxt}
       onChange={onChangeInfo}
       onKeyDown={props.onKeyDown}
-      focusOutEvent={() => onFocusOut(stateTxt)}
       disabled={disabled}
       error={err}
       maxRows={16}
-      placeholder="비밀번호를 다시 입력해 주세요."
+      placeholder="비밀번호 재입력"
     />
   );
 };

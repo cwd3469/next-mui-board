@@ -27,7 +27,6 @@ export class Validation {
   regExpPhoneEight: RegExp;
   regExpBusinessNum: RegExp;
   regExpId: RegExp;
-  regExpPassword: RegExp;
   regPwFormChack: RegExp;
   regExpImage: RegExp;
   regExpFile: RegExp;
@@ -42,6 +41,13 @@ export class Validation {
   regExpBirthDateOn: RegExp;
 
   constructor() {
+    /** 유저 아이디 정규식*/
+    this.regExpId = /^[a-z0-9]{4,20}$/;
+
+    /** 비밀번호 정규식 전체 형식 체크*/
+    this.regPwFormChack =
+      /^((?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]))[0-9a-zA-Z!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]{8,16}$/;
+
     // 인증 번호 유효성 정규식
     this.regExAuthNumder = /^[0-9-]{0,6}$/;
 
@@ -55,17 +61,6 @@ export class Validation {
 
     /**한글만 입력 받기 */
     this.regNameKo = /^[ㄱ-ㅎ|가-힣]{0,5}$/;
-
-    /** 유저 아이디 정규식*/
-    this.regExpId = /^[a-z0-9]{4,20}$/;
-
-    /** 비밀번호 정규식 최대 16자의 영문 대소문자, 숫자, 특수문자 입력 정규식*/
-    this.regExpPassword =
-      /^[a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]{0,16}$/;
-
-    /** 비밀번호 정규식 전체 형식 체크*/
-    this.regPwFormChack =
-      /^((?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]))[0-9a-zA-Z!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]{8,16}$/;
 
     /**핸드폰 입력 확인 정규식*/
     this.regExpNum = /[^0-9]/g;
