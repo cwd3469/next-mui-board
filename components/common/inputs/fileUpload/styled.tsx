@@ -25,6 +25,7 @@ export const SignupFileLadel = styled('label')`
   text-align: center;
   flex-direction: column;
   gap: 10px;
+  background-color: #f8f8f8;
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='6' ry='6' stroke='%23848484FF' stroke-width='1' stroke-dasharray='6%2c 4' stroke-dashoffset='3' stroke-linecap='square'/%3e%3c/svg%3e");
   &.drag-in {
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='6' ry='6' stroke='%234AC6FFFF' stroke-width='1' stroke-dasharray='6%2c 4' stroke-dashoffset='3' stroke-linecap='square'/%3e%3c/svg%3e");
@@ -54,6 +55,19 @@ const DeleteBtn = styled(Button)(({ theme }) => ({
     backgroundColor: '#999',
   },
 }));
+export const FileName = styled(Typography)(({ theme }) => ({
+  ...theme.typography.body1,
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  width: '200px',
+  height: '24px',
+  whiteSpace: 'nowrap',
+  fontWeight: '100',
+  color: '#333',
+  '&.non-file': {
+    color: '#ccc',
+  },
+}));
 
 export const DefaltInfo = (props: { sx?: SxProps<Theme> }) => {
   return (
@@ -73,18 +87,15 @@ export const DefaltInfo = (props: { sx?: SxProps<Theme> }) => {
         lineHeight={'1.3'}
         width="100%"
       >
-        파일 형식 JPG,PNG,PDF
+        파일 형식 JPGE, JPG, PNG, PDF
       </Typography>
       <UploadBtn className="uploadBtn">
         <Image src={upload} alt="업로드" width="15px" />
         <Typography
-          variant="caption"
+          variant="body1"
           color="#333"
           lineHeight={'1'}
-          sx={{
-            fontSize: '12px',
-            fontWeight: '500',
-          }}
+          fontWeight="400"
         >
           파일 등록하기
         </Typography>
@@ -108,11 +119,15 @@ export const ImageView = (props: {
       key={inx}
       sx={{
         position: 'relative',
-        width: '240px',
-        height: '115px',
         borderRadius: '6px',
         border: '1px solid #eee',
         overflow: 'hidden',
+        height: '300px',
+        width: '200px',
+        '& .wimageBox': {
+          height: '300px',
+          width: '200px',
+        },
         ...sx,
       }}
     >
