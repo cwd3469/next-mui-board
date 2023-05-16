@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import useValidation from '@hooks/utils/useValidation';
 import { WTextFieldModulesType } from '../type';
 import WTextField from '../index';
-import { commaRemove, mobileFormatOff } from '@utils/formatNumber';
+import { mobileFormatOff } from '@utils/formatNumber';
 
 const WBusinessNumTextField = (props: WTextFieldModulesType) => {
   const { state, setState, keyId, err, setErr, disabled } = props;
@@ -12,7 +12,7 @@ const WBusinessNumTextField = (props: WTextFieldModulesType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '10자리 사업자 등록 번호를 입력해 주세요.',
+        msg: '사업자 등록 번호는 숫자 10자리 입니다.',
         boo: true,
       },
       keyId,
@@ -63,7 +63,7 @@ const WBusinessNumTextField = (props: WTextFieldModulesType) => {
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      placeholder={'사업자 등록번호를 입력해 주세요.'}
+      placeholder={'숫자 10자리'}
       disabled={disabled}
       error={err}
       onKeyDown={props.onKeyDown}
