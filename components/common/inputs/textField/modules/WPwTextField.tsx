@@ -10,7 +10,7 @@ const WPwTextField = (props: WTextFieldModulesType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '조건에 맞는 비밀번호를 입력해 주세요.',
+        msg: '영문 대소문자/숫자/특수문자 조합으로 8~16자리를 입력해 주세요.',
         boo: true,
       },
       keyId,
@@ -26,30 +26,19 @@ const WPwTextField = (props: WTextFieldModulesType) => {
     );
   }, [keyId, setErr]);
 
-  const onFocusOut = useCallback(
-    (value: string) => {
-      if (valid.regPwFormChack.test(value)) {
-        passMsg();
-      } else {
-        errMsg();
-      }
-    },
-    [errMsg, passMsg, valid.regPwFormChack],
-  );
-
   const onChangeInfo = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 16) {
-        if (valid.regExpPassword.test(value)) {
-          setState(value, keyId);
-          onFocusOut(value);
+        setState(value, keyId);
+        if (valid.regPwFormChack.test(value)) {
+          passMsg();
         } else {
           errMsg();
         }
       }
     },
-    [errMsg, keyId, onFocusOut, setState, valid.regExpPassword],
+    [errMsg, keyId, passMsg, setState, valid.regPwFormChack],
   );
 
   return (
@@ -57,11 +46,10 @@ const WPwTextField = (props: WTextFieldModulesType) => {
       type="password"
       value={stateTxt}
       onChange={onChangeInfo}
-      focusOutEvent={() => onFocusOut(stateTxt)}
       disabled={disabled}
       error={err}
       maxRows={16}
-      placeholder="최소 8자리 이상 영어 대문자, 소문자, 숫자, 특수문자 중 3종류이상 포함해 주세요."
+      placeholder="영어 대소문자,숫자,특수문자 조합 8~16자리"
       onKeyDown={props.onKeyDown}
     />
   );

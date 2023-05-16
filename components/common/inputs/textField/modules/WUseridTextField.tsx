@@ -22,7 +22,7 @@ const WUseridTextField = (props: WTextFieldModulesType) => {
     () =>
       setErr(
         {
-          msg: '조건에 맞는 아이디를 입력해주세요.',
+          msg: '영문 소문자 또는 숫자 조합으로 4~20자리를 입력해 주세요.',
           boo: true,
         },
         keyId,
@@ -32,44 +32,21 @@ const WUseridTextField = (props: WTextFieldModulesType) => {
   const onChangeInfo = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value: txt } = e.target;
-      if (txt.length <= 20) {
-        if (valid.regExpId.test(txt)) {
-          setState(txt, keyId);
-          if (valid.regExpIdEnglishOnly.test(txt)) {
-            errorMsg();
-            return;
-          }
-          if (valid.regExpIdNumberOnly.test(txt)) {
-            errorMsg();
-            return;
-          }
-          if (valid.regExpIdCheck.test(txt)) {
-            successMsg();
-          } else {
-            errorMsg();
-          }
-        } else {
-          errorMsg();
-        }
+      setState(txt, keyId);
+      if (valid.regExpId.test(txt)) {
+        successMsg();
+      } else {
+        errorMsg();
       }
     },
-    [
-      errorMsg,
-      keyId,
-      setState,
-      successMsg,
-      valid.regExpId,
-      valid.regExpIdCheck,
-      valid.regExpIdEnglishOnly,
-      valid.regExpIdNumberOnly,
-    ],
+    [errorMsg, keyId, setState, successMsg, valid.regExpId],
   );
 
   return (
     <WTextField
       value={stateTxt}
       onChange={onChangeInfo}
-      placeholder={'4자 이상의 영문 소문자 또는 숫자를 입력해 주세요.'}
+      placeholder={'영어 소문자 또는 숫자 조합 4~20자리'}
       disabled={disabled ? disabled : false}
       error={err}
       onKeyDown={props.onKeyDown}

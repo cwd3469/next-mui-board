@@ -10,7 +10,7 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '조건에 맞는 약국명을 입력해 주세요.',
+        msg: '약국명은 영문 대소문자/한글/숫자 조합으로 1~15자리 입니다.',
         boo: true,
       },
       keyId,
@@ -30,13 +30,9 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       if (value.length <= 15) {
+        setState(value, keyId);
         if (valid.regPharmacyName.test(value)) {
-          setState(value, keyId);
-          if (value.length > 3 && value.length <= 15) {
-            passMsg();
-          } else {
-            errMsg();
-          }
+          passMsg();
         } else {
           errMsg();
         }
@@ -52,7 +48,7 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
       focusInEvent={passMsg}
       error={err}
       disabled={disabled}
-      placeholder="약국명를 입력해 주세요."
+      placeholder="한글, 숫자, 영어 대소문자 조합 1~15자리"
       onKeyDown={props.onKeyDown}
     />
   );

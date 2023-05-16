@@ -28,10 +28,43 @@ export const mobileFormat = (text: string) => {
   return text.replace(regExpNum, '').replace(regExpMobile, `$1-$2-$3`);
 };
 /** 전화번호 형식 변경*/
-export const phoneFormat = (text: string) => {
-  return text.length > 8
-    ? text.replace(/[^0-9]/g, '').replace(regExpPhone, `$1-$2-$3`)
-    : text.replace(/[^0-9]/g, '').replace(regExpPhoneEight, `$1-$2`);
+export const phoneFormat = (value: string) => {
+  let formatvalue = '';
+  const unHyphen = mobileFormatOff(value);
+  switch (unHyphen.length) {
+    case 12:
+      formatvalue = value
+        .replace(/[^0-9]/g, '')
+        .replace(/(\d{4})(\d{4})(\d{4})/, '$1-$2-$3');
+      break;
+    case 11:
+      formatvalue = value
+        .replace(/[^0-9]/g, '')
+        .replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+      break;
+    case 9:
+      formatvalue = value
+        .replace(/[^0-9]/g, '')
+        .replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3');
+      break;
+    case 8:
+      formatvalue = value
+        .replace(/[^0-9]/g, '')
+        .replace(/(\d{4})(\d{4})/, '$1-$2');
+      break;
+    default:
+      formatvalue = unHyphen.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+      break;
+  }
+
+  if (unHyphen.indexOf('02') === 0) {
+    if (unHyphen.length === 9)
+      formatvalue = unHyphen.replace(/(\d{2})(\d{3})(\d{4})/, '$1-$2-$3');
+    if (unHyphen.length === 10)
+      formatvalue = unHyphen.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+  }
+
+  return formatvalue;
 };
 /** 전화번호 && 휴대폰 형식 해제*/
 export const mobileFormatOff = (text: string) => {

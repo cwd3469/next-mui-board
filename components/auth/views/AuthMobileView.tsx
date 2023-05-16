@@ -34,7 +34,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
               <WTextField
                 value={props.mobileValue}
                 onChange={props.mobileOnChange}
-                placeholder={'숫자 11자리를 입력해 주세요.'}
+                placeholder={'휴대폰 번호'}
                 error={props.mobileError}
                 disabled={props.mobileDisabled}
                 onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -65,7 +65,7 @@ const AuthMobileView = (props: AuthMobileViewType) => {
             value={props.authValue}
             onChange={props.authOnChange}
             disabled={props.authDisabled}
-            placeholder={'인증번호 6자리를 입력해 주세요.'}
+            placeholder={'인증번호'}
             onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
               if (e.key === 'Enter') {
                 if (!props.numDisabled) {
@@ -86,7 +86,6 @@ const AuthMobileView = (props: AuthMobileViewType) => {
                   time={3}
                   action={props.timerActice}
                   resend={onClickAuthNumSend.run}
-                
                 />
               ) : (
                 ''

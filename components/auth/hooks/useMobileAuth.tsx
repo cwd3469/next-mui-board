@@ -42,7 +42,7 @@ export default function useMobileAuth() {
       const passMsg = () => setMobileError({ msg: '', boo: false });
       const errMsg = () =>
         setMobileError({
-          msg: ' 휴대폰 번호를 입력해 주세요.',
+          msg: '11자리의 휴대폰 번호를 입력해 주세요',
           boo: true,
         });
 

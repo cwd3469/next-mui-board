@@ -27,15 +27,12 @@ export class Validation {
   regExpPhoneEight: RegExp;
   regExpBusinessNum: RegExp;
   regExpId: RegExp;
-  regExpIdEnglishOnly: RegExp;
-  regExpIdNumberOnly: RegExp;
-  regExpIdCheck: RegExp;
-  regExpPassword: RegExp;
   regPwFormChack: RegExp;
   regExpImage: RegExp;
   regExpFile: RegExp;
   regExFaxNumber: RegExp;
   regNameKo: RegExp;
+  regExpAdminNameVerify: RegExp;
   regPharmacyName: RegExp;
   regAddressDetail: RegExp;
   regRefusalDispensing: RegExp;
@@ -45,6 +42,21 @@ export class Validation {
   regExpBirthDateOn: RegExp;
 
   constructor() {
+    /** 유저 아이디 정규식*/
+    this.regExpId = /^[a-z0-9]{4,20}$/;
+
+    /** 비밀번호 정규식 전체 형식 체크*/
+    this.regPwFormChack =
+      /^((?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]))[0-9a-zA-Z!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]{8,16}$/;
+
+    /**한글만 입력 받기 */
+    this.regNameKo = /^[ㄱ-ㅎ|가-힣]{0,5}$/;
+    this.regExpAdminNameVerify = /^[가-힣]+$/;
+
+    /** 이메일 체크 정규식*/
+    this.regExpEmail =
+      /^[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]([-_.]?[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s])*@[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]([-_.]?[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s])*\.[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]{2,}$/i;
+
     // 인증 번호 유효성 정규식
     this.regExAuthNumder = /^[0-9-]{0,6}$/;
 
@@ -56,29 +68,8 @@ export class Validation {
     this.regExpPhone = /^(\d{2,4})(\d{3,4})(\d{4})$/;
     this.regExpPhoneEight = /^(\d{4})(\d{4})$/;
 
-    /**한글만 입력 받기 */
-    this.regNameKo = /^[ㄱ-ㅎ|가-힣]{0,5}$/;
-
-    /** 유저 아이디 정규식*/
-    this.regExpId = /^[a-z0-9]{0,20}$/;
-    this.regExpIdEnglishOnly = /^[a-z]*$/;
-    this.regExpIdNumberOnly = /^[0-9]*$/;
-    this.regExpIdCheck = /^[a-z0-9]{4,20}$/;
-
-    /** 비밀번호 정규식 최대 16자의 영문 대소문자, 숫자, 특수문자 입력 정규식*/
-    this.regExpPassword =
-      /^[a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]{0,16}$/;
-
-    /** 비밀번호 정규식 전체 형식 체크*/
-    this.regPwFormChack =
-      /^((?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]))[0-9a-zA-Z!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]{8,16}$/;
-
     /**핸드폰 입력 확인 정규식*/
     this.regExpNum = /[^0-9]/g;
-
-    /** 이메일 체크 정규식*/
-    this.regExpEmail =
-      /^[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]([-_.]?[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s])*@[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]([-_.]?[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s])*\.[a-zA-Z]{2,3}$/i;
 
     /**핸드폰번호 전체 형식 정규식*/
     this.regExpMobile = /^(^010)(\d{3,4})(\d{4})$/;
@@ -118,7 +109,7 @@ export class Validation {
     this.regExpFile = /pdf/i;
 
     /**약국 이름 받기*/
-    this.regPharmacyName = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,15}$/;
+    this.regPharmacyName = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{1,15}$/;
     /**상세 주소 받기*/
     this.regAddressDetail = /^[a-zA-Z0-9|ㄱ-ㅎ|가-힣\s]{0,15}$/;
   }
@@ -134,7 +125,7 @@ export class Validation {
         });
       } else {
         error({
-          msg: '숫자만 입력해 주세요.',
+          msg: '6자리의 인증 번호를 입력해 주세요.',
           boo: true,
         });
       }
