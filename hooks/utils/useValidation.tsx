@@ -27,9 +27,6 @@ export class Validation {
   regExpPhoneEight: RegExp;
   regExpBusinessNum: RegExp;
   regExpId: RegExp;
-  regExpIdEnglishOnly: RegExp;
-  regExpIdNumberOnly: RegExp;
-  regExpIdCheck: RegExp;
   regExpPassword: RegExp;
   regPwFormChack: RegExp;
   regExpImage: RegExp;
@@ -60,10 +57,7 @@ export class Validation {
     this.regNameKo = /^[ㄱ-ㅎ|가-힣]{0,5}$/;
 
     /** 유저 아이디 정규식*/
-    this.regExpId = /^[a-z0-9]{0,20}$/;
-    this.regExpIdEnglishOnly = /^[a-z]*$/;
-    this.regExpIdNumberOnly = /^[0-9]*$/;
-    this.regExpIdCheck = /^[a-z0-9]{4,20}$/;
+    this.regExpId = /^[a-z0-9]{4,20}$/;
 
     /** 비밀번호 정규식 최대 16자의 영문 대소문자, 숫자, 특수문자 입력 정규식*/
     this.regExpPassword =
