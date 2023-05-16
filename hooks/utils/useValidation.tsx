@@ -125,7 +125,7 @@ export class Validation {
         });
       } else {
         error({
-          msg: '숫자만 입력해 주세요.',
+          msg: '6자리의 인증 번호를 입력해 주세요.',
           boo: true,
         });
       }
