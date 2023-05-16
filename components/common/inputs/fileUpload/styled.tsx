@@ -74,11 +74,12 @@ export const DefaltInfo = (props: { sx?: SxProps<Theme> }) => {
     <Stack alignItems="center" gap="10px" sx={props.sx}>
       <Typography
         className="fileDrag"
-        variant="body1"
+        variant="body2"
         color="#666"
         lineHeight={'1'}
+        fontWeight="500"
       >
-        파일을 드래그 해보세요.
+        파일을 첨부해 주세요.
       </Typography>
       <Typography
         className="fileImage"
