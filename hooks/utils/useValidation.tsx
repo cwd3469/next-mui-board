@@ -49,6 +49,14 @@ export class Validation {
     this.regPwFormChack =
       /^((?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]))[0-9a-zA-Z!@#$%^&*()\-_=+;:'",<.>/?₩`~{}\[\]]{8,16}$/;
 
+    /**한글만 입력 받기 */
+    this.regNameKo = /^[ㄱ-ㅎ|가-힣]{0,5}$/;
+    this.regExpAdminNameVerify = /^[가-힣]+$/;
+
+    /** 이메일 체크 정규식*/
+    this.regExpEmail =
+      /^[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]([-_.]?[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s])*@[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]([-_.]?[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s])*\.[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]{2,}$/i;
+
     // 인증 번호 유효성 정규식
     this.regExAuthNumder = /^[0-9-]{0,6}$/;
 
@@ -60,15 +68,8 @@ export class Validation {
     this.regExpPhone = /^(\d{2,4})(\d{3,4})(\d{4})$/;
     this.regExpPhoneEight = /^(\d{4})(\d{4})$/;
 
-    /**한글만 입력 받기 */
-    this.regNameKo = /^[ㄱ-ㅎ|가-힣]{0,5}$/;
-    this.regExpAdminNameVerify = /^[가-힣]+$/;
     /**핸드폰 입력 확인 정규식*/
     this.regExpNum = /[^0-9]/g;
-
-    /** 이메일 체크 정규식*/
-    this.regExpEmail =
-      /^[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]([-_.]?[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s])*@[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s]([-_.]?[0-9a-zA-Z|ㄱ-ㅎ|가-힣\s])*\.[a-zA-Z]{2,3}$/i;
 
     /**핸드폰번호 전체 형식 정규식*/
     this.regExpMobile = /^(^010)(\d{3,4})(\d{4})$/;
