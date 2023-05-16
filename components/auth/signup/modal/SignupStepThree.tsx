@@ -184,6 +184,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                 onUploadFile={(file) =>
                   signup.setInInfo(file, 'businessLicense')
                 }
+                placeholder="사업자 등록증 파일명"
               />
             </ItemInput>
             <ItemInput
@@ -199,6 +200,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                 onUploadFile={(file) =>
                   signup.setInInfo(file, 'pharmacistLicense')
                 }
+                placeholder="약사 면허증 파일명"
               />
             </ItemInput>
             <ItemInput
@@ -212,6 +214,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                   signup.setInInfo(undefined, 'bankbookCopy')
                 }
                 onUploadFile={(file) => signup.setInInfo(file, 'bankbookCopy')}
+                placeholder="통장사본 파일명"
               />
             </ItemInput>
           </Grid>

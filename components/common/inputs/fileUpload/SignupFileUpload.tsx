@@ -2,17 +2,18 @@
 import useFileUpload from '@hooks/utils/fileUpload/useFileUpload';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { blobToFile, forinArr, resizeFileCompression } from '@utils/file';
-import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
-import { DefaltInfo, SignupFileLadel, ImageView } from './styled';
+import { ChangeEvent, useCallback, useRef } from 'react';
+import { DefaltInfo, SignupFileLadel, ImageView, FileName } from './styled';
 
-export interface HospitalImgPickerType {
+interface SignupFileUploadProps {
   onDeleteLogoUid: () => void;
   onUploadFile: (file: File) => void;
   name: string;
+  placeholder?: string;
 }
 
-const SignupFileUpload = (props: HospitalImgPickerType) => {
-  const { onDeleteLogoUid, onUploadFile, name } = props;
+const SignupFileUpload = (props: SignupFileUploadProps) => {
+  const { onDeleteLogoUid, onUploadFile, name, placeholder } = props;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onChangeFileLoad = useCallback(
@@ -72,41 +73,21 @@ const SignupFileUpload = (props: HospitalImgPickerType) => {
           fileUploadHook.imageSrc.map((img, inx) => {
             return (
               <Stack key={inx}>
-                <Typography
-                  variant="body1"
-                  fontWeight={'100'}
-                  color="#333"
-                  sx={{
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                    width: '200px',
-                    height: '20px',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {img.name}
-                </Typography>
                 <Box height="22px" />
+                <FileName>{img.name}</FileName>
                 <ImageView
                   inx={inx}
                   img={img}
                   file={fileUploadHook.files[0]}
                   deleteImg={onDeleteFile}
-                  sx={{
-                    height: '300px',
-                    width: '200px',
-                    '& .wimageBox': {
-                      height: '300px',
-                      width: '200px',
-                    },
-                  }}
                 />
               </Stack>
             );
           })
         ) : (
           <Stack>
-            <Box height="40px" />
+            <Box height="22px" />
+            <FileName className="non-file">{placeholder}</FileName>
             <SignupFileLadel
               className={fileUploadHook.isDragging ? 'drag-in' : 'drag-out'}
               ref={fileUploadHook.dragRef}
