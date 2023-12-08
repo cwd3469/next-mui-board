@@ -1,7 +1,3 @@
-# What Ails You Pharmacy Client
-
-## 개요
-
 ## 기술스택
 
 - JavaScript(ES6)
