@@ -72,7 +72,7 @@ export class CodeMsgBundle {
       case '9902':
         return '서비스에서 에러가 발생했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       case '9999':
-        return '어디아파 서비스에서 장애가 발생했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+        return '디노 서비스에서 장애가 발생했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
 
       /** auth-server code [0100~0199] **/
 
@@ -84,18 +84,14 @@ export class CodeMsgBundle {
       /* hospital account [20~29] */
       case '0120':
         return '이미 등록된 ID 입니다. \n 다시 입력하시길 바랍니다.';
-      case '0121':
-        return '병원 정보를 찾을 수 없습니다. \n 다시 입력하시길 바랍니다.';
+
       /* user account [30~39] */
       case '0130':
         return '이미 등록된 소셜 ID 입니다. \n 다시 입력하시길 바랍니다.';
       /* hospital [40~49] */
-      case '0140':
-        return '이미 등록된 병원코드 입니다. \n 다시 입력하시길 바랍니다.';
+
       case '0145':
         return '보안 설정 정보를 찾을 수 없습니다. \n 다시 입력하시길 바랍니다.';
-      case '0149':
-        return '이미 승인된 병원입니다. \n 다시 입력하시길 바랍니다.';
 
       /* pharmacy account [50~59] */
 
@@ -111,10 +107,6 @@ export class CodeMsgBundle {
       /** hospital-service code [1000~1099] **/
       case '1000':
         return '유효하지 않은 진료과 코드입니다. \n 잠시후 다시 시도해주시길 바랍니다.';
-      case '1001':
-        return '병원 프로필 생성중 오류가 발생했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
-      case '1010':
-        return '병원 프로필을 조회하지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       case '1011':
         return '비급여 항목을 조회하지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       case '1020':

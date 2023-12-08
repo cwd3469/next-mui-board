@@ -155,19 +155,19 @@ const ProceedTable = (props: { data: ProceedInterface[] }): JSX.Element => {
     {
       ...baseOption,
       field: 'hospitalNameKo',
-      headerName: '진료 병원 명',
+      headerName: '업체 명',
       width: 180,
     },
     {
       ...baseOption,
       field: 'doctorNameKo',
-      headerName: '진료 병원 의사 명',
+      headerName: '대상자 명',
       width: 110,
     },
     {
       ...baseOption,
       field: 'hospitalPhoneNum',
-      headerName: '병원 연락처',
+      headerName: '연락처',
       width: 105,
     },
     {

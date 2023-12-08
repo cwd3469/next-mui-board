@@ -188,7 +188,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
               />
             </ItemInput>
             <ItemInput
-              title="약사 면허증 첨부"
+              title="사업자 면허증 첨부"
               require
               sx={{ width: '220px', gap: '0px' }}
             >
@@ -200,7 +200,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                 onUploadFile={(file) =>
                   signup.setInInfo(file, 'pharmacistLicense')
                 }
-                placeholder="약사 면허증 파일명"
+                placeholder="사업자 면허증 파일명"
               />
             </ItemInput>
             <ItemInput

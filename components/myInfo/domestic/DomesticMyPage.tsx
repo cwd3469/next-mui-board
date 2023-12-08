@@ -46,7 +46,7 @@ const DomesticMyPage = () => {
                     </MyinfoTextBox>
                   </FlexStartC>
                   <FlexStartC gap="24px">
-                    <MyinfoTextBox title="약사 명">
+                    <MyinfoTextBox title="사업자 명">
                       {info.data.data.pharmacistNameKo}
                     </MyinfoTextBox>
                     <MyinfoTextBox title="휴대폰 번호">
