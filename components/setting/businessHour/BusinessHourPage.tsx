@@ -233,7 +233,7 @@ const BusinessHourPage = () => {
             <>
               <BusinessHourPageTitle
                 title="요일별 영업 시간 유무 설정"
-                contents="해당 약국의 영업 시작 시간을 설정해 주세요."
+                contents="해당 사업체의 영업 시작 시간을 설정해 주세요."
               />
               <Box height="24px" />
               <FlexStartR gap="40px">

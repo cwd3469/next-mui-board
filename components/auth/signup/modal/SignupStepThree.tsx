@@ -60,7 +60,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
         disabled={signup.btnDisable}
         activeOn
         closeBtnOn
-        title="약국 정보 입력"
+        title="사업체 정보 입력"
         className={classes.modalStyle}
       >
         <Stack gap="40px">
@@ -119,7 +119,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
               </ItemInput>
             </Stack>
             <Stack width="320px" gap="8px">
-              <ItemInput title="약국명" require>
+              <ItemInput title="사업체명" require>
                 <WPharmcyNameTextField
                   state={signup.info.pharmacyName}
                   err={signup.infoErr.pharmacyNameErr}
@@ -128,11 +128,11 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                   keyId={'pharmacyName'}
                 />
               </ItemInput>
-              <ItemInput title="약국 주소" require>
+              <ItemInput title="사업체 주소" require>
                 <WAddressSearch setAddress={signup.addressOnChange} />
               </ItemInput>
               <Box height="20px" />
-              <ItemInput title="약국 상세 주소">
+              <ItemInput title="사업체 상세 주소">
                 <WAddressDetailTextField
                   state={signup.info.addressDetail}
                   err={signup.infoErr.addressDetailErr}
@@ -141,7 +141,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                   keyId={'addressDetail'}
                 />
               </ItemInput>
-              <ItemInput title="약국 전화 번호" require>
+              <ItemInput title="사업체 전화 번호" require>
                 <WPhoneTextField
                   state={signup.info.pharmacyPhone}
                   err={signup.infoErr.pharmacyPhoneErr}
@@ -150,7 +150,7 @@ const SignupStepThree = (props: SignupStepThreeType) => {
                   keyId={'pharmacyPhone'}
                 />
               </ItemInput>
-              <ItemInput title="약국 팩스번호" require>
+              <ItemInput title="사업체 팩스번호" require>
                 <WFaxTextField
                   state={signup.info.pharmacyFaxNum}
                   err={signup.infoErr.pharmacyFaxNumErr}

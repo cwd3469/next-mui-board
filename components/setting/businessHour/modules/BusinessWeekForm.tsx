@@ -29,7 +29,7 @@ const BusinessWeekForm = (props: WeekFormType) => {
     moveTranslateX: 'translateX(63px)',
     borderRadius: '6px',
   };
-  // 약국 오픈 시간
+  // 사업체 오픈 시간
   const setStartime = useCallback(
     (time: string) => {
       setStart(time);
@@ -44,7 +44,7 @@ const BusinessWeekForm = (props: WeekFormType) => {
     },
     [endState, hospitalOpen, setWeekOnChange, week],
   );
-  // 약국 닫는 시간
+  // 사업체 닫는 시간
   const setEndTime = useCallback(
     (time: string) => {
       setEnd(time);
@@ -60,7 +60,7 @@ const BusinessWeekForm = (props: WeekFormType) => {
     [hospitalOpen, setWeekOnChange, startState, week],
   );
 
-  // 약국 당일 오픈 유무
+  // 사업체 당일 오픈 유무
   const setOpenSwich = useCallback(
     (boo: boolean) => {
       setHospitalOpen(boo);

@@ -21,7 +21,7 @@ const Signup = () => {
         letterSpacing="-0.13px"
         fontSize="13px"
       >
-        약국 제휴를 하고 싶으신가요?
+        사업체 제휴를 하고 싶으신가요?
       </Typography>
       <Button
         sx={{
@@ -34,7 +34,7 @@ const Signup = () => {
         variant="text"
         onClick={onOpenModal.run}
       >
-        약국 담당자 회원가입{' '}
+        사업체 담당자 회원가입{' '}
         <ArrowForwardIosIcon sx={{ fontSize: '11px', width: '18px' }} />
       </Button>
       <SignupStepOne open={modalOn} handleClose={handleClose} />

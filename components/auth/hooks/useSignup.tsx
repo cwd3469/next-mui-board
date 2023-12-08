@@ -61,10 +61,10 @@ const useSignup = (props: SignupStepThreeType) => {
     [info],
   );
 
-  /** useSignup 약국전화번호 '-' 추가*/
+  /** useSignup 사업체전화번호 '-' 추가*/
   const formChanger = mobileValue ? mobileFormat(mobileValue) : '';
 
-  /**useSignup 약국 정보 입력 유효성 검사 */
+  /**useSignup 사업체 정보 입력 유효성 검사 */
   const disabledOn = useCallback(() => {
     for (const key in info) {
       if (Object.prototype.hasOwnProperty.call(info, key)) {

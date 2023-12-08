@@ -11,7 +11,7 @@ const WFaxTextField = (props: WTextFieldModulesType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '약국 팩스번호는 숫자 8~12자리 입니다.',
+        msg: '사업체 팩스번호는 숫자 8~12자리 입니다.',
         boo: true,
       },
       keyId,

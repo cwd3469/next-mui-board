@@ -97,7 +97,7 @@ export class CodeMsgBundle {
 
       /* pharmacy [60~69] */
       case '0160':
-        return '약국 정보를 조회하지 못했습니다. \n 다시 입력하시길 바랍니다.';
+        return '사업체 정보를 조회하지 못했습니다. \n 다시 입력하시길 바랍니다.';
       /* mobile authentication [90~99]*/
       case '0190':
         return '인증번호가 일치하지 않습니다. \n 잠시 후, 다시 시도해 주세요';
@@ -119,9 +119,9 @@ export class CodeMsgBundle {
       /** pharmacy-service code [2000~2099] **/
       /** hospital-service code [1000~1099] **/
       case '2000':
-        return '약국 프로필을 조회하지 못했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+        return '사업체 프로필을 조회하지 못했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       case '2020':
-        return '배송 가능한 약국을 찾지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
+        return '배송 가능한 사업체을 찾지 못 했습니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       case '2021':
         return '처방전이 등록되지 않은 진료 입니다. \n 잠시후 다시 시도해주시길 바랍니다.';
       case '2022':

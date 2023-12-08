@@ -104,7 +104,7 @@ const SignupStepOne = (props: ModalType) => {
     >
       <Stack sx={{ width: '720px', padding: '0px 40px' }}>
         <Typography variant="subtitle1" fontWeight={'400'}>
-          어디 아파에 오신 약국 사용자님 반갑습니다.
+          디노에 오신 사업체 사용자님 반갑습니다.
         </Typography>
         <Box height="10px" />
         <Typography variant="h5">안전한 서비스 사용을 위해</Typography>

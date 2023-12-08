@@ -10,7 +10,7 @@ const WPharmcyNameTextField = (props: WTextFieldModulesType) => {
   const errMsg = useCallback(() => {
     setErr(
       {
-        msg: '약국명은 영문 대소문자/한글/숫자 조합으로 1~15자리 입니다.',
+        msg: '사업체명은 영문 대소문자/한글/숫자 조합으로 1~15자리 입니다.',
         boo: true,
       },
       keyId,

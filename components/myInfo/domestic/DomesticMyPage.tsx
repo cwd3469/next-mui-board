@@ -29,14 +29,14 @@ const DomesticMyPage = () => {
                   sx={{ alignItems: 'flex-start', gap: '178px' }}
                 >
                   <FlexStartC gap="24px">
-                    <MyinfoTextBox title="약국 명">
+                    <MyinfoTextBox title="사업체 명">
                       {info.data.data.pharmacyNameKo}
                     </MyinfoTextBox>
-                    <MyinfoTextBox title="약국 전화번호">
+                    <MyinfoTextBox title="사업체 전화번호">
                       {phoneFormat(info.data.data.pharmacyPhoneNum)}
                     </MyinfoTextBox>
                     <MyinfoTextBox
-                      title="약국 주소"
+                      title="사업체 주소"
                       sx={{ '& .disabled-text': { minHeight: '62px' } }}
                     >
                       <>
@@ -52,7 +52,7 @@ const DomesticMyPage = () => {
                     <MyinfoTextBox title="휴대폰 번호">
                       {mobileFormat(info.data.data.pharmacistPhoneNum)}
                     </MyinfoTextBox>
-                    <MyinfoTextBox title="약국 팩스번호">
+                    <MyinfoTextBox title="사업체 팩스번호">
                       {info.data.data.pharmacyFaxNum}
                     </MyinfoTextBox>
                   </FlexStartC>
