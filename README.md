@@ -2,8 +2,6 @@
 
 ## 개요
 
-- 디노 사업체 클라이언트 프로젝트
-
 ## 기술스택
 
 - JavaScript(ES6)
@@ -12,10 +10,6 @@
 - Next.js
 - MUI
 - Emotion
-
-## 프로젝트 시작 전 설정
-
-https://bepluslab.atlassian.net/wiki/spaces/P2D/pages/202342413
 
 ## 프로젝트 시작 (개발)
 
